@@ -1,6 +1,6 @@
 // Target path: src/components/sections/About.jsx
 import { motion } from 'framer-motion'
-import { profile, highlights } from '../../data/portfolio'
+import { profile, researchInterests } from '../../data/portfolio'
 import SectionHeading from '../SectionHeading'
 import { container, item } from '../../lib/motion'
 
@@ -46,7 +46,6 @@ export default function About({ section }) {
         >
           <div className="about__text">
             <p>{profile.bio}</p>
-            <blockquote className="about__quote">{profile.quote}</blockquote>
           </div>
           <aside className="about__meta">
             <dl>
@@ -66,14 +65,22 @@ export default function About({ section }) {
           </aside>
         </motion.div>
 
-        <motion.ul className="hero__stats" variants={container} initial="hidden" animate="show">
-          {highlights.map((highlight) => (
-            <motion.li key={highlight.label} variants={item}>
-              <span>{highlight.label}</span>
-              <strong>{highlight.value}</strong>
-            </motion.li>
-          ))}
-        </motion.ul>
+        <div className="about__research">
+          <h3 className="about__subheading">Research Interests</h3>
+          <motion.div className="research-grid" variants={container} initial="hidden" animate="show">
+            {researchInterests.map((research) => (
+              <motion.article key={research.title} className="research-card" variants={item}>
+                <h3>{research.title}</h3>
+                <p>{research.description}</p>
+                <ul className="tag-list">
+                  {research.tags.map((tag) => (
+                    <li key={tag}>{tag}</li>
+                  ))}
+                </ul>
+              </motion.article>
+            ))}
+          </motion.div>
+        </div>
       </div>
     </div>
   )

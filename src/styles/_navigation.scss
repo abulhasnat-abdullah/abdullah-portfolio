@@ -36,7 +36,13 @@
   border-radius: 50%;
   object-fit: cover;
   object-position: center top;
-  border: 1px solid $border;
+  border: 1px solid rgba($accent, 0.4);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.topnav__brand:hover .topnav__avatar {
+  border-color: $accent;
+  box-shadow: 0 0 16px rgba(255, 107, 53, 0.45);
 }
 
 .topnav__brand-text {
@@ -75,7 +81,7 @@
 }
 
 .topnav__pill:hover:not(.topnav__pill--active) {
-  color: $text;
+  color: $accent-2;
 }
 
 .topnav__pill--active {
@@ -87,7 +93,8 @@
   inset: 0;
   z-index: 0;
   border-radius: 999px;
-  background: $accent;
+  background: $gradient-accent;
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.35);
 }
 
 .topnav__pill-label {
@@ -96,20 +103,38 @@
 }
 
 .topnav__cta {
+  position: relative;
+  overflow: hidden;
   flex-shrink: 0;
   padding: 0.6rem 1.15rem;
   border-radius: 999px;
-  background: $accent;
+  background: $gradient-accent;
   color: $accent-ink;
   font-size: 0.85rem;
   font-weight: 600;
   white-space: nowrap;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.topnav__cta::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: translateX(-130%) skewX(-15deg);
 }
 
 .topnav__cta:hover {
-  transform: translateY(-1px);
-  opacity: 0.88;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(255, 107, 53, 0.45);
+}
+
+.topnav__cta:hover::after {
+  animation: shine-sweep 0.85s ease forwards;
 }
 
 .section-pills {
@@ -139,13 +164,13 @@
 }
 
 .section-pills__item:hover {
-  border-color: rgba($text, 0.25);
-  color: $text;
+  border-color: rgba($accent, 0.45);
+  color: $accent-2;
 }
 
 .section-pills__item--active {
   color: $text;
-  border-color: rgba($text, 0.3);
+  border-color: rgba($accent, 0.4);
 }
 
 .section-pills__item-bg {
@@ -180,7 +205,7 @@
   max-width: none;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba($text, 0.2) transparent;
+  scrollbar-color: rgba($accent, 0.35) transparent;
 }
 
 .section-page--contact {

@@ -52,25 +52,62 @@ ul {
   list-style: none;
 }
 
+@keyframes shine-sweep {
+  0% {
+    transform: translateX(-130%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(230%) skewX(-15deg);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
 .grid-bg {
   position: fixed;
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(rgba(245, 244, 239, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245, 244, 239, 0.025) 1px, transparent 1px),
-    radial-gradient(circle at 50% -10%, rgba(245, 244, 239, 0.06), transparent 40%);
-  background-size: 48px 48px, 48px 48px, auto;
-  mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+    linear-gradient(rgba(255, 107, 53, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 107, 53, 0.03) 1px, transparent 1px),
+    radial-gradient(circle at 18% 8%, rgba(255, 107, 53, 0.14), transparent 32%),
+    radial-gradient(circle at 82% 0%, rgba(255, 178, 56, 0.09), transparent 28%);
+  background-size: 48px 48px, 48px 48px, auto, auto;
+  mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  animation: glow-pulse 6s ease-in-out infinite;
 }
 
 .section-heading {
   margin-bottom: 1.75rem;
 
   h2 {
+    position: relative;
+    display: inline-block;
     font-size: clamp(1.6rem, 2.5vw, 2.2rem);
     font-weight: 600;
     letter-spacing: -0.03em;
+    background: linear-gradient(90deg, $text 55%, $accent 130%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 }
 
@@ -86,7 +123,13 @@ ul {
     border-radius: 999px;
     border: 1px solid $border;
     color: $text-muted;
-    background: rgba(245, 244, 239, 0.04);
+    background: rgba(255, 255, 255, 0.02);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  li:hover {
+    border-color: rgba($accent, 0.4);
+    color: $accent-2;
   }
 }
 
@@ -101,26 +144,49 @@ ul {
   padding: 0.85rem 1.2rem;
   border-radius: 10px;
   font-weight: 600;
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .btn--primary {
-  background: $accent;
+  position: relative;
+  overflow: hidden;
+  background: $gradient-accent;
   color: $accent-ink;
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.28);
+}
+
+.btn--primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: translateX(-130%) skewX(-15deg);
+}
+
+.btn--primary:hover {
+  box-shadow: 0 14px 34px rgba(255, 107, 53, 0.42);
+}
+
+.btn--primary:hover::after {
+  animation: shine-sweep 0.85s ease forwards;
 }
 
 .btn--ghost {
   border: 1px solid $border;
-  background: rgba(245, 244, 239, 0.03);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .btn--ghost:hover {
-  border-color: rgba($text, 0.3);
+  border-color: rgba($accent, 0.5);
   background: $accent-soft;
+  box-shadow: 0 0 24px rgba(255, 107, 53, 0.16);
 }
 
 .hero__eyebrow {
@@ -133,7 +199,7 @@ ul {
 .hero__role {
   margin-top: 0.5rem;
   font-size: 1.1rem;
-  color: $text;
+  color: $accent;
   font-weight: 600;
 }
 
@@ -149,37 +215,4 @@ ul {
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 1.25rem;
-}
-
-.hero__stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-
-  li {
-    padding: 1rem;
-    border-radius: 12px;
-    border: 1px solid $border;
-    background: rgba(245, 244, 239, 0.03);
-  }
-
-  span {
-    display: block;
-    font-family: $font-mono;
-    font-size: 0.72rem;
-    color: $text-muted;
-    margin-bottom: 0.35rem;
-  }
-
-  strong {
-    font-size: 0.92rem;
-    line-height: 1.35;
-  }
-}
-
-@media (max-width: 640px) {
-  .hero__stats {
-    grid-template-columns: 1fr;
-  }
 }

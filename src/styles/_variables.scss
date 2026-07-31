@@ -1,22 +1,26 @@
 // Target path: src/styles/_variables.scss
-$bg: #0a0a09;
-$bg-elevated: #121210;
-$bg-card: #161614;
-$border: rgba(245, 244, 239, 0.1);
+$bg: #060606;
+$bg-elevated: #0d0d0c;
+$bg-card: #121110;
+$border: rgba(255, 255, 255, 0.08);
 
 $text: #f5f4ef;
 $text-muted: #8f8d86;
 $text-soft: #c9c7bd;
 
-$accent: #f5f4ef;        // the one "pop" — off-white, used as inverted fill
-$accent-ink: #0a0a09;    // text/icon color sitting on top of $accent
-$accent-soft: rgba(245, 244, 239, 0.08);
-$accent-2: #c9c7bd;      // dimmer neutral highlight (eyebrows, org labels)
-$warning: #c9c7bd;
+$accent: #ff6b35;        // primary orange
+$accent-2: #ffb238;      // amber — gradient partner / secondary highlight
+$accent-ink: #1a0800;    // dark text sitting on top of orange fills
+$accent-soft: rgba(255, 107, 53, 0.12);
+$accent-glow: rgba(255, 107, 53, 0.45);
+$warning: $accent-2;
+
+$gradient-accent: linear-gradient(135deg, $accent, $accent-2);
 
 $font-sans: 'Space Grotesk', system-ui, sans-serif;
 $font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
 $max-width: 1180px;
 $header-height: 64px;
 $radius: 14px;
-$shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+$shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+$shadow-glow: 0 12px 40px rgba(255, 107, 53, 0.22);
