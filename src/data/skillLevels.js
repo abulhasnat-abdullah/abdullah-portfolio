@@ -37,4 +37,11 @@ export const skillLevels = {
     "Adobe Illustrator": 93,
     "Adobe InDesign": 68,
     "Adobe After Effects": 78,
+    
+    "HTML": 70,
+    "CSS": 70,
+    "JavaScript": 70,
+    "Node.js": 75,
+    "React": 50,
+    "Vite": 50,
   }

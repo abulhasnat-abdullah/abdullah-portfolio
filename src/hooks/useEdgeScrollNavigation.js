@@ -7,8 +7,8 @@
 import { useEffect, useRef } from 'react'
 
 const COOLDOWN_MS = 900 // ignore further edge-triggers while a transition is happening
-const WHEEL_THRESHOLD = 45 // accumulated deltaY needed at the edge before triggering (filters trackpad noise)
-const SWIPE_THRESHOLD = 60 // px of touch movement needed at the edge before triggering
+const WHEEL_THRESHOLD = 500 // accumulated deltaY needed at the edge before triggering (filters trackpad noise)
+const SWIPE_THRESHOLD = 560 // px of touch movement needed at the edge before triggering
 const EDGE_TOLERANCE = 4 // px slack for "at top/bottom" checks
 
 export function useEdgeScrollNavigation({ sections, activeSectionId, navigateToSection, enabled = true }) {

@@ -1,4 +1,5 @@
 // Target path: src/components/nav/TopNav.jsx
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { profile } from '../../data/portfolio'
 import { useNavigation } from '../../context/NavigationContext'
@@ -24,6 +25,27 @@ function MoonIcon() {
 export default function TopNav() {
   const { categories, activeCategoryId, navigateToCategory, navigateToSection } = useNavigation()
   const { theme, toggleTheme } = useTheme()
+  const pillsRef = useRef(null)
+  const activePillRef = useRef(null)
+
+  // Whenever the active category changes (via clicking a pill, edge-scroll
+  // navigation, or the URL hash on load), make sure its pill is fully
+  // visible inside the horizontally-scrollable pill strip instead of
+  // sitting clipped at the edge.
+  useEffect(() => {
+    const pillEl = activePillRef.current
+    const containerEl = pillsRef.current
+    if (!pillEl || !containerEl) return
+
+    const containerRect = containerEl.getBoundingClientRect()
+    const pillRect = pillEl.getBoundingClientRect()
+    const isFullyVisible =
+      pillRect.left >= containerRect.left && pillRect.right <= containerRect.right
+
+    if (!isFullyVisible) {
+      pillEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+    }
+  }, [activeCategoryId])
 
   return (
     <header className="topnav">
@@ -32,13 +54,14 @@ export default function TopNav() {
         <span className="topnav__brand-text">{profile.shortName}</span>
       </button>
 
-      <nav className="topnav__pills" aria-label="Categories">
+      <nav className="topnav__pills" aria-label="Categories" ref={pillsRef}>
         {categories.map((category) => {
           const isActive = activeCategoryId === category.id
           return (
             <button
               key={category.id}
               type="button"
+              ref={isActive ? activePillRef : null}
               className={`topnav__pill ${isActive ? 'topnav__pill--active' : ''}`}
               onClick={() => navigateToCategory(category.id)}
             >

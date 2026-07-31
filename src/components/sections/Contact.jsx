@@ -66,7 +66,7 @@ export default function Contact({ section }) {
         </motion.div>
       </div>
       <footer className="site-footer">
-        <p>© {new Date().getFullYear()} {profile.name}. Built with React & Vite.</p>
+        <p>© {new Date().getFullYear()} {profile.name}.</p>
       </footer>
     </div>
   )
