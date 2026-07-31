@@ -1,17 +1,22 @@
 // Target path: src/styles/_variables.scss
-$bg: #0b0f14;
-$bg-elevated: #111820;
-$bg-card: #151c26;
-$border: rgba(148, 163, 184, 0.14);
-$text: #e8edf5;
-$text-muted: #94a3b8;
-$accent: #38bdf8;
-$accent-soft: rgba(56, 189, 248, 0.12);
-$accent-2: #22d3a6;
-$warning: #fbbf24;
+$bg: #0a0a09;
+$bg-elevated: #121210;
+$bg-card: #161614;
+$border: rgba(245, 244, 239, 0.1);
+
+$text: #f5f4ef;
+$text-muted: #8f8d86;
+$text-soft: #c9c7bd;
+
+$accent: #f5f4ef;        // the one "pop" — off-white, used as inverted fill
+$accent-ink: #0a0a09;    // text/icon color sitting on top of $accent
+$accent-soft: rgba(245, 244, 239, 0.08);
+$accent-2: #c9c7bd;      // dimmer neutral highlight (eyebrows, org labels)
+$warning: #c9c7bd;
+
 $font-sans: 'Space Grotesk', system-ui, sans-serif;
 $font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
 $max-width: 1180px;
-$header-height: 72px;
+$header-height: 64px;
 $radius: 14px;
-$shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+$shadow: 0 24px 60px rgba(0, 0, 0, 0.5);

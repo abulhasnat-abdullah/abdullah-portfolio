@@ -1,8 +1,7 @@
 // Target path: src/components/layout/Layout.jsx
 import { useCallback } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import Sidebar from '../nav/Sidebar'
-import CategoryTabs from '../nav/CategoryTabs'
+import TopNav from '../nav/TopNav'
 import SectionPills from '../nav/SectionPills'
 import SectionPanel from './SectionPanel'
 import { useNavigation } from '../../context/NavigationContext'
@@ -12,9 +11,6 @@ export default function Layout() {
   const categorySections = sections.filter((section) => section.categoryId === activeCategoryId)
   const activeSection = sections.find((section) => section.id === activeSectionId) ?? sections[0]
 
-  // Cursor-driven parallax on the background grid. mx/my are normalized
-  // 0-1 pointer position across the viewport; springs smooth it out so it
-  // drifts rather than snaps.
   const mx = useMotionValue(0.5)
   const my = useMotionValue(0.5)
   const springX = useSpring(mx, { stiffness: 60, damping: 20, mass: 0.5 })
@@ -30,16 +26,12 @@ export default function Layout() {
   return (
     <div className="layout" onPointerMove={handlePointerMove}>
       <motion.div className="grid-bg" aria-hidden="true" style={{ x: bgX, y: bgY }} />
-      <Sidebar />
+      <TopNav />
+      {categorySections.length > 1 && <SectionPills links={categorySections} />}
 
-      <div className="layout__main">
-        <SectionPills links={categorySections} />
-        <div className="layout__content">
-          <SectionPanel section={activeSection} />
-        </div>
+      <div className="layout__content">
+        <SectionPanel section={activeSection} />
       </div>
-
-      <CategoryTabs />
     </div>
   )
 }
