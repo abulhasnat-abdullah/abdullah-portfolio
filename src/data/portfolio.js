@@ -346,7 +346,7 @@ export const projects = [
     status: 'live',
     href: 'https://github.com/abulhasnat-abdullah/interplanetar_mars_rover',
     image: '/images/projects/interplanetar_mars_rover.png',
-    youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
+    // youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
     description:
       'Full autonomy stack — SLAM, Nav2 waypoint nav, ROS2 architecture, and Gazebo digital twin for a competition-grade Mars rover.',
     tags: ['ROS2', 'Nav2', 'SLAM', 'Gazebo', 'C++'],
@@ -356,7 +356,7 @@ export const projects = [
     title: 'warehouse_agv',
     status: 'in-progress',
     image: '/images/projects/warehouse_agv.png',
-    youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
+    // youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
     description:
       'Warehouse AGV for logistics — Nav2 navigation, obstacle avoidance, and kinodynamically constrained path replanning in simulation.',
     tags: ['Nav2', 'RRT*', 'C++', 'Gazebo'],
@@ -367,7 +367,7 @@ export const projects = [
     status: 'completed',
     href: 'https://github.com/abulhasnat-abdullah/arm_visualizer',
     image: '/images/projects/arm_visualizer.png',
-    youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
+    youtube: 'https://youtu.be/Fh9B8C97Wrs',
     description:
       'Real-time 3D robot arm visualization with joint states, end-effector trajectories, and workspace envelopes.',
     tags: ['Python', 'RViz2', 'URDF'],
@@ -378,7 +378,7 @@ export const projects = [
     status: 'completed',
     href: 'https://github.com/abulhasnat-abdullah/voice_controlled_robot',
     image: '/images/projects/voice_controlled_robot.png',
-    youtube: 'https://www.youtube.com/watch?v=T1xi8z0nOks',
+    youtube: 'https://youtu.be/T1xi8z0nOks',
     description:
       'Speech-to-command interface — natural language parsed and mapped to motor commands via ROS2.',
     tags: ['Python', 'ROS2', 'NLP'],
@@ -481,12 +481,12 @@ export const certificates = [
 
 export const skillGroups = [
   {
-    category: 'Robotics & Autonomy',
-    skills: ['ROS2', 'Nav2', 'MoveIt2', 'Gazebo', 'SLAM Toolbox', 'tf2', 'OMPL', 'PyBullet', 'RViz2'],
-  },
-  {
     category: 'Languages & Systems',
     skills: ['C', 'C++', 'Python', 'Bash', 'CMake', 'Linux', 'Ubuntu', 'Docker', 'Git'],
+  },
+  {
+    category: 'Robotics & Autonomy',
+    skills: ['ROS2', 'Nav2', 'MoveIt2', 'Gazebo', 'SLAM Toolbox', 'tf2', 'OMPL', 'PyBullet', 'RViz2'],
   },
   {
     category: 'Perception & ML',
@@ -501,10 +501,16 @@ export const skillGroups = [
     skills: ['SolidWorks', 'AutoCAD', 'Fusion360'],
   },
   {
-    category: 'Graphic Design',
+    category: 'Graphic Design & Animation',
     skills: ['Adobe Photoshop', 'Adobe Illustrator', 'Adobe InDesign', 'Adobe After Effects'],
   },
+  {
+    category: 'Web Development',
+    skills: ['HTML', 'CSS', 'JavaScript', 'Node.js', 'React', 'Vite'],
+  },
+
 ]
+
 
 export const researchInterests = [
   {

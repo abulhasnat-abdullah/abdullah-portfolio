@@ -50,4 +50,11 @@ export const skillIcons = {
     'Adobe Illustrator': 'adobe-illustrator.png',
     'Adobe InDesign': 'adobe-indesign.png',
     'Adobe After Effects': 'adobe-after-effects.png',
+
+    HTML: 'html.png',
+    CSS: 'css.png',
+    JavaScript: 'javascript.png',
+    'Node.js': 'nodejs.png',
+    React: 'react.png',
+    Vite: 'vite.png',
   }
