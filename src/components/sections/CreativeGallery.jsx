@@ -185,7 +185,7 @@ export default function CreativeGallery() {
       {hasArt && (
         <section className="gallery-block">
           <div className="gallery-block__head">
-            <h3>Watercolour Art</h3>
+            <h3>Art Gallery — Aquarelle Verse</h3>
             <span>Instagram · @aquarelle_verse</span>
           </div>
           <GalleryGroup works={artWorks} tone="art" />
