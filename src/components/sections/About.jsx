@@ -20,7 +20,9 @@ export default function About({ section }) {
             <p className="hero__eyebrow">{profile.subtitle}</p>
             <h2 className="about__name">{profile.name}</h2>
             <p className="hero__role">{profile.title}</p>
+            <p className="hero__location">📍 {profile.location}</p>
             <p className="hero__tagline">{profile.tagline}</p>
+            <p className="hero__bio">{profile.bio}</p>
             <div className="hero__actions">
               <a className="btn btn--primary" href={profile.links.github} target="_blank" rel="noreferrer">
                 View GitHub
@@ -36,33 +38,6 @@ export default function About({ section }) {
               </a>
             </div>
           </div>
-        </motion.div>
-
-        <motion.div
-          className="about__grid"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div className="about__text">
-            <p>{profile.bio}</p>
-          </div>
-          <aside className="about__meta">
-            <dl>
-              <div>
-                <dt>Location</dt>
-                <dd>{profile.location}</dd>
-              </div>
-              <div>
-                <dt>Education</dt>
-                <dd>BSc Mechanical Engineering, BUET</dd>
-              </div>
-              <div>
-                <dt>Credentials</dt>
-                <dd>{profile.credentials.join(' · ')}</dd>
-              </div>
-            </dl>
-          </aside>
         </motion.div>
 
         <div className="about__research">

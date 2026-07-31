@@ -17,8 +17,10 @@ $warning: $accent-2;
 
 $gradient-accent: linear-gradient(135deg, $accent, $accent-2);
 
-$font-sans: 'Space Grotesk', system-ui, sans-serif;
-$font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+$font-sans: 'DM Sans', 'Roboto', system-ui, sans-serif;
+$font-display: 'Bebas Neue', 'Barlow', system-ui, sans-serif;
+$font-nav: 'Barlow', 'Roboto', system-ui, sans-serif;
+$font-mono: 'Barlow', 'Roboto', system-ui, sans-serif;
 $max-width: 1180px;
 $header-height: 64px;
 $radius: 14px;

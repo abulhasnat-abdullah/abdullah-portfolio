@@ -28,24 +28,29 @@ export const profile = {
 }
 
 export const categories = [
-  { id: 'home', label: 'Home', icon: '⌂' },
-  { id: 'background', label: 'History', icon: '◷' },
+  { id: 'about', label: 'About', icon: '👤' },
+  { id: 'experience', label: 'Experience', icon: '💼' },
+  { id: 'extracurricular', label: 'Activities', icon: '🤝' },
   { id: 'education', label: 'Education', icon: '🎓' },
-  { id: 'showcase', label: 'Showcase', icon: '◫' },
-  { id: 'more', label: 'More', icon: '⋯' },
+  { id: 'projects', label: 'Projects', icon: '🚀' },
+  { id: 'art-design', label: 'Art & Design', icon: '🎨' },
+  { id: 'skills', label: 'Skills', icon: '🛠️' },
+  { id: 'research', label: 'Research', icon: '🔬' },
+  { id: 'certificates', label: 'Certificates', icon: '📜' },
+  { id: 'contact', label: 'Contact', icon: '✉️' },
 ]
 
 export const sections = [
-  { id: 'about', categoryId: 'home', label: 'About', title: 'About Me' },
-  { id: 'experience', categoryId: 'background', label: 'Experience', title: 'Experience & Highlights' },
-  { id: 'extracurricular', categoryId: 'background', label: 'Activities', title: 'Extra-Curricular Activities' },
+  { id: 'about', categoryId: 'about', label: 'About', title: 'About Me' },
+  { id: 'experience', categoryId: 'experience', label: 'Experience', title: 'Experience & Highlights' },
+  { id: 'extracurricular', categoryId: 'extracurricular', label: 'Activities', title: 'Extra-Curricular Activities' },
   { id: 'education', categoryId: 'education', label: 'Education', title: 'Education' },
-  { id: 'projects', categoryId: 'showcase', label: 'Projects', title: 'Selected Projects' },
-  { id: 'art-design', categoryId: 'showcase', label: 'Art & Design', title: 'Art & Design' },
-  { id: 'skills', categoryId: 'showcase', label: 'Skills', title: 'Technical Stack' },
-  { id: 'research', categoryId: 'showcase', label: 'Research', title: 'Research Interests' },
-  { id: 'certificates', categoryId: 'showcase', label: 'Certificates', title: 'Certifications & Courses' },
-  { id: 'contact', categoryId: 'more', label: 'Contact', title: 'Get In Touch' },
+  { id: 'projects', categoryId: 'projects', label: 'Projects', title: 'Selected Projects' },
+  { id: 'art-design', categoryId: 'art-design', label: 'Art & Design', title: 'Art & Design' },
+  { id: 'skills', categoryId: 'skills', label: 'Skills', title: 'Technical Stack' },
+  { id: 'research', categoryId: 'research', label: 'Research', title: 'Research Interests' },
+  { id: 'certificates', categoryId: 'certificates', label: 'Certificates', title: 'Certifications & Courses' },
+  { id: 'contact', categoryId: 'contact', label: 'Contact', title: 'Get In Touch' },
 ]
 
 export const highlights = [
@@ -367,6 +372,8 @@ export const projects = [
     title: 'interplanetar_mars_rover',
     status: 'live',
     href: 'https://github.com/abulhasnat-abdullah/interplanetar_mars_rover',
+    image: '/images/projects/interplanetar_mars_rover.png',
+    youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
     description:
       'Full autonomy stack — SLAM, Nav2 waypoint nav, ROS2 architecture, and Gazebo digital twin for a competition-grade Mars rover.',
     tags: ['ROS2', 'Nav2', 'SLAM', 'Gazebo', 'C++'],
@@ -375,6 +382,8 @@ export const projects = [
     id: '02',
     title: 'warehouse_agv',
     status: 'in-progress',
+    image: '/images/projects/warehouse_agv.png',
+    youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
     description:
       'Warehouse AGV for logistics — Nav2 navigation, obstacle avoidance, and kinodynamically constrained path replanning in simulation.',
     tags: ['Nav2', 'RRT*', 'C++', 'Gazebo'],
@@ -384,6 +393,8 @@ export const projects = [
     title: 'arm_visualizer',
     status: 'completed',
     href: 'https://github.com/abulhasnat-abdullah/arm_visualizer',
+    image: '/images/projects/arm_visualizer.png',
+    youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
     description:
       'Real-time 3D robot arm visualization with joint states, end-effector trajectories, and workspace envelopes.',
     tags: ['Python', 'RViz2', 'URDF'],
@@ -393,6 +404,8 @@ export const projects = [
     title: 'voice_controlled_robot',
     status: 'completed',
     href: 'https://github.com/abulhasnat-abdullah/voice_controlled_robot',
+    image: '/images/projects/voice_controlled_robot.png',
+    youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
     description:
       'Speech-to-command interface — natural language parsed and mapped to motor commands via ROS2.',
     tags: ['Python', 'ROS2', 'NLP'],
@@ -402,6 +415,8 @@ export const projects = [
     title: 'Autonomous_Exploration',
     status: 'completed',
     href: 'https://github.com/abulhasnat-abdullah/Autonomous_Exploration',
+    image: '/images/projects/Autonomous_Exploration.png',
+    youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
     description: 'Autonomous exploration pipeline for mobile robots in unknown environments.',
     tags: ['ROS2', 'SLAM', 'Python'],
   },
@@ -410,6 +425,8 @@ export const projects = [
     title: 'pointcloud_to_laserscan',
     status: 'completed',
     href: 'https://github.com/abulhasnat-abdullah/pointcloud_to_laserscan',
+    image: '/images/projects/pointcloud_to_laserscan.png',
+    youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
     description: 'Converts 3D point cloud data into 2D laser scans for navigation stack compatibility.',
     tags: ['ROS2', 'Perception', 'C++'],
   },
@@ -475,19 +492,27 @@ export const certificates = [
 export const skillGroups = [
   {
     category: 'Robotics & Autonomy',
-    skills: ['ROS2', 'Nav2', 'MoveIt2', 'Gazebo', 'SLAM Toolbox', 'AMCL', 'tf2', 'OMPL', 'PyBullet'],
+    skills: ['ROS2', 'Nav2', 'MoveIt2', 'Gazebo', 'SLAM Toolbox', 'tf2', 'OMPL', 'PyBullet', 'RViz2'],
   },
   {
     category: 'Languages & Systems',
-    skills: ['C++', 'Python', 'Bash', 'CMake', 'Linux', 'Ubuntu', 'Docker', 'Git'],
+    skills: ['C', 'C++', 'Python', 'Bash', 'CMake', 'Linux', 'Ubuntu', 'Docker', 'Git'],
   },
   {
     category: 'Perception & ML',
     skills: ['OpenCV', 'PyTorch', 'TensorFlow', 'scikit-learn', 'NumPy', 'SciPy', 'Pandas'],
   },
   {
+    category: 'Simulation',
+    skills: ['SolidWorks Simulation', 'ANSYS', 'COMSOL'],
+  },
+  {
     category: 'Design & CAD',
-    skills: ['SolidWorks', 'URDF', 'RViz2', 'Visual Design'],
+    skills: ['SolidWorks', 'AutoCAD', 'Fusion360'],
+  },
+  {
+    category: 'Graphic Design',
+    skills: ['Adobe Photoshop', 'Adobe Illustrator', 'Adobe InDesign', 'Adobe After Effects'],
   },
 ]
 
