@@ -29,27 +29,27 @@ export const profile = {
 
 export const categories = [
   { id: 'about', label: 'About', icon: '👤' },
-  { id: 'experience', label: 'Experience', icon: '💼' },
-  { id: 'extracurricular', label: 'Activities', icon: '🤝' },
   { id: 'education', label: 'Education', icon: '🎓' },
+  { id: 'experience', label: 'Experience', icon: '💼' },
   { id: 'projects', label: 'Projects', icon: '🚀' },
   { id: 'art-design', label: 'Art & Design', icon: '🎨' },
   { id: 'skills', label: 'Skills', icon: '🛠️' },
   { id: 'research', label: 'Research', icon: '🔬' },
   { id: 'certificates', label: 'Certificates', icon: '📜' },
+  { id: 'achievements', label: 'Achievements', icon: '🏆' },
   { id: 'contact', label: 'Contact', icon: '✉️' },
 ]
 
 export const sections = [
   { id: 'about', categoryId: 'about', label: 'About', title: 'About Me' },
-  { id: 'experience', categoryId: 'experience', label: 'Experience', title: 'Experience & Highlights' },
-  { id: 'extracurricular', categoryId: 'extracurricular', label: 'Activities', title: 'Extra-Curricular Activities' },
   { id: 'education', categoryId: 'education', label: 'Education', title: 'Education' },
+  { id: 'experience', categoryId: 'experience', label: 'Experience', title: 'Experience & Activities' },
   { id: 'projects', categoryId: 'projects', label: 'Projects', title: 'Selected Projects' },
   { id: 'art-design', categoryId: 'art-design', label: 'Art & Design', title: 'Art & Design' },
   { id: 'skills', categoryId: 'skills', label: 'Skills', title: 'Technical Stack' },
   { id: 'research', categoryId: 'research', label: 'Research', title: 'Research Interests' },
   { id: 'certificates', categoryId: 'certificates', label: 'Certificates', title: 'Certifications & Courses' },
+  { id: 'achievements', categoryId: 'achievements', label: 'Achievements', title: 'Achievements' },
   { id: 'contact', categoryId: 'contact', label: 'Contact', title: 'Get In Touch' },
 ]
 
@@ -60,44 +60,16 @@ export const highlights = [
   { label: 'Stack', value: 'C++ · Python · Gazebo' },
 ]
 
+// LinkedIn-style "Experience" list — one card per organisation/club, each
+// grouping every role held there (like LinkedIn groups stacked positions
+// under one company). This also folds in what used to be the separate
+// "Activities" (extra-curricular) tab, since both are the same thing: ECA.
+// Every entry needs a `logo`; drop the image file at the given path under
+// /public (see scripts/README note at the bottom of this file).
 export const experience = [
   {
-    role: 'Technical Lead — ERC Remote',
     org: 'Team Interplanetar · BUET',
-    period: 'Jan 2026 — Present',
-    description:
-      'Leading remote operations and autonomy integration for an international Mars-analog rover platform — architecture, simulation, and competition readiness.',
-    tags: ['ROS2', 'Autonomy', 'Leadership'],
-  },
-  {
-    role: 'Senior Coordinator, Software & Autonomy',
-    org: 'BUET Interplanetary Mars Rover Team',
-    period: '2024 — Present',
-    description:
-      'Owns the full autonomy pipeline: SLAM, Nav2 waypoint navigation, Gazebo digital twin, and competition-grade rover software architecture.',
-    tags: ['Nav2', 'SLAM', 'Gazebo'],
-  },
-  {
-    role: 'Member — Software Sub Team',
-    org: 'Team Interplanetar',
-    period: '2023 — 2025',
-    description:
-      'Contributed to rover perception, navigation packages, and ROS 2 integration across simulation and hardware bring-up.',
-    tags: ['ROS2', 'Perception', 'C++'],
-  },
-  {
-    role: 'Member',
-    org: 'BUET Automobile Club',
-    period: '2023 — Present',
-    description:
-      'Hands-on robotics competitions — BattleBot and Robo Soccer platforms with embedded control and mechanical integration.',
-    tags: ['Embedded', 'Controls', 'Mechanical'],
-  },
-]
-
-export const extracurricular = [
-  {
-    org: 'Team Interplanetar · BUET',
+    logo: '/images/organizations/team-interplanetar.png',
     totalDuration: '1 yr 4 mos',
     roles: [
       {
@@ -136,6 +108,7 @@ export const extracurricular = [
   },
   {
     org: 'BUET Automobile Club',
+    logo: '/images/organizations/buet-automobile-club.png',
     totalDuration: '3 yrs 7 mos',
     roles: [
       {
@@ -166,6 +139,7 @@ export const extracurricular = [
   },
   {
     org: 'BUET Robotics Society',
+    logo: '/images/organizations/buet-robotics-society.png',
     totalDuration: '1 yr 1 mo',
     roles: [
       {
@@ -188,6 +162,7 @@ export const extracurricular = [
   },
   {
     org: 'IMechE BUET Student Chapter',
+    logo: '/images/organizations/imeche-buet.png',
     totalDuration: '2 yrs 8 mos',
     roles: [
       {
@@ -202,6 +177,7 @@ export const extracurricular = [
   },
   {
     org: 'AllStar',
+    logo: '/images/organizations/allstar.png',
     totalDuration: '5 yrs 4 mos',
     roles: [
       {
@@ -216,6 +192,7 @@ export const extracurricular = [
   },
   {
     org: 'Ongikar',
+    logo: '/images/organizations/ongikar.png',
     totalDuration: '5 yrs 2 mos',
     roles: [
       {
@@ -230,6 +207,7 @@ export const extracurricular = [
   },
   {
     org: 'Notre Dame Art Club',
+    logo: '/images/organizations/notre-dame-art-club.png',
     totalDuration: '2 yrs 2 mos',
     roles: [
       {
@@ -252,6 +230,7 @@ export const extracurricular = [
   },
   {
     org: 'Brain Stormers',
+    logo: '/images/organizations/brain-stormers.png',
     totalDuration: '8 mos',
     roles: [
       {
@@ -266,6 +245,7 @@ export const extracurricular = [
   },
   {
     org: 'Apars Classroom',
+    logo: '/images/organizations/apars-classroom.png',
     totalDuration: '2 mos',
     roles: [
       {
@@ -321,21 +301,14 @@ export const education = [
 
 
 
+// Drop the certificate image at the given path under /public (see the note
+// at the bottom of this file for the folder to use).
 export const achievements = [
   {
     title: 'Champion — Robo Soccer Challenge',
     context: 'Intra BUET Robo Challenge 2024 · BUET Robotics Club',
     detail: 'Led team Siuuu with a radio-controlled four-wheel soccer bot built on BattleBot experience.',
-  },
-  {
-    title: 'Closed-Loop Drone Simulation',
-    context: 'ROS 2 Humble × ArduPilot integration',
-    detail: 'Bridged aerial autopilot firmware with ROS 2 for integrated simulation and control validation.',
-  },
-  {
-    title: 'BattleBot — NSARv1',
-    context: 'BUET Automobile Club',
-    detail: 'Combat robotics platform developed for intra-university BattleBot competition.',
+    image: '/images/achievements/robo-soccer-challenge-certificate.png',
   },
 ]
 
@@ -405,32 +378,49 @@ export const projects = [
     status: 'completed',
     href: 'https://github.com/abulhasnat-abdullah/voice_controlled_robot',
     image: '/images/projects/voice_controlled_robot.png',
-    youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
+    youtube: 'https://www.youtube.com/watch?v=T1xi8z0nOks',
     description:
       'Speech-to-command interface — natural language parsed and mapped to motor commands via ROS2.',
     tags: ['Python', 'ROS2', 'NLP'],
   },
   {
     id: '05',
-    title: 'Autonomous_Exploration',
+    title: 'BattleBot-NSARv1',
     status: 'completed',
-    href: 'https://github.com/abulhasnat-abdullah/Autonomous_Exploration',
-    image: '/images/projects/Autonomous_Exploration.png',
-    youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
-    description: 'Autonomous exploration pipeline for mobile robots in unknown environments.',
-    tags: ['ROS2', 'SLAM', 'Python'],
+    // Drop the project photo at this path under /public (see note below).
+    image: '/images/projects/battlebot-nsarv1.png',
+    description:
+      'Combat robotics platform built for intra-university BattleBot competition — chassis, drivetrain, and weapon mechanism engineered for BUET Automobile Club.',
+    tags: ['Combat Robotics', 'Mechanical Design', 'Embedded Control'],
   },
   {
     id: '06',
-    title: 'pointcloud_to_laserscan',
+    title: 'SoccerBot-Siuuu',
     status: 'completed',
-    href: 'https://github.com/abulhasnat-abdullah/pointcloud_to_laserscan',
-    image: '/images/projects/pointcloud_to_laserscan.png',
-    youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
-    description: 'Converts 3D point cloud data into 2D laser scans for navigation stack compatibility.',
-    tags: ['ROS2', 'Perception', 'C++'],
+    image: '/images/projects/soccerbot-siuuu.png',
+    description:
+      'Championship-winning radio-controlled four-wheel soccer bot built for the Intra BUET Robo Soccer Challenge — tuned for agility and precise ball control.',
+    tags: ['RC Robotics', 'Mechanical Design', 'Competition'],
+  },
+  {
+    id: '07',
+    title: 'Autonomous GPS-Denied Tunnel Inspection Drone',
+    status: 'in-progress',
+    image: '/images/projects/gps-denied-tunnel-inspection-drone.png',
+    description:
+      'Autonomous inspection drone for GPS-denied tunnels — SLAM-based localization and obstacle-aware navigation for underground infrastructure inspection.',
+    tags: ['ROS2', 'SLAM', 'Drones', 'GPS-Denied Navigation'],
   },
 ]
+
+// ---------------------------------------------------------------------
+// Image folders to create under /public (Vite serves /public at the site
+// root, so these are the paths referenced above):
+//   public/images/organizations/   → one logo per org used in `experience`
+//   public/images/achievements/    → certificate image(s) used in `achievements`
+//   public/images/projects/        → already exists; add the 3 new project photos
+// Recommended logo size: square, ~256×256px, transparent or white background.
+// ---------------------------------------------------------------------
 
 export const certificates = [
   {

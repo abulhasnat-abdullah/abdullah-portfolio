@@ -1,12 +1,68 @@
 // Target path: src/styles/_variables.scss
-$bg: #060606;
-$bg-elevated: #0d0d0c;
-$bg-card: #121110;
-$border: rgba(255, 255, 255, 0.08);
 
-$text: #f5f4ef;
-$text-muted: #8f8d86;
-$text-soft: #c9c7bd;
+// ---------------------------------------------------------------------------
+// Theme tokens (CSS custom properties) — these are what actually change when
+// the user toggles light/dark mode. Dark is the default (defined on :root),
+// light overrides live under [data-theme='light']. The Sass variables below
+// just point at these custom properties, so every existing rule that uses
+// $bg, $text, etc. automatically respects whichever theme is active without
+// needing to be rewritten.
+// ---------------------------------------------------------------------------
+:root {
+  --bg: #060606;
+  --bg-elevated: #0d0d0c;
+  --bg-card: #121110;
+  --border: rgba(255, 255, 255, 0.08);
+
+  --text: #f5f4ef;
+  --text-muted: #8f8d86;
+  --text-soft: #c9c7bd;
+
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  --nav-bg: rgba(6, 6, 6, 0.72);
+  --pill-bg: rgba(18, 17, 16, 0.5);
+
+  // Glass blur applied to cards — 0 in dark mode (cards are solid), turned on
+  // in light mode for the "glassy white" look.
+  --card-blur: 0px;
+
+  --hero-bg-image: url('/images/bg/hero-bg.jpg');
+  --hero-bg-opacity: 0.45;
+}
+
+[data-theme='light'] {
+  --bg: #f3efe7;
+  --bg-elevated: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.55);
+  --border: rgba(20, 18, 15, 0.1);
+
+  --text: #201e1a;
+  --text-muted: #6b675f;
+  --text-soft: #3d3a34;
+
+  --shadow: 0 24px 60px rgba(30, 25, 15, 0.12);
+  --nav-bg: rgba(255, 255, 255, 0.6);
+  --pill-bg: rgba(255, 255, 255, 0.55);
+
+  --card-blur: 18px;
+
+  --hero-bg-image: url('/images/bg/hero-bg-light.jpg');
+  --hero-bg-opacity: 0.65;
+}
+
+// ---------------------------------------------------------------------------
+// Sass variables used throughout the stylesheets. Anything theme-dependent
+// points at the custom properties above; the brand accent stays identical in
+// both themes so it isn't themed.
+// ---------------------------------------------------------------------------
+$bg: var(--bg);
+$bg-elevated: var(--bg-elevated);
+$bg-card: var(--bg-card);
+$border: var(--border);
+
+$text: var(--text);
+$text-muted: var(--text-muted);
+$text-soft: var(--text-soft);
 
 $accent: #ff6b35;        // primary orange
 $accent-2: #ffb238;      // amber — gradient partner / secondary highlight
@@ -24,5 +80,5 @@ $font-mono: 'Barlow', 'Roboto', system-ui, sans-serif;
 $max-width: 1180px;
 $header-height: 64px;
 $radius: 14px;
-$shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+$shadow: var(--shadow);
 $shadow-glow: 0 12px 40px rgba(255, 107, 53, 0.22);

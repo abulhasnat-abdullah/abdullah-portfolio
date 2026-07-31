@@ -2,26 +2,26 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import About from '../sections/About'
 import Experience from '../sections/Experience'
-import Extracurricular from '../sections/Extracurricular'
 import Education from '../sections/Education'
 import Projects from '../sections/Projects'
 import ArtDesign from '../sections/ArtDesign'
 import Skills from '../sections/Skills'
 import Research from '../sections/Research'
 import Certificates from '../sections/Certificates'
+import Achievements from '../sections/Achievements'
 import Contact from '../sections/Contact'
 import { pageVariants } from '../../lib/motion'
 
 const sectionComponents = {
   about: About,
-  experience: Experience,
-  extracurricular: Extracurricular,
   education: Education,
+  experience: Experience,
   projects: Projects,
   'art-design': ArtDesign,
   skills: Skills,
   research: Research,
   certificates: Certificates,
+  achievements: Achievements,
   contact: Contact,
 }
 

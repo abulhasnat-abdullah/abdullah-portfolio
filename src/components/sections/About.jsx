@@ -16,10 +16,9 @@ export default function About({ section }) {
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <img className="about__photo" src={profile.photo} alt={profile.name} />
-          <div>
-            <p className="hero__eyebrow">{profile.subtitle}</p>
+          <div className="about__hero-info">
             <h2 className="about__name">{profile.name}</h2>
-            <p className="hero__role">{profile.title}</p>
+            <p className="hero__role">{profile.subtitle}</p>
             <p className="hero__location">📍 {profile.location}</p>
             <p className="hero__tagline">{profile.tagline}</p>
             <p className="hero__bio">{profile.bio}</p>

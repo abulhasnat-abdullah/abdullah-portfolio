@@ -227,6 +227,9 @@ ul {
   font-size: 1.02rem;
   line-height: 1.7;
   max-width: 62ch;
+  text-align: justify;
+  text-align-last: left; // keep the final line ragged instead of stretched
+  hyphens: none;
 }
 
 .hero__actions {
