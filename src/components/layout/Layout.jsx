@@ -5,11 +5,17 @@ import TopNav from '../nav/TopNav'
 import SectionPills from '../nav/SectionPills'
 import SectionPanel from './SectionPanel'
 import { useNavigation } from '../../context/NavigationContext'
+import { useEdgeScrollNavigation } from '../../hooks/useEdgeScrollNavigation'
 
 export default function Layout() {
-  const { sections, activeSectionId, activeCategoryId } = useNavigation()
+  const { sections, activeSectionId, activeCategoryId, navigateToSection } = useNavigation()
   const categorySections = sections.filter((section) => section.categoryId === activeCategoryId)
   const activeSection = sections.find((section) => section.id === activeSectionId) ?? sections[0]
+
+  // Scrolling past the bottom of the current section advances to the next
+  // tab in `sections` order (and scrolling up past the top goes back),
+  // stopping at the first/last section.
+  useEdgeScrollNavigation({ sections, activeSectionId, navigateToSection })
 
   const mx = useMotionValue(0.5)
   const my = useMotionValue(0.5)

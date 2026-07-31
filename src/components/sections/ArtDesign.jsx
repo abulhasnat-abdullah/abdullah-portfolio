@@ -4,6 +4,7 @@ import { creativePortfolios } from '../../data/portfolio'
 import SectionHeading from '../SectionHeading'
 import { container, item, cardHover } from '../../lib/motion'
 import { useTilt } from '../../hooks/useTilt'
+import CreativeGallery from './CreativeGallery'
 
 function CreativeCard({ portfolio }) {
   const { ref, rotateX, rotateY, handleMouseMove, handleMouseLeave } = useTilt()
@@ -50,6 +51,7 @@ export default function ArtDesign({ section }) {
           <CreativeCard key={portfolio.id} portfolio={portfolio} />
         ))}
       </motion.div>
+      <CreativeGallery />
     </div>
   )
 }

@@ -344,7 +344,7 @@ export const creativePortfolios = [
     id: 'art',
     platform: 'Instagram',
     handle: '@aquarelle_verse',
-    title: 'Aquarelle Verse',
+    title: 'Art Gallery - Aquarelle Verse',
     role: 'Artist',
     description:
       'Watercolour paintings, visual studies, and creative experiments — a growing collection of original art shared on Instagram.',
