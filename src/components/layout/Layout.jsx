@@ -25,6 +25,7 @@ export default function Layout() {
 
   return (
     <div className="layout" onPointerMove={handlePointerMove}>
+      <div className="layout__bg-image" aria-hidden="true" />
       <motion.div className="grid-bg" aria-hidden="true" style={{ x: bgX, y: bgY }} />
       <TopNav />
       {categorySections.length > 1 && <SectionPills links={categorySections} />}

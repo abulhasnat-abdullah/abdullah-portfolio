@@ -8,6 +8,18 @@
   min-height: 100svh;
 }
 
+.layout__bg-image {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: url('/images/bg/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.45;
+  mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+}
+
 .topnav {
   position: sticky;
   top: 0;
