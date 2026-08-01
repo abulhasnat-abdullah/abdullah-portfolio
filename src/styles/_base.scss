@@ -81,6 +81,123 @@ ul {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Ambient background animation — a few large, heavily blurred blobs that
+// drift slowly on their own (so the page feels alive even before the user
+// moves the pointer) plus a pointer/touch-reactive glow (.cursor-glow,
+// positioned via framer-motion in CursorGlow.jsx). Both sit behind
+// #root (z-index -1) and never intercept input.
+// ---------------------------------------------------------------------------
+@keyframes drift-a {
+  0% {
+    transform: translate(-8%, -6%) scale(1);
+  }
+  50% {
+    transform: translate(6%, 8%) scale(1.12);
+  }
+  100% {
+    transform: translate(-8%, -6%) scale(1);
+  }
+}
+
+@keyframes drift-b {
+  0% {
+    transform: translate(4%, -4%) scale(1.05);
+  }
+  50% {
+    transform: translate(-10%, 6%) scale(0.95);
+  }
+  100% {
+    transform: translate(4%, -4%) scale(1.05);
+  }
+}
+
+@keyframes drift-c {
+  0% {
+    transform: translate(0%, 8%) scale(0.9);
+  }
+  50% {
+    transform: translate(-6%, -10%) scale(1.08);
+  }
+  100% {
+    transform: translate(0%, 8%) scale(0.9);
+  }
+}
+
+.ambient-blobs {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ambient-blob {
+  position: absolute;
+  width: 42vmax;
+  height: 42vmax;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: calc(var(--glow-opacity) * 0.35);
+  will-change: transform;
+}
+
+.ambient-blob--a {
+  top: -12%;
+  left: -8%;
+  background: radial-gradient(circle, rgba($accent, 0.55), transparent 70%);
+  animation: drift-a 26s ease-in-out infinite;
+}
+
+.ambient-blob--b {
+  bottom: -16%;
+  right: -10%;
+  width: 36vmax;
+  height: 36vmax;
+  background: radial-gradient(circle, rgba($accent-2, 0.5), transparent 70%);
+  animation: drift-b 32s ease-in-out infinite;
+}
+
+.ambient-blob--c {
+  top: 40%;
+  left: 55%;
+  width: 30vmax;
+  height: 30vmax;
+  background: radial-gradient(circle, rgba($accent, 0.35), transparent 70%);
+  animation: drift-c 38s ease-in-out infinite;
+}
+
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba($accent, 0.4), rgba($accent-2, 0.12) 45%, transparent 72%);
+  filter: blur(50px);
+  opacity: calc(var(--glow-opacity) * 0.55);
+  mix-blend-mode: var(--glow-blend, normal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-blob {
+    animation: none;
+  }
+
+  .cursor-glow {
+    display: none;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  // Touch devices: the glow only tracks an active touch drag, so keep it
+  // a little smaller/dimmer since it will mostly sit idle off-screen.
+  .cursor-glow {
+    opacity: calc(var(--glow-opacity) * 0.4);
+  }
+}
+
 .grid-bg {
   position: fixed;
   inset: 0;

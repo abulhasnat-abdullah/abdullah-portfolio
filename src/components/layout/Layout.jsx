@@ -3,6 +3,8 @@ import { useCallback } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import TopNav from '../nav/TopNav'
 import SectionPills from '../nav/SectionPills'
+import CategoryTabs from '../nav/CategoryTabs'
+import CursorGlow from '../effects/CursorGlow'
 import SectionPanel from './SectionPanel'
 import { useNavigation } from '../../context/NavigationContext'
 import { useEdgeScrollNavigation } from '../../hooks/useEdgeScrollNavigation'
@@ -33,12 +35,20 @@ export default function Layout() {
     <div className="layout" onPointerMove={handlePointerMove}>
       <div className="layout__bg-image" aria-hidden="true" />
       <motion.div className="grid-bg" aria-hidden="true" style={{ x: bgX, y: bgY }} />
+      <div className="ambient-blobs" aria-hidden="true">
+        <span className="ambient-blob ambient-blob--a" />
+        <span className="ambient-blob ambient-blob--b" />
+        <span className="ambient-blob ambient-blob--c" />
+      </div>
+      <CursorGlow />
       <TopNav />
       {categorySections.length > 1 && <SectionPills links={categorySections} />}
 
       <div className="layout__content">
         <SectionPanel section={activeSection} />
       </div>
+
+      <CategoryTabs />
     </div>
   )
 }

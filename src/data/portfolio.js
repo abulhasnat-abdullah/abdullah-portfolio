@@ -27,29 +27,27 @@ export const profile = {
   ],
 }
 
+// Top-level categories drive both the desktop topnav pills and the mobile
+// bottom dock. Kept to 4 so the dock stays clean and thumb-friendly; each
+// category can hold several sections, in which case SectionPills renders a
+// secondary row of tabs underneath the topnav to pick between them.
 export const categories = [
-  { id: 'about', label: 'About', icon: '👤' },
-  { id: 'education', label: 'Education', icon: '🎓' },
-  { id: 'experience', label: 'Experience', icon: '💼' },
-  { id: 'projects', label: 'Projects', icon: '🚀' },
-  { id: 'art-design', label: 'Art & Design', icon: '🎨' },
-  { id: 'skills', label: 'Skills', icon: '🛠️' },
-  { id: 'research', label: 'Research', icon: '🔬' },
-  { id: 'certificates', label: 'Certificates', icon: '📜' },
-  { id: 'achievements', label: 'Achievements', icon: '🏆' },
-  { id: 'contact', label: 'Contact', icon: '✉️' },
+  { id: 'about', label: 'About' },
+  { id: 'education', label: 'Education' },
+  { id: 'showcase', label: 'Showcase' },
+  { id: 'contact', label: 'Contact' },
 ]
 
 export const sections = [
   { id: 'about', categoryId: 'about', label: 'About', title: 'About Me' },
   { id: 'education', categoryId: 'education', label: 'Education', title: 'Education' },
-  { id: 'experience', categoryId: 'experience', label: 'Experience', title: 'Experience & Activities' },
-  { id: 'projects', categoryId: 'projects', label: 'Projects', title: 'Selected Projects' },
-  { id: 'art-design', categoryId: 'art-design', label: 'Art & Design', title: 'Art & Design' },
-  { id: 'skills', categoryId: 'skills', label: 'Skills', title: 'Technical Stack' },
-  { id: 'research', categoryId: 'research', label: 'Research', title: 'Research Interests' },
-  { id: 'certificates', categoryId: 'certificates', label: 'Certificates', title: 'Certifications & Courses' },
-  { id: 'achievements', categoryId: 'achievements', label: 'Achievements', title: 'Achievements' },
+  { id: 'experience', categoryId: 'showcase', label: 'Experience', title: 'Experience & Activities' },
+  { id: 'projects', categoryId: 'showcase', label: 'Projects', title: 'Selected Projects' },
+  { id: 'art-design', categoryId: 'showcase', label: 'Art & Design', title: 'Art & Design' },
+  { id: 'skills', categoryId: 'showcase', label: 'Skills', title: 'Technical Stack' },
+  { id: 'research', categoryId: 'showcase', label: 'Research', title: 'Research Interests' },
+  { id: 'certificates', categoryId: 'showcase', label: 'Certificates', title: 'Certifications & Courses' },
+  { id: 'achievements', categoryId: 'showcase', label: 'Achievements', title: 'Achievements' },
   { id: 'contact', categoryId: 'contact', label: 'Contact', title: 'Get In Touch' },
 ]
 

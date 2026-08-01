@@ -23,8 +23,7 @@ export default function CategoryTabs() {
                 transition={{ type: 'spring', stiffness: 380, damping: 32 }}
               />
             )}
-            <span className="category-tabs__icon">{category.icon}</span>
-            <span>{category.label}</span>
+            <span className="category-tabs__item-label">{category.label}</span>
           </button>
         )
       })}

@@ -29,6 +29,7 @@
   --hero-bg-image: url('/images/bg/hero-bg.jpg');
   --hero-bg-opacity: 0.45;
   --glow-opacity: 1;
+  --glow-blend: screen;
 }
 
 [data-theme='light'] {
@@ -50,6 +51,7 @@
   --hero-bg-image: url('/images/bg/hero-bg-light.jpg');
   --hero-bg-opacity: 0.65;
   --glow-opacity: 0.45;
+  --glow-blend: normal;
 }
 
 // ---------------------------------------------------------------------------

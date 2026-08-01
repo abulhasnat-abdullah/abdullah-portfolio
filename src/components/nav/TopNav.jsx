@@ -23,12 +23,12 @@ function MoonIcon() {
 }
 
 export default function TopNav() {
-  const { categories, activeCategoryId, navigateToCategory, navigateToSection } = useNavigation()
+  const { sections, activeSectionId, navigateToSection } = useNavigation()
   const { theme, toggleTheme } = useTheme()
   const pillsRef = useRef(null)
   const activePillRef = useRef(null)
 
-  // Whenever the active category changes (via clicking a pill, edge-scroll
+  // Whenever the active section changes (via clicking a pill, edge-scroll
   // navigation, or the URL hash on load), make sure its pill is fully
   // visible inside the horizontally-scrollable pill strip instead of
   // sitting clipped at the edge.
@@ -45,7 +45,7 @@ export default function TopNav() {
     if (!isFullyVisible) {
       pillEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
     }
-  }, [activeCategoryId])
+  }, [activeSectionId])
 
   return (
     <header className="topnav">
@@ -54,16 +54,16 @@ export default function TopNav() {
         <span className="topnav__brand-text">{profile.shortName}</span>
       </button>
 
-      <nav className="topnav__pills" aria-label="Categories" ref={pillsRef}>
-        {categories.map((category) => {
-          const isActive = activeCategoryId === category.id
+      <nav className="topnav__pills" aria-label="Sections" ref={pillsRef}>
+        {sections.map((section) => {
+          const isActive = activeSectionId === section.id
           return (
             <button
-              key={category.id}
+              key={section.id}
               type="button"
               ref={isActive ? activePillRef : null}
               className={`topnav__pill ${isActive ? 'topnav__pill--active' : ''}`}
-              onClick={() => navigateToCategory(category.id)}
+              onClick={() => navigateToSection(section.id)}
             >
               {isActive && (
                 <motion.span
@@ -72,25 +72,27 @@ export default function TopNav() {
                   transition={{ type: 'spring', stiffness: 380, damping: 32 }}
                 />
               )}
-              <span className="topnav__pill-label">{category.label}</span>
+              <span className="topnav__pill-label">{section.label}</span>
             </button>
           )
         })}
       </nav>
 
-      <button
-        type="button"
-        className="theme-toggle"
-        onClick={toggleTheme}
-        aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-        title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-      >
-        {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-      </button>
+      <div className="topnav__actions">
+        <button
+          type="button"
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+        </button>
 
-      <a className="topnav__cta" href={profile.links.email}>
-        Let&rsquo;s Talk
-      </a>
+        <a className="topnav__cta" href={profile.links.email}>
+          Let&rsquo;s Talk
+        </a>
+      </div>
     </header>
   )
 }
