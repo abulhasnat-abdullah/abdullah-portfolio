@@ -1,11 +1,9 @@
 export const profile = {
   name: 'Abul Hasnat Abdullah',
-  shortName: 'Abul Hasnat',
+  shortName: 'abd',
   title: 'Robotics & Automation Engineer',
   subtitle: 'BSc Mechanical Engineering · BUET',
-  tagline:
-    'Robotics engineer by day — watercolour artist and graphic designer by passion.',
-  bio: `Mechanical Engineering student at BUET focused on robotics and autonomous systems. I lead software and autonomy for Team Interplanetar's Mars rover program, bridging simulation, perception, and real-time navigation in GPS-denied environments. Outside engineering, I create watercolour art as Aquarelle Verse and design brand visuals, event creatives, and social media graphics.`,
+  bio: `Hi, I'm Abdullah. I'm a Mechanical Engineering student at BUET, focused on robotics and autonomous systems. I currently lead the software and autonomy team of Team Interplanetar, a Mars rover of BUET, where I work on developing control systems, implementing SLAM, and building an Autonomy Stack with custom behaviour trees to adapt in complex mission. When I'm away from my engineering projects, you'll usually find me painting under the name Aquarelle Verse, or designing visuals and branding for different events and creatives. I love building things that are both highly functional and visually beautiful.`,
   photo: '/images/profile/photo.png',
   email: 'abdkalam22@gmail.com',
   location: 'Dhaka, Bangladesh',
@@ -340,7 +338,7 @@ export const creativePortfolios = [
 export const projects = [
   {
     id: '01',
-    title: 'interplanetar_mars_rover',
+    title: 'Autonmous Navigation Stack for Mars Rover',
     status: 'live',
     href: 'https://github.com/abulhasnat-abdullah/interplanetar_mars_rover',
     image: '/images/projects/interplanetar_mars_rover.png',
@@ -351,7 +349,7 @@ export const projects = [
   },
   {
     id: '02',
-    title: 'warehouse_agv',
+    title: 'Warehouse AGV Simulation',
     status: 'in-progress',
     image: '/images/projects/warehouse_agv.png',
     // youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
@@ -361,28 +359,35 @@ export const projects = [
   },
   {
     id: '03',
-    title: 'arm_visualizer',
-    status: 'completed',
-    href: 'https://github.com/abulhasnat-abdullah/arm_visualizer',
-    image: '/images/projects/arm_visualizer.png',
-    youtube: 'https://youtu.be/Fh9B8C97Wrs',
+    title: 'Autonomous GPS-Denied Tunnel Inspection Drone',
+    status: 'in-progress',
+    image: '/images/projects/gps-denied-tunnel-inspection-drone.png',
+    video: '/images/projects/gps-denied-tunnel-inspection-drone.mp4',
     description:
-      'Real-time 3D robot arm visualization with joint states, end-effector trajectories, and workspace envelopes.',
-    tags: ['Python', 'RViz2', 'URDF'],
+      'Autonomous inspection drone for GPS-denied tunnels — SLAM-based localization and obstacle-aware navigation for underground infrastructure inspection.',
+    tags: ['ROS2', 'SLAM', 'Drones', 'GPS-Denied Navigation'],
   },
   {
     id: '04',
-    title: 'voice_controlled_robot',
-    status: 'completed',
-    href: 'https://github.com/abulhasnat-abdullah/voice_controlled_robot',
-    image: '/images/projects/voice_controlled_robot.png',
-    youtube: 'https://youtu.be/T1xi8z0nOks',
+    title: 'Swerve Drive Setup with CAN-Bus & ROS2 Control',
+    status: 'in-progress',
+    image: '/images/projects/swerve-drive-canbus-ros2.png',
+    video: '/images/projects/swerve-drive-canbus-ros2.mp4',
     description:
-      'Speech-to-command interface — natural language parsed and mapped to motor commands via ROS2.',
-    tags: ['Python', 'ROS2', 'NLP'],
+      'Swerve drive module built around SteadyWin motors on a CAN-Bus network, integrated with ros2_control for closed-loop drive and steering commands.',
+    tags: ['ROS2', 'ros2_control', 'CAN-Bus', 'SteadyWin', 'Swerve Drive'],
   },
   {
     id: '05',
+    title: 'Closed Loop Drone Simulation',
+    status: 'completed',
+    image: '/images/projects/closed-loop-drone-simulation.png',
+    description:
+      'Closed-loop drone simulation spanning both PX4 SITL and ArduPilot SITL, with ROS2 in the loop for guidance, control, and mission testing.',
+    tags: ['ROS2', 'PX4', 'ArduPilot', 'SITL', 'Drones'],
+  },
+  {
+    id: '06',
     title: 'BattleBot-NSARv1',
     status: 'completed',
     // Drop the project photo at this path under /public (see note below).
@@ -392,7 +397,7 @@ export const projects = [
     tags: ['Combat Robotics', 'Mechanical Design', 'Embedded Control'],
   },
   {
-    id: '06',
+    id: '07',
     title: 'SoccerBot-Siuuu',
     status: 'completed',
     image: '/images/projects/soccerbot-siuuu.png',
@@ -401,13 +406,80 @@ export const projects = [
     tags: ['RC Robotics', 'Mechanical Design', 'Competition'],
   },
   {
-    id: '07',
-    title: 'Autonomous GPS-Denied Tunnel Inspection Drone',
-    status: 'in-progress',
-    image: '/images/projects/gps-denied-tunnel-inspection-drone.png',
+    id: '08',
+    title: 'Arm URDF & Visualization',
+    status: 'completed',
+    href: 'https://github.com/abulhasnat-abdullah/arm_visualizer',
+    image: '/images/projects/arm_visualizer.png',
+    youtube: 'https://youtu.be/Fh9B8C97Wrs',
     description:
-      'Autonomous inspection drone for GPS-denied tunnels — SLAM-based localization and obstacle-aware navigation for underground infrastructure inspection.',
-    tags: ['ROS2', 'SLAM', 'Drones', 'GPS-Denied Navigation'],
+      'Real-time 3D robot arm visualization with joint states, end-effector trajectories, and workspace envelopes.',
+    tags: ['Python', 'RViz2', 'URDF'],
+  },
+  {
+    id: '09',
+    title: 'Voice Controlled Turtlebot3 Simulation',
+    status: 'completed',
+    href: 'https://github.com/abulhasnat-abdullah/voice_controlled_robot',
+    image: '/images/projects/voice_controlled_robot.png',
+    youtube: 'https://youtu.be/T1xi8z0nOks',
+    description:
+      'Speech-to-command interface — natural language parsed and mapped to motor commands via ROS2.',
+    tags: ['Python', 'ROS2', 'NLP'],
+  },
+  {
+    id: '10',
+    title: 'Autonomous Navigation GUI',
+    status: 'in-progress',
+    image: '/images/projects/autonomous-navigation-gui.png',
+    description:
+      'Custom GUI for monitoring and commanding autonomous navigation — live map, waypoint goals, and robot state feedback in one dashboard.',
+    tags: ['ROS2', 'Nav2', 'GUI', 'Python'],
+  },
+  {
+    id: '11',
+    title: 'Gazebo ROS2 Digital Twin of BUET Mars Rover',
+    status: 'completed',
+    image: '/images/projects/buet-mars-rover-digital-twin.png',
+    description:
+      'Full Gazebo/ROS2 digital twin of the BUET Mars Rover — matched kinematics and sensor suite for simulating missions before hardware trials.',
+    tags: ['ROS2', 'Gazebo', 'URDF', 'Simulation'],
+  },
+  {
+    id: '12',
+    title: 'Portfolio Website',
+    status: 'live',
+    image: '/images/projects/portfolio-website.png',
+    description:
+      'This site — a React, Vite, and Framer Motion portfolio built to showcase experience, projects, and skills.',
+    tags: ['React', 'Vite', 'SCSS', 'Framer Motion'],
+  },
+  {
+    id: '13',
+    title: '3D Printing',
+    status: 'completed',
+    image: '/images/projects/3d-designing.png',
+    description:
+      'CAD modeling and 3D prinitng work spanning mechanical parts, assemblies, and concept models for robotics platforms.',
+    tags: ['SolidWorks', 'CAD', '3D Modeling'],
+  },
+  {
+    id: '14',
+    title: 'Rover Field Test — Prochesta V1',
+    status: 'completed',
+    image: '/images/projects/rover-field-test-prochesta-v1.png',
+    description:
+      'Prochesta V1 rover trials and development documentation, covering platform testing, setup, and operational readiness.',
+    tags: ['Field Testing', 'Rover', 'Documentation'],
+  },
+  {
+    id: '15',
+    title: 'Differential Drive Setup with ROS2 Control',
+    status: 'completed',
+    image: '/images/projects/differential-drive-ros2-control.png',
+    description:
+      'Differential drive platform running ros2_control, with a teleoperation interface for manual rover driving.',
+    tags: ['ROS2', 'ros2_control', 'Differential Drive', 'Teleoperation'],
   },
 ]
 
@@ -416,7 +488,10 @@ export const projects = [
 // root, so these are the paths referenced above):
 //   public/images/organizations/   → one logo per org used in `experience`
 //   public/images/achievements/    → certificate image(s) used in `achievements`
-//   public/images/projects/        → already exists; add the 3 new project photos
+//   public/images/projects/        → add a photo/screenshot for each of the
+//                                     8 new projects (ids 08–15 above,
+//                                     filenames listed next to each
+//                                     project's `image` field)
 // Recommended logo size: square, ~256×256px, transparent or white background.
 // ---------------------------------------------------------------------
 
@@ -484,7 +559,7 @@ export const skillGroups = [
   },
   {
     category: 'Robotics & Autonomy',
-    skills: ['ROS2', 'Nav2', 'MoveIt2', 'Gazebo', 'SLAM Toolbox', 'tf2', 'OMPL', 'PyBullet', 'RViz2'],
+    skills: ['ROS2', 'Nav2', 'MoveIt2', 'Gazebo', 'SLAM Toolbox', 'PyBullet', 'RViz2'],
   },
   {
     category: 'Perception & ML',

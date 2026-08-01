@@ -48,22 +48,35 @@ export default function TopNav() {
   }, [activeSectionId])
 
   return (
-    <header className="topnav">
-      <button type="button" className="topnav__brand" onClick={() => navigateToSection('about')}>
+    <motion.header
+      className="topnav"
+      initial={{ opacity: 0, y: -14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <motion.button
+        type="button"
+        className="topnav__brand"
+        onClick={() => navigateToSection('about')}
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.96 }}
+      >
         <img className="topnav__avatar" src={profile.photo} alt={profile.name} />
         <span className="topnav__brand-text">{profile.shortName}</span>
-      </button>
+      </motion.button>
 
       <nav className="topnav__pills" aria-label="Sections" ref={pillsRef}>
         {sections.map((section) => {
           const isActive = activeSectionId === section.id
           return (
-            <button
+            <motion.button
               key={section.id}
               type="button"
               ref={isActive ? activePillRef : null}
               className={`topnav__pill ${isActive ? 'topnav__pill--active' : ''}`}
               onClick={() => navigateToSection(section.id)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               {isActive && (
                 <motion.span
@@ -73,26 +86,33 @@ export default function TopNav() {
                 />
               )}
               <span className="topnav__pill-label">{section.label}</span>
-            </button>
+            </motion.button>
           )
         })}
       </nav>
 
       <div className="topnav__actions">
-        <button
+        <motion.button
           type="button"
           className="theme-toggle"
           onClick={toggleTheme}
           aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          whileHover={{ scale: 1.08, rotate: 8 }}
+          whileTap={{ scale: 0.9 }}
         >
           {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-        </button>
+        </motion.button>
 
-        <a className="topnav__cta" href={profile.links.email}>
+        <motion.a
+          className="topnav__cta"
+          href={profile.links.email}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.96 }}
+        >
           Let&rsquo;s Talk
-        </a>
+        </motion.a>
       </div>
-    </header>
+    </motion.header>
   )
 }

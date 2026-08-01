@@ -30,6 +30,7 @@ export function NavigationProvider({ children }) {
     if (sectionId === activeSectionId) return
     setActiveSectionId(sectionId)
     window.location.hash = sectionId
+    window.scrollTo(0, 0)
   }, [activeSectionId])
 
   const navigateToCategory = useCallback((categoryId) => {
@@ -39,7 +40,10 @@ export function NavigationProvider({ children }) {
   }, [activeSectionId, navigateToSection])
 
   useEffect(() => {
-    const onHashChange = () => setActiveSectionId(parseHash())
+    const onHashChange = () => {
+      setActiveSectionId(parseHash())
+      window.scrollTo(0, 0)
+    }
     window.addEventListener('hashchange', onHashChange)
     if (!window.location.hash) window.location.hash = sections[0].id
     return () => window.removeEventListener('hashchange', onHashChange)

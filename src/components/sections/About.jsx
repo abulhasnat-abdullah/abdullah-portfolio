@@ -3,8 +3,11 @@ import { motion } from 'framer-motion'
 import { profile, researchInterests } from '../../data/portfolio'
 import SectionHeading from '../SectionHeading'
 import { container, item } from '../../lib/motion'
+import { useNavigation } from '../../context/NavigationContext'
 
 export default function About({ section }) {
+  const { navigateToSection } = useNavigation()
+
   return (
     <div className="section-page">
       <SectionHeading title={section.title} />
@@ -23,18 +26,18 @@ export default function About({ section }) {
             <p className="hero__tagline">{profile.tagline}</p>
             <p className="hero__bio">{profile.bio}</p>
             <div className="hero__actions">
-              <a className="btn btn--primary" href={profile.links.github} target="_blank" rel="noreferrer">
-                View GitHub
+              <a className="btn btn--ghost" href={profile.links.github} target="_blank" rel="noreferrer">
+                GitHub
               </a>
               <a className="btn btn--ghost" href={profile.links.linkedin} target="_blank" rel="noreferrer">
                 LinkedIn
               </a>
-              <a className="btn btn--ghost" href={profile.links.instagram} target="_blank" rel="noreferrer">
-                Art · Instagram
+              <a className="btn btn--ghost" href={profile.links.email}>
+                Email
               </a>
-              <a className="btn btn--ghost" href={profile.links.behance} target="_blank" rel="noreferrer">
-                Design · Behance
-              </a>
+              <button type="button" className="btn btn--primary" onClick={() => navigateToSection('projects')}>
+                Projects
+              </button>
             </div>
           </div>
         </motion.div>

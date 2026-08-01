@@ -6,8 +6,8 @@
 import { useRef } from 'react'
 import { useMotionValue, useSpring, useTransform } from 'framer-motion'
 
-const SPRING = { stiffness: 300, damping: 22, mass: 0.6 }
-const MAX_TILT_DEG = 8
+const SPRING = { stiffness: 180, damping: 26, mass: 0.7 }
+const MAX_TILT_DEG = 4
 
 export function useTilt() {
   const ref = useRef(null)

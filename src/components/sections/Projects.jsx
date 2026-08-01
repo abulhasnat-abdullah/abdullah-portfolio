@@ -29,9 +29,21 @@ function ProjectCard({ project }) {
       onMouseLeave={handleMouseLeave}
       {...cardProps}
     >
-      {project.image && (
+      {(project.video || project.image) && (
         <div className="project-card__thumb">
-          <img src={project.image} alt={`${project.title} preview`} loading="lazy" />
+          {project.video ? (
+            <video
+              src={project.video}
+              poster={project.image}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+            />
+          ) : (
+            <img src={project.image} alt={`${project.title} preview`} loading="lazy" />
+          )}
           {project.youtube && (
             <button
               type="button"

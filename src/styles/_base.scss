@@ -213,13 +213,15 @@ ul {
 }
 
 .section-heading {
-  margin-bottom: 1.75rem;
+  margin-bottom: clamp(1.1rem, 4vw, 1.75rem);
 
   h2 {
     position: relative;
     display: inline-block;
     font-family: $font-display;
-    font-size: clamp(2rem, 3.2vw, 2.8rem);
+    // Scales continuously with viewport width instead of hitting a fixed
+    // floor, so it keeps shrinking all the way down to small phones.
+    font-size: clamp(1.5rem, 6.5vw, 2.8rem);
     font-weight: 400;
     letter-spacing: 0.01em;
     background: linear-gradient(90deg, $text 55%, $accent 130%);
@@ -236,8 +238,8 @@ ul {
 
   li {
     font-family: $font-mono;
-    font-size: 0.72rem;
-    padding: 0.35rem 0.65rem;
+    font-size: clamp(0.64rem, 2.4vw, 0.72rem);
+    padding: clamp(0.25rem, 1.2vw, 0.35rem) clamp(0.5rem, 2vw, 0.65rem);
     border-radius: 999px;
     border: 1px solid $border;
     color: $text-muted;
@@ -252,15 +254,16 @@ ul {
 }
 
 .tag-list--wrap li {
-  font-size: 0.78rem;
+  font-size: clamp(0.7rem, 2.6vw, 0.78rem);
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.85rem 1.2rem;
+  padding: clamp(0.6rem, 2.4vw, 0.85rem) clamp(0.85rem, 3.2vw, 1.2rem);
   border-radius: 10px;
+  font-size: clamp(0.82rem, 3vw, 1rem);
   font-weight: 600;
   transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -309,14 +312,14 @@ ul {
 
 .hero__eyebrow {
   font-family: $font-mono;
-  font-size: 0.85rem;
+  font-size: clamp(0.7rem, 2.6vw, 0.85rem);
   color: $accent-2-text;
   margin-bottom: 0.75rem;
 }
 
 .hero__role {
   margin-top: 0.5rem;
-  font-size: 1.1rem;
+  font-size: clamp(0.85rem, 3.4vw, 1.1rem);
   color: $accent-text;
   font-weight: 600;
 }
@@ -324,7 +327,7 @@ ul {
 .hero__tagline {
   margin-top: 0.85rem;
   color: $text-muted;
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 3vw, 1rem);
   max-width: 34rem;
 }
 
@@ -334,14 +337,14 @@ ul {
   gap: 0.4rem;
   margin-top: 0.6rem;
   font-family: $font-nav;
-  font-size: 0.85rem;
+  font-size: clamp(0.72rem, 2.6vw, 0.85rem);
   color: $text-muted;
 }
 
 .hero__bio {
   margin-top: 1.1rem;
   color: $text-muted;
-  font-size: 1.02rem;
+  font-size: clamp(0.82rem, 3vw, 1.02rem);
   line-height: 1.7;
   max-width: 62ch;
   text-align: justify;
@@ -354,4 +357,24 @@ ul {
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 1.25rem;
+}
+
+@media (max-width: 600px) {
+  .hero__actions {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .hero__actions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero__actions .btn {
+    flex: 0 0 auto;
+    padding: 0.42rem 0.6rem;
+    font-size: 0.66rem;
+    white-space: nowrap;
+  }
 }

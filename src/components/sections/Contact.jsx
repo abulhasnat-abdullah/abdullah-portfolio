@@ -16,7 +16,7 @@ export default function Contact({ section }) {
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
         >
           <h3>Open to robotics collaborations, creative commissions, and design work.</h3>
-          <p>Reach out for Mars rover autonomy, ROS2 systems, watercolour art, or graphic design projects.</p>
+          <p>Reach out for Robotics Simulations, Drone/Rover Systems, Autonomy Stack development, Watercolour art, or Graphic design projects.</p>
         </motion.div>
         <motion.div className="contact__links" variants={container} initial="hidden" animate="show">
           <motion.a className="contact-link" href={profile.links.email} variants={item}>

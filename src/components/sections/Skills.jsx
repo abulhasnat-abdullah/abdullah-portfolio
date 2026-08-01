@@ -21,7 +21,7 @@ function SkillBadge({ skill }) {
 
   return (
     <motion.div className="skill-badge" variants={item} whileHover={{ y: -4 }}>
-      <div className="skill-badge__ring-wrap" style={{ width: RING_SIZE, height: RING_SIZE }}>
+      <div className="skill-badge__ring-wrap">
         <svg className="skill-badge__progress" viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`}>
           <circle
             className="skill-badge__track"

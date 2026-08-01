@@ -6,15 +6,22 @@ export default function SectionPills({ links }) {
   const { activeSectionId, navigateToSection } = useNavigation()
 
   return (
-    <nav className="section-pills" aria-label="Section tabs">
+    <motion.nav
+      className="section-pills"
+      aria-label="Section tabs"
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+    >
       {links.map((section) => {
         const isActive = activeSectionId === section.id
         return (
-          <button
+          <motion.button
             key={section.id}
             type="button"
             className={`section-pills__item ${isActive ? 'section-pills__item--active' : ''}`}
             onClick={() => navigateToSection(section.id)}
+            whileTap={{ scale: 0.95 }}
           >
             {isActive && (
               <motion.span
@@ -24,9 +31,9 @@ export default function SectionPills({ links }) {
               />
             )}
             <span className="section-pills__item-label">{section.label}</span>
-          </button>
+          </motion.button>
         )
       })}
-    </nav>
+    </motion.nav>
   )
 }
