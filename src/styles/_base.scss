@@ -150,7 +150,7 @@ ul {
   height: 42vmax;
   border-radius: 50%;
   filter: blur(90px);
-  opacity: calc(var(--glow-opacity) * 0.3);
+  opacity: calc(var(--glow-opacity) * 0.16);
   will-change: transform;
 }
 
@@ -195,8 +195,8 @@ ul {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(circle at 16% 6%, rgba(255, 107, 53, 0.13), transparent 34%),
-    radial-gradient(circle at 84% 2%, rgba(255, 178, 56, 0.08), transparent 30%);
+    radial-gradient(circle at 16% 6%, rgba(255, 107, 53, 0.07), transparent 34%),
+    radial-gradient(circle at 84% 2%, rgba(255, 178, 56, 0.045), transparent 30%);
   mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
   animation: mesh-breathe 18s ease-in-out infinite;
