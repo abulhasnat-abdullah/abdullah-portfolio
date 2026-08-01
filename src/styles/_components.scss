@@ -112,7 +112,7 @@
 }
 
 .timeline__org {
-  color: $accent-2;
+  color: $accent-2-text;
   font-size: 0.92rem;
   margin-top: 0.2rem;
 }
@@ -190,7 +190,7 @@
 .education-card__grade,
 .education-card__note {
   font-size: 0.88rem;
-  color: $accent-2;
+  color: $accent-2-text;
   margin-bottom: 0.5rem;
 }
 
@@ -206,7 +206,7 @@
 }
 
 .education-card__skills-more {
-  color: $accent !important;
+  color: $accent-text !important;
   border-color: rgba($accent, 0.4) !important;
 }
 
@@ -264,7 +264,7 @@
 }
 
 .achievement-card__context {
-  color: $accent-2 !important;
+  color: $accent-2-text !important;
   margin-bottom: 0.65rem !important;
   font-family: $font-mono;
   font-size: 0.75rem !important;
@@ -357,7 +357,7 @@
 
 .project-card__id {
   font-family: $font-mono;
-  color: $accent;
+  color: $accent-text;
   font-size: 0.85rem;
 }
 
@@ -376,13 +376,13 @@
 }
 
 .project-card__status--in-progress {
-  color: $accent-2;
+  color: $accent-2-text;
   background: rgba($accent-2, 0.16);
 }
 
 .project-card__status--completed {
   color: $text-muted;
-  background: rgba(255, 255, 255, 0.08);
+  background: $chip-bg;
 }
 
 .project-card h3 {
@@ -404,7 +404,7 @@
   z-index: 1;
   font-family: $font-mono;
   font-size: 0.78rem;
-  color: $accent;
+  color: $accent-text;
 }
 
 .section-lead {
@@ -447,12 +447,12 @@
 
   .creative-card__platform,
   .creative-card__link {
-    color: $accent-2;
+    color: $accent-2-text;
   }
 
   .creative-card__role {
     background: rgba($accent-2, 0.14);
-    color: $accent-2;
+    color: $accent-2-text;
   }
 }
 
@@ -467,12 +467,12 @@
 
   .creative-card__platform,
   .creative-card__link {
-    color: $accent;
+    color: $accent-text;
   }
 
   .creative-card__role {
     background: $accent-soft;
-    color: $accent;
+    color: $accent-text;
   }
 }
 
@@ -506,7 +506,7 @@
 .creative-card__handle {
   font-family: $font-mono;
   font-size: 0.82rem;
-  color: $accent-2;
+  color: $accent-2-text;
   margin-bottom: 0.85rem;
 }
 
@@ -638,7 +638,7 @@
   code {
     font-family: $font-mono;
     font-size: 0.82rem;
-    color: $accent-2;
+    color: $accent-2-text;
     background: rgba($accent, 0.1);
     padding: 0.1rem 0.4rem;
     border-radius: 6px;
@@ -648,7 +648,7 @@
 .gallery-empty__title {
   font-family: $font-mono;
   font-size: 0.95rem;
-  color: $accent;
+  color: $accent-text;
   margin-bottom: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -694,7 +694,7 @@
     text-transform: capitalize;
 
     span {
-      color: $accent-2;
+      color: $accent-2-text;
       font-size: 0.72rem;
     }
   }
@@ -812,7 +812,7 @@
 
 .skill-badge__track {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.08);
+  stroke: $border;
 }
 
 .skill-badge__bar {
@@ -852,7 +852,7 @@
   font-family: $font-nav;
   font-size: 1.05rem;
   font-weight: 600;
-  color: $accent;
+  color: $accent-text;
   text-transform: uppercase;
 }
 
@@ -869,7 +869,7 @@
   font-family: $font-nav;
   font-size: 0.66rem;
   font-weight: 600;
-  color: $accent;
+  color: $accent-text;
 }
 
 .certificate-grid {
@@ -917,7 +917,7 @@
 .certificate-card__issuer {
   font-family: $font-mono;
   font-size: 0.78rem;
-  color: $accent-2;
+  color: $accent-2-text;
   margin-bottom: 0.4rem;
 }
 
@@ -952,7 +952,7 @@
   margin-top: 0.5rem;
   font-family: $font-mono;
   font-size: 0.85rem;
-  color: $accent;
+  color: $accent-text;
 }
 
 .contact {
@@ -990,9 +990,9 @@
   padding: 1rem 1.1rem;
   border-radius: 12px;
   border: 1px solid $border;
-  background: rgba(0, 0, 0, 0.3);
+  background: $surface-strong;
   overflow: hidden;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .contact-link:hover {
@@ -1004,7 +1004,7 @@
 .contact-link span {
   font-family: $font-mono;
   font-size: 0.72rem;
-  color: $accent;
+  color: $accent-text;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -1090,7 +1090,7 @@
   margin-top: 0.15rem;
   font-family: $font-mono;
   font-size: 0.72rem;
-  color: $accent-2;
+  color: $accent-2-text;
 }
 
 .org-card__roles {
@@ -1137,7 +1137,7 @@
   margin-top: 0.35rem;
   font-family: $font-mono;
   font-size: 0.72rem;
-  color: $accent-2;
+  color: $accent-2-text;
 }
 
 .org-card__toggle {
@@ -1145,7 +1145,7 @@
   font-family: $font-nav;
   font-size: 0.78rem;
   font-weight: 600;
-  color: $accent;
+  color: $accent-text;
   text-align: left;
   border-top: 1px solid $border;
   background: rgba($accent, 0.04);
@@ -1157,7 +1157,6 @@
 }
 
 @media (max-width: 960px) {
-  .about__hero,
   .about__grid,
   .achievement-grid,
   .project-grid,
@@ -1169,33 +1168,69 @@
     grid-template-columns: 1fr;
   }
 
+  // Photo sits beside just the name/role/location. The tagline, bio, and
+  // action buttons promote out of .about__hero-info (via display: contents)
+  // so they can span the full card width in their own row below, instead
+  // of being squeezed into the narrow text column next to the photo.
+  .about__hero {
+    grid-template-columns: minmax(80px, min(28vw, 170px)) 1fr;
+    grid-auto-rows: auto;
+    align-items: start;
+    padding: clamp(1rem, 4vw, 1.5rem);
+    row-gap: 0.4rem;
+    column-gap: clamp(0.85rem, 3vw, 1.5rem);
+  }
+
   .about__photo {
     width: 100%;
-    max-width: 280px;
-    height: 340px;
-    margin: 0 auto;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    min-height: 0;
+    margin: 0;
+    grid-column: 1;
+    grid-row: 1 / 4;
   }
 
   .about__hero-info {
-    text-align: center;
+    display: contents;
+  }
+
+  .about__hero-info .about__name {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .about__hero-info .hero__role {
+    grid-column: 2;
+    grid-row: 2;
   }
 
   .about__hero-info .hero__location {
-    justify-content: center;
+    grid-column: 2;
+    grid-row: 3;
+    justify-content: flex-start;
+  }
+
+  .about__hero-info .hero__tagline,
+  .about__hero-info .hero__bio,
+  .about__hero-info .hero__actions {
+    grid-column: 1 / -1;
+    margin-left: 0;
+    margin-right: 0;
+    max-width: none;
+  }
+
+  .about__hero-info .hero__tagline {
+    margin-top: 0.5rem;
   }
 
   .about__hero-info .hero__actions {
-    justify-content: center;
-  }
-
-  .about__hero-info .hero__bio,
-  .about__hero-info .hero__tagline {
-    margin-left: auto;
-    margin-right: auto;
+    justify-content: flex-start;
   }
 
   .about__hero-info .hero__bio {
-    text-align: center;
+    text-align: left;
+    text-align-last: left;
   }
 
   .timeline__head {
@@ -1205,5 +1240,44 @@
   .org-role__top {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+// Shrink the About "hero" text further as the viewport narrows, so the
+// photo + text row stays comfortable all the way down to small phones.
+@media (max-width: 520px) {
+  .about__hero {
+    grid-template-columns: minmax(72px, min(30vw, 120px)) 1fr;
+    padding: 0.9rem;
+    row-gap: 0.35rem;
+    column-gap: 0.75rem;
+    border-radius: calc($radius - 2px);
+  }
+
+  .about__photo {
+    border-radius: 14px;
+  }
+
+  .about__name {
+    font-size: clamp(1.15rem, 6.5vw, 1.6rem);
+  }
+
+  .about__hero-info .hero__role {
+    font-size: clamp(0.78rem, 3.4vw, 0.9rem);
+  }
+
+  .about__hero-info .hero__location {
+    font-size: clamp(0.68rem, 2.8vw, 0.78rem);
+  }
+
+  .about__hero-info .hero__tagline,
+  .about__hero-info .hero__bio {
+    font-size: clamp(0.75rem, 3vw, 0.85rem);
+    line-height: 1.5;
+  }
+
+  .about__hero-info .hero__actions .btn {
+    padding: 0.6rem 0.85rem;
+    font-size: 0.78rem;
   }
 }

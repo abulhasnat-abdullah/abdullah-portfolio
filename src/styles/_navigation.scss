@@ -101,7 +101,7 @@
 }
 
 .topnav__pill:hover:not(.topnav__pill--active) {
-  color: $accent-2;
+  color: $accent-2-text;
 }
 
 .topnav__pill--active {
@@ -185,11 +185,15 @@
   }
 
   &:hover {
-    color: $accent-2;
+    color: $accent-2-text;
     border-color: rgba($accent, 0.4);
     transform: translateY(-1px);
   }
 }
+
+// Height reserved for the fixed mobile category dock at the bottom of the
+// screen, so scrollable content doesn't end up hidden behind it.
+$mobile-dock-height: 4.75rem;
 
 // Bottom "dock" — mirrors the topnav's category pills but as fixed icon
 // tabs, swapped in once the window is too narrow for the horizontal pill
@@ -256,7 +260,7 @@
   // Room for the fixed dock so the last section content isn't hidden
   // behind it.
   .layout__content {
-    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(#{$mobile-dock-height} + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -270,9 +274,19 @@
 }
 
 @media (max-width: 760px) {
+  // Sub-nav sits pinned at the top, directly under the main nav bar —
+  // same pattern as the top tab bar, not stacked with the bottom dock.
   .section-pills {
     display: flex;
     justify-content: center;
+    position: sticky;
+    top: $header-height;
+    z-index: 20;
+    margin: 0;
+    padding: 0.65rem 1rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
   }
 }
 
@@ -296,7 +310,7 @@
 
 .section-pills__item:hover {
   border-color: rgba($accent, 0.45);
-  color: $accent-2;
+  color: $accent-2-text;
 }
 
 .section-pills__item--active {
@@ -370,6 +384,6 @@
 // on the smallest screens (both media queries match at once there).
 @media (max-width: 760px) {
   .layout__content {
-    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(#{$mobile-dock-height} + env(safe-area-inset-bottom, 0px));
   }
 }
