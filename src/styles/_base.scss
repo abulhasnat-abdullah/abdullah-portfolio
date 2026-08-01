@@ -382,3 +382,138 @@ ul {
     white-space: nowrap;
   }
 }
+
+
+// ---------------------------------------------------------------------------
+// Loading screen — shown on first boot. Minimal robotics/HUD styling: a
+// small terminal block that prints boot lines one at a time (nods to the
+// robotics/autonomy content without being literal), a monospace wordmark
+// with a blinking cursor, and a percentage readout synced to the progress
+// bar. Fully theme-aware via CSS custom props, so it looks right whether
+// dark or light mode was last saved.
+// ---------------------------------------------------------------------------
+$loading-mono: ui-monospace, 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
+
+@keyframes loading-cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  background: $bg;
+  overflow: hidden;
+}
+
+.loading-screen__mark {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+// Small boot log: each line is a separate element, animated in with a
+// staggered fade + rise (see terminalVariants/terminalLineVariants in
+// LoadingScreen.jsx), so they read as printing one after another.
+.loading-screen__terminal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.loading-screen__terminal-line {
+  font-family: $loading-mono;
+  font-size: 0.72rem;
+  letter-spacing: 0.01em;
+  color: $text-muted;
+  white-space: nowrap;
+}
+
+.loading-screen__word {
+  font-family: $font-sans;
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: lowercase;
+  background: $gradient-accent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.loading-screen__cursor {
+  display: inline-block;
+  margin-left: 0.06em;
+  color: $accent;
+  -webkit-text-fill-color: $accent;
+  animation: loading-cursor-blink 1s step-end infinite;
+}
+
+.loading-screen__status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.loading-screen__bar {
+  position: relative;
+  width: 140px;
+  height: 3px;
+  border-radius: 999px;
+  background: $chip-bg;
+  overflow: hidden;
+}
+
+.loading-screen__bar-fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  border-radius: inherit;
+  background: $gradient-accent;
+}
+
+.loading-screen__percent {
+  font-family: $loading-mono;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  color: $text-muted;
+  min-width: 3.4em;
+}
+
+.loading-screen__label {
+  font-family: $loading-mono;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: $text-muted;
+  text-align: center;
+}
+
+.loading-screen__prompt {
+  color: $accent;
+  margin-right: 0.35em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen__cursor {
+    animation: none;
+  }
+}

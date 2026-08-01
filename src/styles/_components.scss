@@ -1416,6 +1416,23 @@
     justify-content: flex-start;
   }
 
+  // Scale the name/role/location text down with the viewport so the
+  // photo + text column stay level instead of the text block growing
+  // taller than the photo on mid-size phones/tablets.
+  .about__hero-info .about__name {
+    font-size: clamp(1.3rem, 5.2vw, 2.1rem);
+    line-height: 1.08;
+  }
+
+  .about__hero-info .hero__role {
+    font-size: clamp(0.72rem, 2.6vw, 0.92rem);
+    line-height: 1.35;
+  }
+
+  .about__hero-info .hero__location {
+    font-size: clamp(0.65rem, 2.1vw, 0.8rem);
+  }
+
   .about__hero-info .hero__tagline,
   .about__hero-info .hero__bio,
   .about__hero-info .hero__actions {
