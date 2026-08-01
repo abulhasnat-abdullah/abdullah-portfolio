@@ -21,7 +21,15 @@ export default function About({ section }) {
           <img className="about__photo" src={profile.photo} alt={profile.name} />
           <div className="about__hero-info">
             <h2 className="about__name">{profile.name}</h2>
-            <p className="hero__role">{profile.subtitle}</p>
+            <p className="hero__role">
+              <span className="hero__role-line hero__role-line--edu">
+                Undergraduate Student (<strong>Junior Year</strong>)
+              </span>
+              <br />
+              <span className="hero__role-line">
+                Dept. of <strong>Mechanical Engineering</strong>, BUET
+              </span>
+            </p>
             <p className="hero__location">📍 {profile.location}</p>
             <p className="hero__tagline">{profile.tagline}</p>
             <p className="hero__bio">{profile.bio}</p>

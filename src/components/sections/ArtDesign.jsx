@@ -22,19 +22,22 @@ function CreativeCard({ portfolio }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="creative-card__top">
-        <span className="creative-card__platform">{portfolio.platform}</span>
-        <span className="creative-card__role">{portfolio.role}</span>
+      <div className="creative-card__body">
+        <div className="creative-card__top">
+          <span className="creative-card__platform">{portfolio.platform}</span>
+          <span className="creative-card__role">{portfolio.role}</span>
+        </div>
+        <h3>{portfolio.title}</h3>
+        <p className="creative-card__handle">{portfolio.handle}</p>
+        <p>{portfolio.description}</p>
+        <ul className="tag-list">
+          {portfolio.tags.map((tag) => (
+            <li key={tag}>{tag}</li>
+          ))}
+        </ul>
+        <span className="creative-card__link">View on {portfolio.platform} →</span>
       </div>
-      <h3>{portfolio.title}</h3>
-      <p className="creative-card__handle">{portfolio.handle}</p>
-      <p>{portfolio.description}</p>
-      <ul className="tag-list">
-        {portfolio.tags.map((tag) => (
-          <li key={tag}>{tag}</li>
-        ))}
-      </ul>
-      <span className="creative-card__link">View on {portfolio.platform} →</span>
+      <div className="creative-card__media" aria-hidden="true" />
     </motion.a>
   )
 }

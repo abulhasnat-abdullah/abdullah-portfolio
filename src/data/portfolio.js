@@ -3,6 +3,8 @@ export const profile = {
   shortName: 'abd',
   title: 'Robotics & Automation Engineer',
   subtitle: 'BSc Mechanical Engineering · BUET',
+  eduLine1: 'Undergraduate Student (Junior Year)',
+  eduLine2: 'Department of Mechanical Engineering, BUET',
   bio: `Hi, I'm Abdullah. I'm a Mechanical Engineering student at BUET, focused on robotics and autonomous systems. I currently lead the software and autonomy team of Team Interplanetar, a Mars rover of BUET, where I work on developing control systems, implementing SLAM, and building an Autonomy Stack with custom behaviour trees to adapt in complex mission. When I'm away from my engineering projects, you'll usually find me painting under the name Aquarelle Verse, or designing visuals and branding for different events and creatives. I love building things that are both highly functional and visually beautiful.`,
   photo: '/images/profile/photo.png',
   email: 'abdkalam22@gmail.com',
@@ -605,9 +607,9 @@ export const researchInterests = [
     tags: ['AGV Routing', 'HRC', 'Collision Prediction'],
   },
   {
-    title: 'Mars Analog Terrain Navigation',
+    title: 'Multi-Robot Heterogeneous Systems',
     description:
-      'Traversability analysis and perception pipelines for planetary surfaces — regolith, rocks, and steep slopes.',
-    tags: ['Traversability', 'Terrain Classification', '3D Localization'],
+      'Engineering cooperative autonomy and physical task-sharing between aerial drones (UAVs) and ground vehicles (UGVs).',
+    tags: ['UAV-UGV', 'Cooperative Autonomy', 'Task Allocation'],
   },
 ]

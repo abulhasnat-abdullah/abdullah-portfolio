@@ -82,11 +82,11 @@ ul {
 }
 
 // ---------------------------------------------------------------------------
-// Ambient background animation — a few large, heavily blurred blobs that
-// drift slowly on their own (so the page feels alive even before the user
-// moves the pointer) plus a pointer/touch-reactive glow (.cursor-glow,
-// positioned via framer-motion in CursorGlow.jsx). Both sit behind
-// #root (z-index -1) and never intercept input.
+// Ambient background — a few large, heavily blurred blobs that drift slowly
+// and continuously on their own, layered under a soft, mostly-static mesh
+// wash. No pointer tracking, no grid lines, no pulsing — just a slow, calm
+// sense of motion. Both sit behind #root (z-index -1) and never intercept
+// input.
 // ---------------------------------------------------------------------------
 @keyframes drift-a {
   0% {
@@ -124,6 +124,18 @@ ul {
   }
 }
 
+@keyframes mesh-breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-1.5%, 1.5%) scale(1.04);
+  }
+}
+
 .ambient-blobs {
   position: fixed;
   inset: 0;
@@ -138,7 +150,7 @@ ul {
   height: 42vmax;
   border-radius: 50%;
   filter: blur(90px);
-  opacity: calc(var(--glow-opacity) * 0.35);
+  opacity: calc(var(--glow-opacity) * 0.3);
   will-change: transform;
 }
 
@@ -167,49 +179,28 @@ ul {
   animation: drift-c 38s ease-in-out infinite;
 }
 
-.cursor-glow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba($accent, 0.4), rgba($accent-2, 0.12) 45%, transparent 72%);
-  filter: blur(50px);
-  opacity: calc(var(--glow-opacity) * 0.55);
-  mix-blend-mode: var(--glow-blend, normal);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .ambient-blob {
+  .ambient-blob,
+  .ambient-mesh {
     animation: none;
   }
-
-  .cursor-glow {
-    display: none;
-  }
 }
 
-@media (hover: none) and (pointer: coarse) {
-  // Touch devices: the glow only tracks an active touch drag, so keep it
-  // a little smaller/dimmer since it will mostly sit idle off-screen.
-  .cursor-glow {
-    opacity: calc(var(--glow-opacity) * 0.4);
-  }
-}
-
-.grid-bg {
+// Soft, mostly-static wash that replaces the old moving/pulsing grid —
+// two gentle radial glows top-left and top-right, breathing very slowly.
+// No grid lines, no pointer tracking.
+.ambient-mesh {
   position: fixed;
   inset: 0;
+  z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(rgba(255, 107, 53, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 107, 53, 0.03) 1px, transparent 1px),
-    radial-gradient(circle at 18% 8%, rgba(255, 107, 53, 0.14), transparent 32%),
-    radial-gradient(circle at 82% 0%, rgba(255, 178, 56, 0.09), transparent 28%);
-  background-size: 48px 48px, 48px 48px, auto, auto;
+    radial-gradient(circle at 16% 6%, rgba(255, 107, 53, 0.13), transparent 34%),
+    radial-gradient(circle at 84% 2%, rgba(255, 178, 56, 0.08), transparent 30%);
   mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-  animation: glow-pulse 6s ease-in-out infinite;
+  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  animation: mesh-breathe 18s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .section-heading {
@@ -319,9 +310,22 @@ ul {
 
 .hero__role {
   margin-top: 0.5rem;
-  font-size: clamp(0.85rem, 3.4vw, 1.1rem);
   color: $accent-text;
-  font-weight: 600;
+  font-weight: 400;
+}
+
+.hero__role-line {
+  display: inline-block;
+  font-size: clamp(0.95rem, 3.6vw, 1.2rem);
+  line-height: 1.4;
+
+  strong {
+    font-weight: 700;
+  }
+}
+
+.hero__role-line--edu {
+  font-size: clamp(0.82rem, 3vw, 1rem);
 }
 
 .hero__tagline {
@@ -344,9 +348,9 @@ ul {
 .hero__bio {
   margin-top: 1.1rem;
   color: $text-muted;
-  font-size: clamp(0.82rem, 3vw, 1.02rem);
+  font-size: clamp(0.76rem, 2.6vw, 0.92rem);
   line-height: 1.7;
-  max-width: 62ch;
+  max-width: none;
   text-align: justify;
   text-align-last: left; // keep the final line ragged instead of stretched
   hyphens: none;
