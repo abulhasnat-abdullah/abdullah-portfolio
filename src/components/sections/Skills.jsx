@@ -1,80 +1,61 @@
 // Target path: src/components/sections/Skills.jsx
+// One ruled row per group: a numbered label, then compact chips. Each chip
+// carries its level as a hairline along its base that fills on scroll-in.
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { skillGroups } from '../../data/portfolio'
 import { skillIcons } from '../../data/skillIcons'
 import { skillLevels } from '../../data/skillLevels'
-import SectionHeading from '../SectionHeading'
-import { container, item } from '../../lib/motion'
+import ScrubItem from '../motion/ScrubItem'
+import { EASE, viewport } from '../../lib/motion'
 
-const RING_SIZE = 84
-const RING_STROKE = 4
-const RING_RADIUS = (RING_SIZE - RING_STROKE) / 2
-const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS
+const pad = (n) => String(n).padStart(2, '0')
 
-function SkillBadge({ skill }) {
+function SkillChip({ skill, index }) {
   const file = skillIcons[skill]
-  const percent = skillLevels[skill] ?? 0
+  const level = skillLevels[skill] ?? 0
   const [broken, setBroken] = useState(false)
-  const showImage = file && !broken
-  const offset = RING_CIRCUMFERENCE * (1 - percent / 100)
 
   return (
-    <motion.div className="skill-badge" variants={item} whileHover={{ y: -4 }}>
-      <div className="skill-badge__ring-wrap">
-        <svg className="skill-badge__progress" viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`}>
-          <circle
-            className="skill-badge__track"
-            cx={RING_SIZE / 2}
-            cy={RING_SIZE / 2}
-            r={RING_RADIUS}
-            strokeWidth={RING_STROKE}
-          />
-          <circle
-            className="skill-badge__bar"
-            cx={RING_SIZE / 2}
-            cy={RING_SIZE / 2}
-            r={RING_RADIUS}
-            strokeWidth={RING_STROKE}
-            strokeDasharray={RING_CIRCUMFERENCE}
-            strokeDashoffset={offset}
-          />
-        </svg>
-        <span className="skill-badge__logo">
-          {showImage ? (
-            <img
-              src={`/images/skills/${file}`}
-              alt={`${skill} logo`}
-              loading="lazy"
-              onError={() => setBroken(true)}
-            />
-          ) : (
-            <span className="skill-badge__fallback">{skill.slice(0, 2)}</span>
-          )}
-        </span>
-      </div>
-      <span className="skill-badge__label">{skill}</span>
-      <span className="skill-badge__percent">{percent}%</span>
-    </motion.div>
+    <li className="skill-chip" title={`${skill} — ${level}%`}>
+      <span className="skill-chip__logo">
+        {file && !broken ? (
+          <img src={`/images/skills/${file}`} alt="" loading="lazy" onError={() => setBroken(true)} />
+        ) : (
+          <span>{skill.slice(0, 2)}</span>
+        )}
+      </span>
+      <span className="skill-chip__name">{skill}</span>
+      <span className="skill-chip__bar" aria-hidden="true">
+        <motion.span
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: level / 100 }}
+          viewport={viewport}
+          transition={{ duration: 1, delay: 0.1 + index * 0.05, ease: EASE }}
+        />
+      </span>
+    </li>
   )
 }
 
-export default function Skills({ section }) {
+export default function Skills() {
   return (
-    <div className="section-page">
-      <SectionHeading title={section.title} />
-      <motion.div className="skills-grid" variants={container} initial="hidden" animate="show">
-        {skillGroups.map((group) => (
-          <motion.article key={group.category} className="skills-card" variants={item}>
-            <h3>{group.category}</h3>
-            <div className="skills-card__badges">
-              {group.skills.map((skill) => (
-                <SkillBadge key={skill} skill={skill} />
+    <div className="skill-rows">
+      {skillGroups.map((group, gi) => (
+        <ScrubItem key={group.category} preset={gi % 2 === 0 ? 'slide-left' : 'slide-right'}>
+          <div className="skill-row">
+            <h3 className="skill-row__label">
+              <span>{pad(gi + 1)}</span>
+              {group.category}
+            </h3>
+            <ul className="skill-row__chips">
+              {group.skills.map((skill, i) => (
+                <SkillChip key={skill} skill={skill} index={i} />
               ))}
-            </div>
-          </motion.article>
-        ))}
-      </motion.div>
+            </ul>
+          </div>
+        </ScrubItem>
+      ))}
     </div>
   )
 }

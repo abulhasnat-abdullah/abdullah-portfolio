@@ -1,4 +1,9 @@
 @use 'base';
-@use 'layout';
+@use 'hero';
 @use 'components';
+@use 'dashboard';
+@use 'sections';
 @use 'navigation';
+@use 'motion';
+// Loaded last: the type system overrides per-component font rules.
+@use 'typography';

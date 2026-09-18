@@ -1,63 +1,86 @@
 // Target path: src/context/NavigationContext.jsx
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { categories, sections } from '../data/portfolio'
+// The site is one continuous scroll now, so "navigation" means two things:
+//   1. scroll-spy — which section is currently under the reader's eye
+//   2. scrollToSection — smooth-scroll a section into view from the nav
+// There is no more section mounting/unmounting, no category tabs, and no
+// hash-driven page swap.
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { sections } from '../data/portfolio'
 
 const NavigationContext = createContext(null)
 
-function parseHash() {
-  const hash = window.location.hash.replace('#', '')
-  if (hash.startsWith('cat:')) {
-    const categoryId = hash.slice(4)
-    const categorySections = sections.filter((section) => section.categoryId === categoryId)
-    return categorySections[0]?.id ?? sections[0].id
-  }
-  return sections.some((section) => section.id === hash) ? hash : sections[0].id
-}
-
 export function NavigationProvider({ children }) {
-  const [activeSectionId, setActiveSectionId] = useState(parseHash)
+  const [activeSectionId, setActiveSectionId] = useState(sections[0].id)
+  const [atTop, setAtTop] = useState(true)
+  // Suppress scroll-spy while a programmatic scroll is in flight, so the
+  // active pill doesn't flicker through every section on the way past.
+  const lockRef = useRef(0)
 
-  const activeSection = useMemo(
-    () => sections.find((section) => section.id === activeSectionId) ?? sections[0],
-    [activeSectionId],
-  )
-
-  const activeCategoryId = activeSection.categoryId
-
-  // Transition timing/visuals now live entirely in Framer Motion
-  // (see SectionPanel.jsx's AnimatePresence), so this just flips state.
-  const navigateToSection = useCallback((sectionId) => {
-    if (sectionId === activeSectionId) return
+  const scrollToSection = useCallback((sectionId) => {
+    const el = document.getElementById(sectionId)
+    if (!el) return
+    lockRef.current = Date.now() + 900
     setActiveSectionId(sectionId)
-    window.location.hash = sectionId
-    window.scrollTo(0, 0)
-  }, [activeSectionId])
-
-  const navigateToCategory = useCallback((categoryId) => {
-    const categorySections = sections.filter((section) => section.categoryId === categoryId)
-    const nextSection = categorySections.find((section) => section.id === activeSectionId) ?? categorySections[0]
-    if (nextSection) navigateToSection(nextSection.id)
-  }, [activeSectionId, navigateToSection])
-
-  useEffect(() => {
-    const onHashChange = () => {
-      setActiveSectionId(parseHash())
-      window.scrollTo(0, 0)
-    }
-    window.addEventListener('hashchange', onHashChange)
-    if (!window.location.hash) window.location.hash = sections[0].id
-    return () => window.removeEventListener('hashchange', onHashChange)
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    if (history.replaceState) history.replaceState(null, '', `#${sectionId}`)
   }, [])
 
-  const value = {
-    sections,
-    categories,
-    activeSection,
-    activeSectionId,
-    activeCategoryId,
-    navigateToSection,
-    navigateToCategory,
-  }
+  const scrollToTop = useCallback(() => {
+    lockRef.current = Date.now() + 900
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    // Drop the hash without reloading. Spell the URL out rather than
+    // passing ' ', so the result is always the plain current path.
+    if (history.replaceState) {
+      history.replaceState(null, '', window.location.pathname + window.location.search)
+    }
+  }, [])
+
+  // Active section = whichever one is crossing the middle band of the
+  // viewport. An IntersectionObserver keeps this off the scroll thread.
+  useEffect(() => {
+    const visible = new Map()
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) visible.set(entry.target.id, entry.intersectionRatio)
+          else visible.delete(entry.target.id)
+        })
+        if (Date.now() < lockRef.current) return
+        if (visible.size === 0) return
+        // Prefer the section listed first in document order among visible.
+        const next = sections.find((section) => visible.has(section.id))
+        if (next) setActiveSectionId(next.id)
+      },
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 },
+    )
+
+    sections.forEach((section) => {
+      const el = document.getElementById(section.id)
+      if (el) observer.observe(el)
+    })
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const onScroll = () => setAtTop(window.scrollY < 40)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Deep links still work: #projects scrolls there once the page is up.
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '')
+    if (!hash) return
+    if (!sections.some((section) => section.id === hash)) return
+    const timer = window.setTimeout(() => scrollToSection(hash), 300)
+    return () => window.clearTimeout(timer)
+  }, [scrollToSection])
+
+  const value = useMemo(
+    () => ({ sections, activeSectionId, atTop, scrollToSection, scrollToTop }),
+    [activeSectionId, atTop, scrollToSection, scrollToTop],
+  )
 
   return <NavigationContext.Provider value={value}>{children}</NavigationContext.Provider>
 }

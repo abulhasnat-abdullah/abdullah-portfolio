@@ -1,26 +1,31 @@
 // Target path: src/components/sections/Research.jsx
-import { motion } from 'framer-motion'
+// A numbered editorial list, two columns wide, rising out of a slight skew.
 import { researchInterests } from '../../data/portfolio'
-import SectionHeading from '../SectionHeading'
-import { container, item } from '../../lib/motion'
+import ScrubItem from '../motion/ScrubItem'
 
-export default function Research({ section }) {
+const pad = (n) => String(n).padStart(2, '0')
+
+export default function Research() {
   return (
-    <div className="section-page">
-      <SectionHeading title={section.title} />
-      <motion.div className="research-grid" variants={container} initial="hidden" animate="show">
-        {researchInterests.map((research) => (
-          <motion.article key={research.title} className="research-card" variants={item}>
-            <h3>{research.title}</h3>
-            <p>{research.description}</p>
-            <ul className="tag-list">
-              {research.tags.map((tag) => (
-                <li key={tag}>{tag}</li>
-              ))}
-            </ul>
-          </motion.article>
-        ))}
-      </motion.div>
+    <div className="research-list">
+      {researchInterests.map((research, i) => (
+        <ScrubItem key={research.title} preset="skew">
+          <article className="research-item">
+            <span className="research-item__num" aria-hidden="true">
+              {pad(i + 1)}
+            </span>
+            <div>
+              <h3>{research.title}</h3>
+              <p>{research.description}</p>
+              <ul className="tag-list">
+                {research.tags.map((tag) => (
+                  <li key={tag}>{tag}</li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        </ScrubItem>
+      ))}
     </div>
   )
 }

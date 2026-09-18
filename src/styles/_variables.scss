@@ -10,6 +10,11 @@
 // ---------------------------------------------------------------------------
 :root {
   --bg: #060606;
+  // Same colour as --bg but fully transparent. Fading a gradient to plain
+  // `transparent` interpolates through transparent BLACK, which shows up as
+  // a grey smudge on a light background (most visibly in Safari) — so any
+  // fade-to-page-background must end on this token instead.
+  --bg-transparent: rgba(6, 6, 6, 0);
   --bg-elevated: #0d0d0c;
   --bg-card: rgba(18, 17, 16, 0.62);
   --border: rgba(255, 255, 255, 0.08);
@@ -27,7 +32,7 @@
   // mode for the "glassy white" look.
   --card-blur: 16px;
 
-  --hero-bg-image: url('/images/bg/hero-bg.jpg');
+  --hero-bg-image: url('/images/bg/hero-bg.webp');
   --hero-bg-opacity: 0.45;
   --glow-opacity: 1;
   --glow-blend: screen;
@@ -52,6 +57,7 @@
 
 [data-theme='light'] {
   --bg: #f3efe7;
+  --bg-transparent: rgba(243, 239, 231, 0);
   --bg-elevated: #ffffff;
   --bg-card: rgba(255, 255, 255, 0.82);
   --border: rgba(20, 18, 15, 0.18);
@@ -66,7 +72,7 @@
 
   --card-blur: 18px;
 
-  --hero-bg-image: url('/images/bg/hero-bg-light.jpg');
+  --hero-bg-image: url('/images/bg/hero-bg-light.webp');
   --hero-bg-opacity: 0.65;
   --glow-opacity: 0.45;
   --glow-blend: normal;
@@ -88,6 +94,7 @@
 // both themes so it isn't themed.
 // ---------------------------------------------------------------------------
 $bg: var(--bg);
+$bg-transparent: var(--bg-transparent);
 $bg-elevated: var(--bg-elevated);
 $bg-card: var(--bg-card);
 $border: var(--border);
@@ -112,10 +119,16 @@ $chip-bg: var(--chip-bg);
 
 $gradient-accent: linear-gradient(135deg, $accent, $accent-2);
 
-$font-sans: 'DM Sans', 'Roboto', system-ui, sans-serif;
-$font-display: 'Bebas Neue', 'Barlow', system-ui, sans-serif;
-$font-nav: 'Barlow', 'Roboto', system-ui, sans-serif;
-$font-mono: 'Barlow', 'Roboto', system-ui, sans-serif;
+// Four families, one job each (see _typography.scss):
+$font-sans: 'Instrument Sans', system-ui, sans-serif;            // running text
+$font-display: 'Instrument Sans', system-ui, sans-serif;         // headings
+$font-poster: $font-display;                                     // big figures and titles
+$font-condensed: 'Sofia Sans Extra Condensed', 'Arial Narrow', sans-serif; // big figures, surname
+$font-name: 'Big Shoulders Display', $font-condensed;             // section titles
+$font-hero-name: 'Roboto Flex', $font-name;                       // the hero name: narrowest width, tallest caps
+$font-sign: 'Pinyon Script', cursive;                              // the surname, as a signature
+$font-nav: 'IBM Plex Mono', ui-monospace, monospace;             // labels, kickers, UI
+$font-mono: $font-nav;
 $max-width: 1180px;
 $header-height: 54px;
 $radius: 14px;

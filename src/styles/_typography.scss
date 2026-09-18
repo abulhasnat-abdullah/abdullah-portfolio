@@ -1,0 +1,213 @@
+// Target path: src/styles/_typography.scss
+@use 'variables' as *;
+
+// ---------------------------------------------------------------------------
+// Typography
+//
+// Three families, each with one job, so the hierarchy reads the same in
+// every section:
+//   Instrument Sans            — headings (semibold, mixed case, tight
+//                                tracking) and running text (regular).
+//   Sofia Sans Extra Condensed — the hero name and big figures: tall,
+//                                condensed, heavy.
+//   IBM Plex Mono              — small labels: kickers, indexes, dates,
+//                                tags, buttons.
+// Emphasis is contrast of weight and colour, never italics.
+//
+// Everything lives in this one file and loads last, so it overrides the
+// per-component font declarations without touching layout or colour.
+// ---------------------------------------------------------------------------
+
+// The arguments are kept so existing call sites still read; one semibold
+// weight carries every display role.
+@mixin type-display($stretch: 66%, $weight: 900) {
+  font-family: $font-display;
+  font-weight: 600;
+  font-stretch: normal;
+  text-transform: none;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+@mixin type-title($stretch: 80%, $weight: 800, $case: none) {
+  font-family: $font-display;
+  @if $weight >= 800 {
+    font-weight: 600;
+  } @else {
+    font-weight: 500;
+  }
+  font-stretch: normal;
+  text-transform: $case;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+@mixin type-label($tracking: 0.16em, $weight: 500) {
+  font-family: $font-nav;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+// Emphasis in running text: same face, heavier and brighter.
+em {
+  font-style: normal;
+  font-weight: 600;
+  color: $text;
+}
+
+// ---------------------------------------------------------------------------
+// Section headings
+// ---------------------------------------------------------------------------
+// Give the reveal mask headroom so it never shaves the tops of the capitals.
+.section-heading__title-mask {
+  padding: 0.1em 0 0.05em;
+  margin: -0.1em 0 -0.05em;
+}
+
+// Section titles share the hero name's face: heavy condensed capitals, with
+// the last word drawn in outline (see SectionHeading.jsx) — the same solid
+// / outline pairing the hero uses where the face crosses the name.
+.section-heading__title {
+  font-family: $font-name;
+  font-size: clamp(3rem, 8.5vw, 7.5rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-transform: uppercase;
+
+  em {
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--text);
+  }
+}
+
+.section-heading__kicker,
+.section-heading__index {
+  @include type-label;
+}
+
+// A short aside at the end of the meta row.
+.section-heading__note {
+  @include type-label;
+}
+
+// ---------------------------------------------------------------------------
+// Loader
+// ---------------------------------------------------------------------------
+.loader__words {
+  @include type-title(80%, 800);
+}
+
+.loader__count {
+  font-family: $font-display;
+  font-weight: 600;
+  font-stretch: normal;
+  letter-spacing: -0.02em;
+  line-height: 0.8;
+}
+
+// ---------------------------------------------------------------------------
+// Navigation and logo strip
+// ---------------------------------------------------------------------------
+.topnav__brand-mark {
+  font-family: $font-display;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.nav-overlay__list button {
+  @include type-display(70%);
+  line-height: 1;
+}
+
+.logo-strip__item span {
+  font-family: $font-sans;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+// ---------------------------------------------------------------------------
+// About
+// ---------------------------------------------------------------------------
+.about__lead {
+  @include type-title(82%, 700, none);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.highlight__value {
+  @include type-title(84%, 700);
+  line-height: 1.2;
+}
+
+.highlight__label,
+.about__meta dt {
+  @include type-label(0.18em);
+}
+
+// ---------------------------------------------------------------------------
+// Dashboard
+// ---------------------------------------------------------------------------
+.dash-tile__value {
+  @include type-display(70%);
+  line-height: 0.9;
+}
+
+.dash-tile__label,
+.dash-chip {
+  @include type-label(0.18em);
+}
+
+.dash-card__head h3 {
+  @include type-title(80%, 800);
+}
+
+.dash-activity__name,
+.dash-building li {
+  @include type-title(82%, 700);
+}
+
+.certificate-card h3,
+.research-card h3,
+.creative-card h3,
+.org-card__title h3,
+.gallery-block__head h2,
+.gallery-block__head h3 {
+  @include type-title(80%, 800);
+}
+
+.achievement-card h3 {
+  @include type-title(72%, 900);
+  letter-spacing: -0.03em;
+}
+
+// Institution names stay in title case, as in the reference.
+.education-card__head h3,
+.timeline__head h3 {
+  @include type-title(84%, 800, none);
+  line-height: 1.08;
+}
+
+.org-role__top h4,
+.contact-link strong {
+  @include type-title(84%, 700);
+  letter-spacing: -0.01em;
+}
+
+.contact__intro h3 {
+  @include type-title(82%, 700, none);
+  letter-spacing: -0.015em;
+}
+
+// Skill group names are small tracked labels in the reference.
+.skills-card h3 {
+  @include type-label(0.12em, 600);
+}
+
+.tag-list li {
+  font-family: $font-nav;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

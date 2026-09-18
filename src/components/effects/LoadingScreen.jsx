@@ -1,138 +1,157 @@
 // Target path: src/components/effects/LoadingScreen.jsx
-// Shown once on first load. Stays up for a small minimum duration (so it
-// never just flashes), then fades out once fonts are ready. Minimal
-// robotics/coder styling: a small terminal block that prints boot lines
-// one at a time, a monospace wordmark with a blinking cursor, and a
-// percentage readout synced to the progress bar. Respects
-// prefers-reduced-motion via CSS (the cursor blink is disabled there; this
-// component still just fades, and the boot lines render instantly).
+// First-load curtain.
+//
+// A big counter runs 0 → 100 while the discipline words swap behind it, the
+// name unmasks letter by letter, and a hairline rule tracks the count. When
+// fonts + assets are ready (and a minimum beat has passed) the whole thing
+// wipes upward off the screen, handing the hero its own entrance.
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { EASE, EASE_OUT } from '../../lib/motion'
+import { useIntro } from '../../context/IntroContext'
 
-const MIN_VISIBLE_MS = 1200
-
-const BOOT_LINES = [
-  'import robotics.core',
-  'init_kinematics()',
-  'calibrating sensors... ok',
-  'mounting workspace',
-  'render(<Portfolio />)',
-]
-
-const terminalVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.16, delayChildren: 0.1 },
-  },
-}
-
-const terminalLineVariants = {
-  hidden: { opacity: 0, y: 4 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
-  },
-}
+const MIN_VISIBLE_MS = 1900
+const WORDS = ['Robotics', 'Autonomy', 'Art', 'Design']
+const NAME = 'ABUL HASNAT ABDULLAH'
 
 export default function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true)
   const [percent, setPercent] = useState(0)
-  const startRef = useRef(null)
+  const readyRef = useRef(false)
+  const { markIntroReady } = useIntro()
+
+  // Hand off to the hero the moment the curtain starts lifting, so its
+  // entrance plays as the page is revealed rather than behind the loader.
+  useEffect(() => {
+    if (!isLoading) markIntroReady()
+  }, [isLoading, markIntroReady])
 
   useEffect(() => {
-    const start = Date.now()
-    startRef.current = start
+    const start = performance.now()
     let cancelled = false
     let frame
 
-    const tick = () => {
+    // The bar is time-based but *waits* at 99 until the real work is done,
+    // so it never claims 100% before the page can actually render.
+    const tick = (now) => {
       if (cancelled) return
-      const elapsed = Date.now() - start
-      const pct = Math.min(100, Math.round((elapsed / MIN_VISIBLE_MS) * 100))
-      setPercent(pct)
-      if (pct < 100) {
-        frame = window.requestAnimationFrame(tick)
+      const elapsed = now - start
+      const linear = Math.min(1, elapsed / MIN_VISIBLE_MS)
+      const eased = 1 - Math.pow(1 - linear, 3)
+      const capped = readyRef.current ? eased : Math.min(eased, 0.99)
+      setPercent(Math.round(capped * 100))
+
+      if (capped >= 1) {
+        window.setTimeout(() => {
+          if (!cancelled) setIsLoading(false)
+        }, 260)
+        return
       }
+      frame = window.requestAnimationFrame(tick)
     }
     frame = window.requestAnimationFrame(tick)
 
-    const finish = () => {
+    const markReady = () => {
+      readyRef.current = true
+    }
+
+    if (document.fonts?.ready) document.fonts.ready.then(markReady).catch(markReady)
+    else markReady()
+    if (document.readyState === 'complete') markReady()
+    else window.addEventListener('load', markReady, { once: true })
+
+    // Safety net: never trap the visitor behind the curtain.
+    const fallback = window.setTimeout(markReady, MIN_VISIBLE_MS + 1800)
+
+    // The counter above is driven by requestAnimationFrame, which the
+    // browser PAUSES entirely while the tab is in the background — so a
+    // page opened in a background tab would sit behind the curtain until
+    // it was focused. Timers still fire when hidden, so mirror the
+    // completion here and let whichever finishes first dismiss it.
+    const hardFinish = window.setTimeout(() => {
       if (cancelled) return
-      const elapsed = Date.now() - start
-      const remaining = Math.max(MIN_VISIBLE_MS - elapsed, 0)
-      window.setTimeout(() => {
-        if (!cancelled) setIsLoading(false)
-      }, remaining)
-    }
-
-    if (document.fonts?.ready) {
-      document.fonts.ready.then(finish).catch(finish)
-    } else {
-      finish()
-    }
-
-    // Safety net in case fonts.ready never resolves for some reason.
-    const fallback = window.setTimeout(finish, MIN_VISIBLE_MS + 1500)
+      setPercent(100)
+      setIsLoading(false)
+    }, MIN_VISIBLE_MS + 2600)
 
     return () => {
       cancelled = true
       window.clearTimeout(fallback)
+      window.clearTimeout(hardFinish)
       window.cancelAnimationFrame(frame)
+      window.removeEventListener('load', markReady)
     }
   }, [])
+
+  // Lock the page behind the curtain so a stray wheel event doesn't scroll
+  // the hero out of frame before it has been seen.
+  useEffect(() => {
+    document.body.style.overflow = isLoading ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isLoading])
+
+  const reduced = useReducedMotion()
+  const wordIndex = Math.min(WORDS.length - 1, Math.floor((percent / 100) * WORDS.length))
 
   return (
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          className="loading-screen"
-          aria-hidden="true"
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="loader"
+          initial={{ clipPath: 'inset(0% 0% 0% 0%)' }}
+          exit={
+            reduced
+              ? { opacity: 0 }
+              : { clipPath: 'inset(0% 0% 100% 0%)' }
+          }
+          transition={{ duration: 0.9, ease: EASE_OUT }}
         >
           <motion.div
-            className="loading-screen__mark"
-            initial={{ opacity: 0, y: 8, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="loader__inner"
+            exit={reduced ? undefined : { y: -60, opacity: 0 }}
+            transition={{ duration: 0.7, ease: EASE }}
           >
-            <motion.div
-              className="loading-screen__terminal"
-              variants={terminalVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {BOOT_LINES.map((line) => (
-                <motion.div className="loading-screen__terminal-line" variants={terminalLineVariants} key={line}>
-                  <span className="loading-screen__prompt">&gt;</span> {line}
-                </motion.div>
+            <div className="loader__name" role="img" aria-label="Abul Hasnat Abdullah">
+              {Array.from(NAME).map((char, i) => (
+                <span className="loader__glyph" key={`${char}-${i}`} aria-hidden="true">
+                  <motion.span
+                    initial={{ y: '110%' }}
+                    animate={{ y: '0%' }}
+                    transition={{ duration: 0.8, delay: 0.1 + i * 0.028, ease: EASE_OUT }}
+                  >
+                    {char === ' ' ? ' ' : char}
+                  </motion.span>
+                </span>
               ))}
-            </motion.div>
-
-            <span className="loading-screen__word">
-              @abd_portfolio
-              <span className="loading-screen__cursor">_</span>
-            </span>
-          </motion.div>
-
-          <div className="loading-screen__status">
-            <div className="loading-screen__bar">
-              <motion.span
-                className="loading-screen__bar-fill"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: MIN_VISIBLE_MS / 1000, ease: 'easeInOut' }}
-              />
             </div>
-            <span className="loading-screen__percent">{String(percent).padStart(3, '0')}%</span>
-          </div>
 
-          <p className="loading-screen__label">
-            <span className="loading-screen__prompt">$</span> booting_interface
-          </p>
+            <div className="loader__row">
+              <div className="loader__words" aria-hidden="true">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={WORDS[wordIndex]}
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -14 }}
+                    transition={{ duration: 0.32, ease: EASE }}
+                  >
+                    {WORDS[wordIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
+
+              <span className="loader__count" aria-hidden="true">
+                {String(percent).padStart(3, '0')}
+              </span>
+            </div>
+
+            <div className="loader__rule" aria-hidden="true">
+              <span className="loader__rule-fill" style={{ transform: `scaleX(${percent / 100})` }} />
+            </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

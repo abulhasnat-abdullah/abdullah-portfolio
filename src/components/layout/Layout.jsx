@@ -1,38 +1,53 @@
 // Target path: src/components/layout/Layout.jsx
+// One page, one scroll. Every section is mounted at once in document order;
+// nothing swaps in and out any more.
+import { Fragment } from 'react'
 import TopNav from '../nav/TopNav'
-import SectionPills from '../nav/SectionPills'
-import CategoryTabs from '../nav/CategoryTabs'
-import SectionPanel from './SectionPanel'
-import { useNavigation } from '../../context/NavigationContext'
-import { useEdgeScrollNavigation } from '../../hooks/useEdgeScrollNavigation'
+import SideRail from '../nav/SideRail'
+import ScrollProgress from '../effects/ScrollProgress'
+import FlowField from '../effects/FlowField'
+import Cursor from '../effects/Cursor'
+import ScrollMarquee from '../motion/ScrollMarquee'
+import Hero from '../sections/Hero'
+import LogoStrip from '../sections/LogoStrip'
+import SectionShell from './SectionShell'
+import { sections } from '../../data/portfolio'
+import { useSmoothScroll } from '../../hooks/useSmoothScroll'
+
+// Words for the two scroll-reactive bands: one after the hero, one leading
+// into Contact.
+const BAND_INTRO = ['Robotics', 'Autonomy', 'Watercolour', 'Design']
+const BAND_CONTACT = ['Open to work', 'Collaborations', 'Commissions', 'Say hello']
 
 export default function Layout() {
-  const { sections, activeSectionId, activeCategoryId, navigateToSection } = useNavigation()
-  const categorySections = sections.filter((section) => section.categoryId === activeCategoryId)
-  const activeSection = sections.find((section) => section.id === activeSectionId) ?? sections[0]
-
-  // Scrolling past the bottom of the current section advances to the next
-  // tab in `sections` order (and scrolling up past the top goes back),
-  // stopping at the first/last section.
-  useEdgeScrollNavigation({ sections, activeSectionId, navigateToSection })
+  useSmoothScroll()
 
   return (
     <div className="layout">
-      <div className="layout__bg-image" aria-hidden="true" />
-      <div className="ambient-mesh" aria-hidden="true" />
-      <div className="ambient-blobs" aria-hidden="true">
-        <span className="ambient-blob ambient-blob--a" />
-        <span className="ambient-blob ambient-blob--b" />
-        <span className="ambient-blob ambient-blob--c" />
-      </div>
+      <div className="page-wash" aria-hidden="true" />
+      <div className="page-grain" aria-hidden="true" />
+      <FlowField />
+
+      <ScrollProgress />
       <TopNav />
-      {categorySections.length > 1 && <SectionPills links={categorySections} />}
+      <SideRail />
 
-      <div className="layout__content">
-        <SectionPanel section={activeSection} />
-      </div>
+      <main className="layout__main">
+        <Hero />
+        {/* The landing zone: the logos and the first band. */}
+        <div className="landing">
+          <LogoStrip />
+          <ScrollMarquee words={BAND_INTRO} />
+        </div>
+        {sections.map((section, index) => (
+          <Fragment key={section.id}>
+            {section.id === 'contact' && <ScrollMarquee words={BAND_CONTACT} reverse />}
+            <SectionShell section={section} index={index} />
+          </Fragment>
+        ))}
+      </main>
 
-      <CategoryTabs />
+      <Cursor />
     </div>
   )
 }

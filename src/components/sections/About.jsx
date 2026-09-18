@@ -1,72 +1,75 @@
 // Target path: src/components/sections/About.jsx
-import { motion } from 'framer-motion'
-import { profile, researchInterests } from '../../data/portfolio'
-import SectionHeading from '../SectionHeading'
-import { container, item } from '../../lib/motion'
+// The hero is intentionally bare now, so everything that used to sit up
+// there — bio, location, links, credentials — lands here instead, revealed
+// as you scroll into it.
+import { profile, highlights } from '../../data/portfolio'
+import Reveal, { Stagger, StaggerItem } from '../motion/Reveal'
+import ScrubText from '../motion/ScrubText'
 import { useNavigation } from '../../context/NavigationContext'
 
-export default function About({ section }) {
-  const { navigateToSection } = useNavigation()
+export default function About() {
+  const { scrollToSection } = useNavigation()
 
   return (
-    <div className="section-page">
-      <SectionHeading title={section.title} />
-      <div className="about about--tab">
-        <motion.div
-          className="about__hero"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <img className="about__photo" src={profile.photo} alt={profile.name} />
-          <div className="about__hero-info">
-            <h2 className="about__name">{profile.name}</h2>
-            <p className="hero__role">
-              <span className="hero__role-line hero__role-line--edu">
-                Undergraduate Student (<strong>Junior Year</strong>)
-              </span>
-              <br />
-              <span className="hero__role-line">
-                Dept. of <strong>Mechanical Engineering</strong>, BUET
-              </span>
-            </p>
-            <p className="hero__location">📍 {profile.location}</p>
-            <p className="hero__tagline">{profile.tagline}</p>
-            <p className="hero__bio">{profile.bio}</p>
-            <div className="hero__actions">
-              <a className="btn btn--ghost" href={profile.links.github} target="_blank" rel="noreferrer">
-                GitHub
-              </a>
-              <a className="btn btn--ghost" href={profile.links.linkedin} target="_blank" rel="noreferrer">
-                LinkedIn
-              </a>
-              <a className="btn btn--ghost" href={profile.links.email}>
-                Email
-              </a>
-              <button type="button" className="btn btn--primary" onClick={() => navigateToSection('projects')}>
-                Projects
-              </button>
-            </div>
-          </div>
-        </motion.div>
+    <div className="about">
+      <div className="about__grid">
+        <div className="about__main">
+          <Reveal className="about__lead" as="p">
+            Mechanical Engineering at BUET — building autonomous systems by day,
+            painting watercolour and designing by night.
+          </Reveal>
 
-        <div className="about__research">
-          <h3 className="about__subheading">Research Interests</h3>
-          <motion.div className="research-grid" variants={container} initial="hidden" animate="show">
-            {researchInterests.map((research) => (
-              <motion.article key={research.title} className="research-card" variants={item}>
-                <h3>{research.title}</h3>
-                <p>{research.description}</p>
-                <ul className="tag-list">
-                  {research.tags.map((tag) => (
-                    <li key={tag}>{tag}</li>
-                  ))}
-                </ul>
-              </motion.article>
-            ))}
-          </motion.div>
+          <ScrubText className="about__bio" text={profile.bio} />
+
+          <Reveal className="about__actions" delay={0.1}>
+            <a className="btn btn--ghost" href={profile.links.github} target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <a className="btn btn--ghost" href={profile.links.linkedin} target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+            <a className="btn btn--ghost" href={profile.links.email}>
+              Email
+            </a>
+            <button type="button" className="btn btn--primary" onClick={() => scrollToSection('projects')}>
+              See Projects
+            </button>
+          </Reveal>
         </div>
+
+        <aside className="about__aside">
+          <Reveal className="about__meta" direction="left" delay={0.08}>
+            <dl>
+              <div>
+                <dt>Based in</dt>
+                <dd>{profile.location}</dd>
+              </div>
+              <div>
+                <dt>Studying</dt>
+                <dd>{profile.eduLine2}</dd>
+              </div>
+              <div>
+                <dt>Currently</dt>
+                <dd>{profile.eduLine1}</dd>
+              </div>
+            </dl>
+          </Reveal>
+
+          <Stagger className="about__highlights">
+            {highlights.map((highlight) => (
+              <StaggerItem className="highlight" key={highlight.label}>
+                <span className="highlight__label">{highlight.label}</span>
+                <strong className="highlight__value">{highlight.value}</strong>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </aside>
       </div>
+
+      <Reveal className="about__quote" as="blockquote" direction="none">
+        <span aria-hidden="true">&ldquo;</span>
+        {profile.quote}
+      </Reveal>
     </div>
   )
 }

@@ -1,50 +1,37 @@
 // Target path: src/components/sections/Education.jsx
-import { motion } from 'framer-motion'
+// One ruled row per school, led by the year span in poster type.
 import { education } from '../../data/portfolio'
-import SectionHeading from '../SectionHeading'
-import { container, item } from '../../lib/motion'
+import ScrubItem from '../motion/ScrubItem'
 
-export default function Education({ section }) {
+// "Jul 2022 — Present" → "2022–Now"; "Jun 2020 — Feb 2023" → "2020–2023".
+function yearSpan(period) {
+  const years = period?.match(/\d{4}/g) ?? []
+  if (years.length === 0) return '—'
+  const end = /present/i.test(period) ? 'Now' : years[1]
+  return end ? `${years[0]}–${end}` : years[0]
+}
+
+export default function Education() {
   return (
-    <div className="section-page">
-      <SectionHeading title={section.title} />
-      <motion.div className="education-list" variants={container} initial="hidden" animate="show">
-        {education.map((entry) => (
-          <motion.article key={entry.id} className="education-card" variants={item}>
-            <div className="education-card__logo">
-              <img src={entry.logo} alt={entry.institution} loading="lazy" />
+    <div className="edu-list">
+      {education.map((entry) => (
+        <ScrubItem key={entry.id} preset="rise">
+          <article className="edu-row">
+            <span className="edu-row__years">{yearSpan(entry.period)}</span>
+            <img className="edu-row__logo" src={entry.logo} alt="" loading="lazy" />
+            <div className="edu-row__main">
+              <h3>{entry.institution}</h3>
+              <p>{entry.degree}</p>
             </div>
-            <div className="education-card__body">
-              <div className="education-card__head">
-                <div>
-                  <h3>{entry.institution}</h3>
-                  <p className="education-card__degree">{entry.degree}</p>
-                </div>
-                {entry.period && <time className="education-card__period">{entry.period}</time>}
-              </div>
-
-              {entry.grade && <p className="education-card__grade">Grade: {entry.grade}</p>}
-              {entry.note && <p className="education-card__note">{entry.note}</p>}
-              {entry.activities && (
-                <p className="education-card__activities">
-                  <span>Activities and societies:</span> {entry.activities}
-                </p>
+            <div className="edu-row__meta">
+              {(entry.grade || entry.note) && (
+                <span className="edu-row__badge">{[entry.grade, entry.note].filter(Boolean).join(' · ')}</span>
               )}
-
-              {entry.skills?.length > 0 && (
-                <ul className="tag-list education-card__skills">
-                  {entry.skills.map((skill) => (
-                    <li key={skill}>{skill}</li>
-                  ))}
-                  {entry.moreSkillsCount > 0 && (
-                    <li className="education-card__skills-more">+{entry.moreSkillsCount} skills</li>
-                  )}
-                </ul>
-              )}
+              {entry.activities && <p>{entry.activities}</p>}
             </div>
-          </motion.article>
-        ))}
-      </motion.div>
+          </article>
+        </ScrubItem>
+      ))}
     </div>
   )
 }

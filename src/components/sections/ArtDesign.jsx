@@ -1,60 +1,43 @@
 // Target path: src/components/sections/ArtDesign.jsx
-import { motion } from 'framer-motion'
+// Two large link rows (Instagram art, Behance design) above the gallery.
 import { creativePortfolios } from '../../data/portfolio'
-import SectionHeading from '../SectionHeading'
-import { container, item, cardHover } from '../../lib/motion'
-import { useTilt } from '../../hooks/useTilt'
+import Reveal from '../motion/Reveal'
+import ScrubItem from '../motion/ScrubItem'
 import CreativeGallery from './CreativeGallery'
+import WaveArt from '../effects/WaveArt'
 
-function CreativeCard({ portfolio }) {
-  const { ref, rotateX, rotateY, handleMouseMove, handleMouseLeave } = useTilt()
-
+function ArrowUpRight() {
   return (
-    <motion.a
-      ref={ref}
-      className={`creative-card creative-card--${portfolio.theme}`}
-      href={portfolio.href}
-      target="_blank"
-      rel="noreferrer"
-      variants={item}
-      whileHover={cardHover}
-      style={{ rotateX, rotateY, transformPerspective: 900 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="creative-card__body">
-        <div className="creative-card__top">
-          <span className="creative-card__platform">{portfolio.platform}</span>
-          <span className="creative-card__role">{portfolio.role}</span>
-        </div>
-        <h3>{portfolio.title}</h3>
-        <p className="creative-card__handle">{portfolio.handle}</p>
-        <p>{portfolio.description}</p>
-        <ul className="tag-list">
-          {portfolio.tags.map((tag) => (
-            <li key={tag}>{tag}</li>
-          ))}
-        </ul>
-        <span className="creative-card__link">View on {portfolio.platform} →</span>
-      </div>
-      <div className="creative-card__media" aria-hidden="true" />
-    </motion.a>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M7 17 17 7M8 7h9v9" />
+    </svg>
   )
 }
 
-export default function ArtDesign({ section }) {
+export default function ArtDesign() {
   return (
-    <div className="section-page">
-      <SectionHeading title={section.title} />
-      <p className="section-lead">
+    <>
+      <Reveal className="section-lead" as="p">
         Creative work beyond robotics — watercolour art and graphic design portfolios.
-      </p>
-      <motion.div className="creative-grid" variants={container} initial="hidden" animate="show">
-        {creativePortfolios.map((portfolio) => (
-          <CreativeCard key={portfolio.id} portfolio={portfolio} />
+      </Reveal>
+
+      <div className="creative-links">
+        <WaveArt src="/images/decorative/wave-pattern.webp" className="wave-art--band" />
+        {creativePortfolios.map((portfolio, i) => (
+          <ScrubItem key={portfolio.id} preset={i % 2 === 0 ? 'slide-left' : 'slide-right'}>
+            <a className="creative-link" href={portfolio.href} target="_blank" rel="noreferrer">
+              <span className="creative-link__platform">{portfolio.platform}</span>
+              <strong className="creative-link__title">{portfolio.title}</strong>
+              <span className="creative-link__handle">{portfolio.handle}</span>
+              <span className="creative-link__arrow">
+                <ArrowUpRight />
+              </span>
+            </a>
+          </ScrubItem>
         ))}
-      </motion.div>
+      </div>
+
       <CreativeGallery />
-    </div>
+    </>
   )
 }

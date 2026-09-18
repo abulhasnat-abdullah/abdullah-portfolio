@@ -6,7 +6,7 @@ export const profile = {
   eduLine1: 'Undergraduate Student (Junior Year)',
   eduLine2: 'Department of Mechanical Engineering, BUET',
   bio: `Hi, I'm Abdullah. I'm a Mechanical Engineering student at BUET, focused on robotics and autonomous systems. I currently lead the software and autonomy team of Team Interplanetar, a Mars rover of BUET, where I work on developing control systems, implementing SLAM, and building an Autonomy Stack with custom behaviour trees to adapt in complex mission. When I'm away from my engineering projects, you'll usually find me painting under the name Aquarelle Verse, or designing visuals and branding for different events and creatives. I love building things that are both highly functional and visually beautiful.`,
-  photo: '/images/profile/photo.png',
+  photo: '/images/profile/photo.webp',
   email: 'abdkalam22@gmail.com',
   location: 'Dhaka, Bangladesh',
   links: {
@@ -27,28 +27,25 @@ export const profile = {
   ],
 }
 
-// Top-level categories drive both the desktop topnav pills and the mobile
-// bottom dock. Kept to 4 so the dock stays clean and thumb-friendly; each
-// category can hold several sections, in which case SectionPills renders a
-// secondary row of tabs underneath the topnav to pick between them.
-export const categories = [
-  { id: 'about', label: 'About' },
-  { id: 'education', label: 'Education' },
-  { id: 'showcase', label: 'Showcase' },
-  { id: 'contact', label: 'Contact' },
-]
-
+// The site is a single scroll now: this list is the document order of the
+// page, and doubles as the nav / scroll-spy source. `kicker` is the small
+// line printed above each section title.
+//
+// `navPrimary` marks the handful that appear in the top bar — all ten
+// would overflow it. The side rail and the mobile menu still list every
+// section, so nothing becomes unreachable.
 export const sections = [
-  { id: 'about', categoryId: 'about', label: 'About', title: 'About Me' },
-  { id: 'education', categoryId: 'education', label: 'Education', title: 'Education' },
-  { id: 'experience', categoryId: 'showcase', label: 'Experience', title: 'Experience & Activities' },
-  { id: 'projects', categoryId: 'showcase', label: 'Projects', title: 'Selected Projects' },
-  { id: 'art-design', categoryId: 'showcase', label: 'Art & Design', title: 'Art & Design' },
-  { id: 'skills', categoryId: 'showcase', label: 'Skills', title: 'Technical Stack' },
-  { id: 'research', categoryId: 'showcase', label: 'Research', title: 'Research Interests' },
-  { id: 'certificates', categoryId: 'showcase', label: 'Certificates', title: 'Certifications & Courses' },
-  { id: 'achievements', categoryId: 'showcase', label: 'Achievements', title: 'Achievements' },
-  { id: 'contact', categoryId: 'contact', label: 'Contact', title: 'Get In Touch' },
+  { navPrimary: true, id: 'about', label: 'About', title: 'About Me', kicker: 'Who I am', note: 'the short version' },
+  { id: 'dashboard', label: 'Dashboard', title: 'At a Glance', kicker: 'Live numbers', note: 'updated as you read' },
+  { id: 'education', label: 'Education', title: 'Education', kicker: 'Where I studied', note: 'still learning' },
+  { id: 'experience', label: 'Experience', title: 'Experience & Activities', kicker: 'Where I work', note: 'the teams I build with' },
+  { navPrimary: true, id: 'projects', label: 'Projects', title: 'Selected Projects', kicker: 'What I build', note: 'hover a row to peek' },
+  { navPrimary: true, id: 'art-design', label: 'Art & Design', title: 'Art & Design', kicker: 'The other half', note: 'painted by hand' },
+  { navPrimary: true, id: 'skills', label: 'Skills', title: 'Technical Stack', kicker: 'What I use', note: 'daily drivers' },
+  { id: 'research', label: 'Research', title: 'Research Interests', kicker: 'What I explore', note: 'favourite rabbit holes' },
+  { id: 'certificates', label: 'Certificates', title: 'Certifications & Courses', kicker: 'Credentials', note: 'homework, verified' },
+  { id: 'achievements', label: 'Achievements', title: 'Achievements', kicker: 'Recognition', note: 'proud of these' },
+  { navPrimary: true, id: 'contact', label: 'Contact', title: 'Get In Touch', kicker: 'Say hello', note: 'I reply fast' },
 ]
 
 export const highlights = [
@@ -67,7 +64,7 @@ export const highlights = [
 export const experience = [
   {
     org: 'Team Interplanetar · BUET',
-    logo: '/images/organizations/team-interplanetar.png',
+    logo: '/images/organizations/team-interplanetar.webp',
     totalDuration: '1 yr 4 mos',
     roles: [
       {
@@ -137,7 +134,7 @@ export const experience = [
   },
   {
     org: 'BUET Robotics Society',
-    logo: '/images/organizations/buet-robotics-society.png',
+    logo: '/images/organizations/buet-robotics-society.webp',
     totalDuration: '1 yr 1 mo',
     roles: [
       {
@@ -160,7 +157,7 @@ export const experience = [
   },
   {
     org: 'IMechE BUET Student Chapter',
-    logo: '/images/organizations/imeche-buet.png',
+    logo: '/images/organizations/imeche-buet.webp',
     totalDuration: '2 yrs 8 mos',
     roles: [
       {
@@ -175,7 +172,7 @@ export const experience = [
   },
   {
     org: 'AllStar',
-    logo: '/images/organizations/allstar.png',
+    logo: '/images/organizations/allstar.webp',
     totalDuration: '5 yrs 4 mos',
     roles: [
       {
@@ -190,7 +187,7 @@ export const experience = [
   },
   {
     org: 'Ongikar',
-    logo: '/images/organizations/ongikar.png',
+    logo: '/images/organizations/ongikar.webp',
     totalDuration: '5 yrs 2 mos',
     roles: [
       {
@@ -205,7 +202,7 @@ export const experience = [
   },
   {
     org: 'Notre Dame Art Club',
-    logo: '/images/organizations/notre-dame-art-club.png',
+    logo: '/images/organizations/notre-dame-art-club.webp',
     totalDuration: '2 yrs 2 mos',
     roles: [
       {
@@ -228,7 +225,7 @@ export const experience = [
   },
   {
     org: 'Brain Stormers',
-    logo: '/images/organizations/brain-stormers.png',
+    logo: '/images/organizations/brain-stormers.webp',
     totalDuration: '8 mos',
     roles: [
       {
@@ -243,7 +240,7 @@ export const experience = [
   },
   {
     org: 'Apars Classroom',
-    logo: '/images/organizations/apars-classroom.png',
+    logo: '/images/organizations/apars-classroom.webp',
     totalDuration: '2 mos',
     roles: [
       {
@@ -262,7 +259,7 @@ export const education = [
   {
     id: 'buet',
     institution: 'Bangladesh University of Engineering and Technology',
-    logo: '/images/education/buet.png',
+    logo: '/images/education/buet.webp',
     degree: 'Bachelor of Science - B.Sc., Mechanical Engineering',
     period: 'Jul 2022 — Present',
     grade: null,
@@ -274,7 +271,7 @@ export const education = [
   {
     id: 'notre-dame',
     institution: 'Notre Dame College',
-    logo: '/images/education/notre-dame.png',
+    logo: '/images/education/notre-dame.webp',
     degree: 'Higher Secondary School Certificate, Science',
     period: 'Jun 2020 — Feb 2023',
     grade: 'GPA 5.00/5.00',
@@ -286,7 +283,7 @@ export const education = [
   {
     id: 'rajuk',
     institution: 'RAJUK Uttara Model College',
-    logo: '/images/education/rajuk.png',
+    logo: '/images/education/rajuk.webp',
     degree: 'Secondary School Certificate, Science',
     period: null,
     grade: 'GPA 5.00/5.00',
@@ -306,7 +303,7 @@ export const achievements = [
     title: 'Champion — Robo Soccer Challenge',
     context: 'Intra BUET Robo Challenge 2024 · BUET Robotics Club',
     detail: 'Led team Siuuu with a radio-controlled four-wheel soccer bot built on BattleBot experience.',
-    image: '/images/achievements/robo-soccer-challenge-certificate.png',
+    image: '/images/achievements/robo-soccer-challenge-certificate.webp',
   },
 ]
 
@@ -343,7 +340,7 @@ export const projects = [
     title: 'Autonmous Navigation Stack for Mars Rover',
     status: 'live',
     href: 'https://github.com/abulhasnat-abdullah/interplanetar_mars_rover',
-    image: '/images/projects/interplanetar_mars_rover.png',
+    image: '/images/projects/interplanetar_mars_rover.webp',
     // youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
     description:
       'Full autonomy stack — SLAM, Nav2 waypoint nav, ROS2 architecture, and Gazebo digital twin for a competition-grade Mars rover.',
@@ -353,7 +350,7 @@ export const projects = [
     id: '02',
     title: 'Warehouse AGV Simulation',
     status: 'in-progress',
-    image: '/images/projects/warehouse_agv.png',
+    image: '/images/projects/warehouse_agv.webp',
     // youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
     description:
       'Warehouse AGV for logistics — Nav2 navigation, obstacle avoidance, and kinodynamically constrained path replanning in simulation.',
@@ -363,7 +360,7 @@ export const projects = [
     id: '03',
     title: 'Autonomous GPS-Denied Tunnel Inspection Drone',
     status: 'in-progress',
-    image: '/images/projects/gps-denied-tunnel-inspection-drone.png',
+    image: '/images/projects/gps-denied-tunnel-inspection-drone.webp',
     video: '/images/projects/gps-denied-tunnel-inspection-drone.mp4',
     description:
       'Autonomous inspection drone for GPS-denied tunnels — SLAM-based localization and obstacle-aware navigation for underground infrastructure inspection.',
@@ -373,7 +370,7 @@ export const projects = [
     id: '04',
     title: 'Swerve Drive Setup with CAN-Bus & ROS2 Control',
     status: 'in-progress',
-    image: '/images/projects/swerve-drive-canbus-ros2.png',
+    image: '/images/projects/swerve-drive-canbus-ros2.webp',
     video: '/images/projects/swerve-drive-canbus-ros2.mp4',
     description:
       'Swerve drive module built around SteadyWin motors on a CAN-Bus network, integrated with ros2_control for closed-loop drive and steering commands.',
@@ -383,7 +380,7 @@ export const projects = [
     id: '05',
     title: 'Closed Loop Drone Simulation',
     status: 'completed',
-    image: '/images/projects/closed-loop-drone-simulation.png',
+    image: '/images/projects/closed-loop-drone-simulation.webp',
     description:
       'Closed-loop drone simulation spanning both PX4 SITL and ArduPilot SITL, with ROS2 in the loop for guidance, control, and mission testing.',
     tags: ['ROS2', 'PX4', 'ArduPilot', 'SITL', 'Drones'],
@@ -393,7 +390,7 @@ export const projects = [
     title: 'BattleBot-NSARv1',
     status: 'completed',
     // Drop the project photo at this path under /public (see note below).
-    image: '/images/projects/battlebot-nsarv1.png',
+    image: '/images/projects/battlebot-nsarv1.webp',
     description:
       'Combat robotics platform built for intra-university BattleBot competition — chassis, drivetrain, and weapon mechanism engineered for BUET Automobile Club.',
     tags: ['Combat Robotics', 'Mechanical Design', 'Embedded Control'],
@@ -402,7 +399,7 @@ export const projects = [
     id: '07',
     title: 'SoccerBot-Siuuu',
     status: 'completed',
-    image: '/images/projects/soccerbot-siuuu.png',
+    image: '/images/projects/soccerbot-siuuu.webp',
     description:
       'Championship-winning radio-controlled four-wheel soccer bot built for the Intra BUET Robo Soccer Challenge — tuned for agility and precise ball control.',
     tags: ['RC Robotics', 'Mechanical Design', 'Competition'],
@@ -412,7 +409,7 @@ export const projects = [
     title: 'Arm URDF & Visualization',
     status: 'completed',
     href: 'https://github.com/abulhasnat-abdullah/arm_visualizer',
-    image: '/images/projects/arm_visualizer.png',
+    image: '/images/projects/arm_visualizer.webp',
     youtube: 'https://youtu.be/Fh9B8C97Wrs',
     description:
       'Real-time 3D robot arm visualization with joint states, end-effector trajectories, and workspace envelopes.',
@@ -423,7 +420,7 @@ export const projects = [
     title: 'Voice Controlled Turtlebot3 Simulation',
     status: 'completed',
     href: 'https://github.com/abulhasnat-abdullah/voice_controlled_robot',
-    image: '/images/projects/voice_controlled_robot.png',
+    image: '/images/projects/voice_controlled_robot.webp',
     youtube: 'https://youtu.be/T1xi8z0nOks',
     description:
       'Speech-to-command interface — natural language parsed and mapped to motor commands via ROS2.',
@@ -433,7 +430,7 @@ export const projects = [
     id: '10',
     title: 'Autonomous Navigation GUI',
     status: 'in-progress',
-    image: '/images/projects/autonomous-navigation-gui.png',
+    image: '/images/projects/autonomous-navigation-gui.webp',
     description:
       'Custom GUI for monitoring and commanding autonomous navigation — live map, waypoint goals, and robot state feedback in one dashboard.',
     tags: ['ROS2', 'Nav2', 'GUI', 'Python'],
@@ -442,7 +439,7 @@ export const projects = [
     id: '11',
     title: 'Gazebo ROS2 Digital Twin of BUET Mars Rover',
     status: 'completed',
-    image: '/images/projects/buet-mars-rover-digital-twin.png',
+    image: '/images/projects/buet-mars-rover-digital-twin.webp',
     description:
       'Full Gazebo/ROS2 digital twin of the BUET Mars Rover — matched kinematics and sensor suite for simulating missions before hardware trials.',
     tags: ['ROS2', 'Gazebo', 'URDF', 'Simulation'],
@@ -451,7 +448,7 @@ export const projects = [
     id: '12',
     title: 'Portfolio Website',
     status: 'live',
-    image: '/images/projects/portfolio-website.png',
+    image: '/images/projects/portfolio-website.webp',
     description:
       'This site — a React, Vite, and Framer Motion portfolio built to showcase experience, projects, and skills.',
     tags: ['React', 'Vite', 'SCSS', 'Framer Motion'],
@@ -460,7 +457,7 @@ export const projects = [
     id: '13',
     title: '3D Printing',
     status: 'completed',
-    image: '/images/projects/3d-designing.png',
+    image: '/images/projects/3d-designing.webp',
     description:
       'CAD modeling and 3D prinitng work spanning mechanical parts, assemblies, and concept models for robotics platforms.',
     tags: ['SolidWorks', 'CAD', '3D Modeling'],
@@ -469,7 +466,7 @@ export const projects = [
     id: '14',
     title: 'Rover Field Test — Prochesta V1',
     status: 'completed',
-    image: '/images/projects/rover-field-test-prochesta-v1.png',
+    image: '/images/projects/rover-field-test-prochesta-v1.webp',
     description:
       'Prochesta V1 rover trials and development documentation, covering platform testing, setup, and operational readiness.',
     tags: ['Field Testing', 'Rover', 'Documentation'],
@@ -478,7 +475,7 @@ export const projects = [
     id: '15',
     title: 'Differential Drive Setup with ROS2 Control',
     status: 'completed',
-    image: '/images/projects/differential-drive-ros2-control.png',
+    image: '/images/projects/differential-drive-ros2-control.webp',
     description:
       'Differential drive platform running ros2_control, with a teleoperation interface for manual rover driving.',
     tags: ['ROS2', 'ros2_control', 'Differential Drive', 'Teleoperation'],
@@ -504,7 +501,7 @@ export const certificates = [
     title: 'SOLIDWORKS CAD Design Associate (CSWA)',
     date: 'Dec 2024',
     credentialId: 'C-C8WTER59UF',
-    image: '/images/certificates/cswa.png',
+    image: '/images/certificates/cswa.webp',
     href: null,
     tags: ['SolidWorks', 'CAD', 'CSWA'],
   },
@@ -515,7 +512,7 @@ export const certificates = [
     date: 'Nov 2025',
     hours: '4.5 hours',
     credentialId: 'UC-5686837b-a19e-4ea1-94a8-6e38d16168e8',
-    image: '/images/certificates/cswp-prep.png',
+    image: '/images/certificates/cswp-prep.webp',
     href: 'https://ude.my/UC-5686837b-a19e-4ea1-94a8-6e38d16168e8',
     tags: ['SolidWorks', 'CSWP', 'CAD'],
   },
@@ -526,7 +523,7 @@ export const certificates = [
     date: 'Jun 2025',
     hours: '25 hours',
     credentialId: 'UC-a7b8c265-f41e-4be7-a5bc-76880a8c3815',
-    image: '/images/certificates/ros2-map-localization.png',
+    image: '/images/certificates/ros2-map-localization.webp',
     href: 'https://ude.my/UC-a7b8c265-f41e-4be7-a5bc-76880a8c3815',
     tags: ['ROS2', 'SLAM', 'Localization'],
   },
@@ -537,7 +534,7 @@ export const certificates = [
     date: 'Nov 2025',
     hours: '29 hours',
     credentialId: 'UC-2f8654be-0af0-4c81-bf7d-a8ec7d870da0',
-    image: '/images/certificates/ros2-odometry-control.png',
+    image: '/images/certificates/ros2-odometry-control.webp',
     href: 'https://ude.my/UC-2f8654be-0af0-4c81-bf7d-a8ec7d870da0',
     tags: ['ROS2', 'Control', 'Odometry'],
   },
@@ -548,7 +545,7 @@ export const certificates = [
     date: 'Mar 2026',
     hours: '28.5 hours',
     credentialId: 'UC-efdf32b0-3dc4-4acb-9b99-33cc51693832',
-    image: '/images/certificates/ros2-plan-navigation.png',
+    image: '/images/certificates/ros2-plan-navigation.webp',
     href: 'https://ude.my/UC-efdf32b0-3dc4-4acb-9b99-33cc51693832',
     tags: ['ROS2', 'Nav2', 'Planning'],
   },

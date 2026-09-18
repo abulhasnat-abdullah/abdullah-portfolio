@@ -1,0 +1,1453 @@
+// Target path: src/styles/_sections.scss
+@use 'variables' as *;
+
+// Compact, editorial layouts for the content sections: hairline-ruled rows
+// and lists instead of boxed cards. Loaded after _components.scss and
+// _dashboard.scss, so where a section keeps an older class, this strips its
+// card chrome.
+
+// ---------------------------------------------------------------------------
+// Rhythm
+// ---------------------------------------------------------------------------
+.section {
+  padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1.15rem, 5vw, 3rem);
+}
+
+.section + .section .section__inner::before {
+  top: calc(clamp(3.5rem, 7vw, 6.5rem) * -0.5);
+}
+
+.section-heading {
+  margin-bottom: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+// Shared row behaviour: a hairline under each row, and an accent wash that
+// sweeps in from the left on hover.
+%row {
+  position: relative;
+  border-bottom: 1px solid $border;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(90deg, var(--row-wash, rgba($accent, 0.1)), transparent 70%);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover::before {
+    transform: scaleX(1);
+  }
+}
+
+%row-title {
+  font-family: $font-display;
+  font-weight: 800;
+  font-stretch: 80%;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: $text;
+}
+
+%row-label {
+  font-family: $font-nav;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $text-muted;
+}
+
+%row-logo {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  padding: 5px;
+  border-radius: 12px;
+  background: #fff;
+  object-fit: contain;
+}
+
+// ---------------------------------------------------------------------------
+// About — borderless highlights and a poster-type pull quote.
+// ---------------------------------------------------------------------------
+// Paired rows across the two columns: the lead sits opposite the details,
+// the bio opposite the highlights. The columns' wrappers step aside
+// (display: contents) so their children join one shared grid.
+.about__grid {
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  grid-template-areas:
+    'lead meta'
+    'bio highlights'
+    'actions highlights';
+  align-items: start;
+  gap: clamp(1.25rem, 2.5vw, 2rem) clamp(2rem, 5vw, 4.5rem);
+}
+
+.about__main,
+.about__aside {
+  display: contents;
+}
+
+.about__lead {
+  grid-area: lead;
+  margin: 0;
+}
+
+.about__bio {
+  grid-area: bio;
+}
+
+.about__actions {
+  grid-area: actions;
+  margin-top: 0;
+}
+
+.about__meta {
+  grid-area: meta;
+}
+
+.about__highlights {
+  grid-area: highlights;
+  column-gap: 1.25rem;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  gap: 0 1.25rem;
+}
+
+.highlight {
+  padding: 0.9rem 0;
+  border-top: 1px solid $border;
+  background: none;
+
+  &:hover {
+    background: none;
+  }
+}
+
+// The quote closes the section as a centred band between two hairlines, so
+// the section ends on its axis instead of leaning left.
+.about__quote {
+  font-family: $font-display;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  max-width: none;
+  margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(0rem, 6vw, 5rem);
+  border-top: 1px solid $border;
+  border-bottom: 1px solid $border;
+  font-size: clamp(1.84rem, 3.91vw, 3.33rem);
+  line-height: 1.1;
+  text-align: center;
+  text-wrap: balance;
+  color: $text;
+
+  span {
+    display: block;
+    height: 0.5em;
+    font-size: 1.8em;
+    line-height: 0.8;
+    color: var(--quote-mark, #{$accent});
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Dashboard — figures separated by rules, not boxed.
+// ---------------------------------------------------------------------------
+.dash-tiles {
+  gap: 0;
+  border-top: 1px solid $border;
+  border-bottom: 1px solid $border;
+}
+
+.dash-tile__inner {
+  padding: clamp(1rem, 2vw, 1.4rem) clamp(1rem, 2vw, 1.5rem);
+  border: 0;
+  border-left: 1px solid $border;
+  border-radius: 0;
+  background: none;
+}
+
+.dash-tiles > :first-child .dash-tile__inner {
+  padding-left: 0;
+  border-left: 0;
+}
+
+a.dash-tile__inner:hover {
+  transform: none;
+}
+
+.dash-tile__value {
+  font-size: clamp(2.8rem, 5vw, 4.4rem);
+}
+
+.dash-grid {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.dash-card {
+  padding: 1.25rem 0 0;
+  border: 0;
+  border-top: 1px solid $border;
+  border-radius: 0;
+  background: none;
+}
+
+@media (max-width: 960px) {
+  .dash-tiles > :nth-child(3) .dash-tile__inner {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .dash-tiles > :nth-child(n + 3) .dash-tile__inner {
+    border-top: 1px solid $border;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Education — one row per school, led by the year span.
+// ---------------------------------------------------------------------------
+.edu-list {
+  border-top: 1px solid $border;
+}
+
+.edu-row {
+  @extend %row;
+  display: grid;
+  grid-template-columns: 8.5rem 52px minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  padding: clamp(1.1rem, 2.4vw, 1.6rem) 0;
+}
+
+.edu-row__years {
+  font-family: $font-poster;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-size: clamp(1.36rem, 2.21vw, 1.95rem);
+  line-height: 1;
+  color: $text;
+}
+
+.edu-row__logo {
+  @extend %row-logo;
+}
+
+.edu-row__main {
+  h3 {
+    @extend %row-title;
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  }
+
+  p {
+    margin-top: 0.3rem;
+    font-size: 0.88rem;
+    color: $text-soft;
+  }
+}
+
+.edu-row__meta {
+  display: grid;
+  justify-items: start;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: $text-muted;
+}
+
+.edu-row__badge {
+  font-family: $font-nav;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $accent-text;
+}
+
+// ---------------------------------------------------------------------------
+// Experience — one row per organisation; click to see earlier roles.
+// ---------------------------------------------------------------------------
+.xp-list {
+  border-top: 1px solid $border;
+}
+
+.xp-row {
+  @extend %row;
+}
+
+.xp-row__head,
+.xp-role {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1.3fr) 5.5rem;
+  gap: clamp(1rem, 2.4vw, 2rem);
+}
+
+.xp-row__head {
+  align-items: center;
+  width: 100%;
+  padding: clamp(1rem, 2.2vw, 1.4rem) 0;
+  text-align: left;
+  color: inherit;
+}
+
+.xp-row__logo {
+  @extend %row-logo;
+}
+
+.xp-row__org strong {
+  @extend %row-title;
+  display: block;
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+}
+
+.xp-row__org small,
+.xp-row__role small {
+  @extend %row-label;
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.xp-row__role em {
+  font-size: 0.92rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.35;
+  color: $text-soft;
+}
+
+.xp-row__more {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: $font-nav;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: $accent-text;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+.xp-row--open .xp-row__more svg {
+  transform: rotate(180deg);
+}
+
+.xp-row__earlier {
+  overflow: hidden;
+}
+
+.xp-role {
+  padding: 0 0 1rem;
+}
+
+.xp-role__period {
+  @extend %row-label;
+  grid-column: 2;
+}
+
+.xp-role__title {
+  grid-column: 3;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: $text-soft;
+}
+
+// ---------------------------------------------------------------------------
+// Research — a numbered editorial list.
+// ---------------------------------------------------------------------------
+.research-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.research-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
+  border-top: 1px solid $border;
+
+  h3 {
+    @extend %row-title;
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  }
+
+  p {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: $text-soft;
+  }
+}
+
+.research-item__num {
+  font-family: $font-poster;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.21rem, 3.4vw, 3.06rem);
+  line-height: 0.85;
+  color: transparent;
+  -webkit-text-stroke: 1.2px $accent;
+}
+
+// ---------------------------------------------------------------------------
+// Certificates — rows with a thumbnail that zooms on hover.
+// ---------------------------------------------------------------------------
+.cert-list {
+  border-top: 1px solid $border;
+}
+
+.cert-row {
+  @extend %row;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) auto 7.5rem;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2rem);
+  padding: clamp(0.9rem, 2vw, 1.2rem) 0;
+  color: inherit;
+}
+
+.cert-row__thumb {
+  width: 96px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 10px;
+  background: $bg-elevated;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+.cert-row:hover .cert-row__thumb img {
+  transform: scale(1.08);
+}
+
+.cert-row__main {
+  small {
+    @extend %row-label;
+    display: block;
+  }
+
+  strong {
+    @extend %row-title;
+    display: block;
+    margin-top: 0.25rem;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+  }
+}
+
+.cert-row__meta,
+.cert-row__go {
+  font-family: $font-nav;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cert-row__meta {
+  color: $text-soft;
+}
+
+.cert-row__go {
+  justify-self: end;
+  font-weight: 700;
+  color: $accent-text;
+}
+
+// ---------------------------------------------------------------------------
+// Achievements — a poster-scale feature per win.
+// ---------------------------------------------------------------------------
+.wins {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+}
+
+.win {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.win__kicker {
+  font-family: $font-nav;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $accent-text;
+}
+
+.win__title {
+  margin-top: 0.6rem;
+  font-family: $font-poster;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.45rem, 6.3vw, 5.25rem);
+  line-height: 0.86;
+  text-transform: none;
+  color: $text;
+}
+
+.win__sub {
+  @extend %row-title;
+  margin-top: 0.5rem;
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  color: $text-soft;
+}
+
+.win__detail {
+  max-width: 42ch;
+  margin-top: 1rem;
+  line-height: 1.6;
+  color: $text-soft;
+}
+
+.win__media {
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+  rotate: 2deg;
+  transition: rotate 0.5s cubic-bezier(0.22, 1, 0.36, 1), scale 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+  img {
+    display: block;
+    width: 100%;
+  }
+}
+
+.win:hover .win__media {
+  rotate: 0deg;
+  scale: 1.02;
+}
+
+// ---------------------------------------------------------------------------
+// Skills — a label per group and compact chips with level bars.
+// ---------------------------------------------------------------------------
+.skill-rows {
+  border-top: 1px solid $border;
+}
+
+.skill-row {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  padding: clamp(1.1rem, 2.4vw, 1.6rem) 0;
+  border-bottom: 1px solid $border;
+}
+
+.skill-row__label {
+  @extend %row-title;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+
+  span {
+    font-family: $font-nav;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: $accent-text;
+  }
+}
+
+.skill-row__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.skill-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.42rem 0.85rem 0.5rem 0.45rem;
+  overflow: hidden;
+  border: 1px solid $border;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: $text;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: rgba($accent, 0.55);
+  }
+}
+
+.skill-chip__logo {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #fff;
+
+  img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+  }
+
+  span {
+    font-family: $font-nav;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #1a0a03;
+  }
+}
+
+// The level: a hairline along the chip's base that fills on scroll-in.
+.skill-chip__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: rgba($accent, 0.12);
+
+  span {
+    position: absolute;
+    inset: 0;
+    transform-origin: left center;
+    background: $accent;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Art & Design — large link rows in place of cards.
+// ---------------------------------------------------------------------------
+.creative-links {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid $border;
+}
+
+.creative-link {
+  @extend %row;
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr) auto 48px;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2rem);
+  padding: clamp(1.1rem, 2.4vw, 1.6rem) 0;
+  color: inherit;
+}
+
+.creative-link__platform {
+  font-family: $font-nav;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $accent-text;
+}
+
+.creative-link__title {
+  font-family: $font-poster;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-size: clamp(1.4rem, 3.12vw, 2.5rem);
+  line-height: 0.95;
+  text-transform: none;
+  color: $text;
+  transition: translate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.creative-link:hover .creative-link__title {
+  translate: 10px 0;
+}
+
+.creative-link__handle {
+  font-size: 0.85rem;
+  color: $text-muted;
+}
+
+.creative-link__arrow {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid $border;
+  border-radius: 50%;
+  color: $text;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.creative-link:hover .creative-link__arrow {
+  border-color: $accent;
+  background: $accent;
+  color: #fff;
+}
+
+// ---------------------------------------------------------------------------
+// Contact — a poster-sized call to action and link rows.
+// ---------------------------------------------------------------------------
+.contact {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  &::after {
+    display: none;
+  }
+}
+
+.contact__lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 2rem;
+  margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.contact__big {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  font-family: $font-poster;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.16rem, 5.76vw, 4.68rem);
+  line-height: 0.9;
+  text-transform: none;
+  white-space: nowrap;
+  color: $text;
+  transition: color 0.3s ease;
+
+  svg {
+    width: 0.6em;
+    height: 0.6em;
+    color: $accent;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover {
+    color: $accent-text;
+  }
+
+  &:hover svg {
+    transform: translate(0.08em, -0.08em);
+  }
+}
+
+.contact__links {
+  display: block;
+  border-top: 1px solid $border;
+}
+
+.contact__links .contact-link {
+  @extend %row;
+  display: grid;
+  grid-template-columns: 12rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 0;
+  border: 0;
+  border-bottom: 1px solid $border;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  &:hover {
+    border-color: $border;
+    background: none;
+    transform: none;
+  }
+}
+
+.contact__links .contact-link__arrow {
+  position: static;
+  opacity: 1;
+  transform: none;
+  transition: translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.contact__links .contact-link:hover .contact-link__arrow {
+  translate: 6px 0;
+}
+
+// ---------------------------------------------------------------------------
+// Narrow screens: every row collapses to logo + text, extras below.
+// ---------------------------------------------------------------------------
+@media (max-width: 760px) {
+  .edu-row {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 0.4rem 1rem;
+  }
+
+  .edu-row__years,
+  .edu-row__meta {
+    grid-column: 1 / -1;
+  }
+
+  .edu-row__logo,
+  .xp-row__logo {
+    width: 44px;
+    height: 44px;
+  }
+
+  .xp-row__head,
+  .xp-role {
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    gap: 0.35rem 1rem;
+  }
+
+  .xp-row__role {
+    grid-column: 2 / -1;
+    grid-row: 2;
+  }
+
+  .xp-row__more {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .xp-role__period,
+  .xp-role__title {
+    grid-column: 2 / -1;
+  }
+
+  .research-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cert-row {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 0.35rem 1rem;
+  }
+
+  .cert-row__thumb {
+    width: 72px;
+    grid-row: span 3;
+  }
+
+  .cert-row__meta,
+  .cert-row__go {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .win {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .skill-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+
+  .creative-link {
+    grid-template-columns: minmax(0, 1fr) 44px;
+    gap: 0.35rem 1rem;
+  }
+
+  .creative-link__platform,
+  .creative-link__title {
+    grid-column: 1;
+  }
+
+  .creative-link__handle {
+    display: none;
+  }
+
+  .creative-link__arrow {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    width: 44px;
+    height: 44px;
+  }
+
+  .contact__lead {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  .contact__big {
+    white-space: normal;
+  }
+
+  .contact__links .contact-link {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.2rem 1rem;
+  }
+
+  .contact__links .contact-link span:first-child {
+    grid-column: 1;
+  }
+
+  .contact__links .contact-link strong {
+    grid-column: 1;
+    overflow-wrap: anywhere;
+  }
+
+  .contact__links .contact-link__arrow {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Phone fixes from the layout audit.
+// ---------------------------------------------------------------------------
+
+// Scroll-scrubbed entrances start shifted sideways (up to ±90px) until they
+// settle, which pushed the page wider than a phone screen and let it wobble
+// sideways. `clip` — not `hidden` — so the main column doesn't become a
+// scroll container, which would break the pinned Projects rail.
+.layout__main {
+  overflow-x: clip;
+}
+
+// Nothing on a phone should drop below ~11px.
+@media (max-width: 480px) {
+  .hero__locale,
+  .hero__stat-label,
+  .highlight__label,
+  .about__meta dt {
+    font-size: 0.7rem;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Contact: the old card rule split this into two columns, which crushed the
+// pitch to a word per line. One column; the lead row and the rows stack.
+// ---------------------------------------------------------------------------
+.contact {
+  display: block;
+}
+
+// ---------------------------------------------------------------------------
+// Wave artwork from the original site: a faint band along the bottom of a
+// section that fades upward and drifts as it scrolls (see WaveArt.jsx).
+// ---------------------------------------------------------------------------
+.section__inner {
+  z-index: 1;
+}
+
+.wave-art {
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(12rem, 30vw, 26rem);
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.3;
+  -webkit-mask-image: linear-gradient(to top, #000 15%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 15%, transparent 100%);
+}
+
+[data-theme='light'] .wave-art {
+  opacity: 0.45;
+}
+
+// Wider than its box so the sideways drift never shows an edge.
+.wave-art__img {
+  position: absolute;
+  inset: 0 -6%;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;
+  will-change: transform;
+}
+
+// Art & Design: a full-bleed band behind the two link rows.
+.creative-links {
+  position: relative;
+  isolation: isolate;
+}
+
+.wave-art--band {
+  z-index: -1;
+  left: calc(50% - 50vw);
+  right: auto;
+  bottom: -2.5rem;
+  width: 100vw;
+  height: clamp(11rem, 24vw, 20rem);
+  opacity: 0.35;
+}
+
+@media (max-width: 900px) {
+  .about__grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'lead' 'bio' 'actions' 'meta' 'highlights';
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Sankey on phones. The chart sizes itself to its container, but a plain
+// `1fr` grid column won't shrink below its content — so the chart kept the
+// width it first measured and ran off the screen. minmax(0, 1fr) and
+// min-width: 0 let the whole chain shrink to the screen.
+// ---------------------------------------------------------------------------
+.dash-grid,
+.dash-main,
+.dash-side,
+.dash-card,
+.dash-flow {
+  min-width: 0;
+}
+
+@media (max-width: 960px) {
+  .dash-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.dash-flow--compact svg text {
+  font-size: 10.5px;
+}
+
+// ---------------------------------------------------------------------------
+// Art gallery — columns that drift at their own speed on scroll
+// (CreativeGallery.jsx). Rounded pieces, no filename captions; a hover
+// zooms the image and reveals its number.
+// ---------------------------------------------------------------------------
+.gallery-groups {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.gallery-block + .gallery-block {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.gallery-block__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid $border;
+
+  h3 {
+    font-family: $font-poster;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    font-size: clamp(1.56rem, 3.12vw, 2.5rem);
+    line-height: 0.9;
+    text-transform: none;
+    color: $text;
+  }
+
+  span {
+    @extend %row-label;
+  }
+}
+
+// Padded by the largest column drift so shifted columns never clip.
+.pgallery {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(0.6rem, 1.4vw, 1rem);
+  padding: 130px 0;
+  overflow: clip;
+}
+
+.pgallery__col {
+  display: grid;
+  gap: clamp(0.6rem, 1.4vw, 1rem);
+  will-change: transform;
+}
+
+// Staggered starting heights: every other column begins lower.
+.pgallery__col:nth-child(even) {
+  margin-top: clamp(2.5rem, 7vw, 6rem);
+}
+
+.pgallery__item {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: $bg-elevated;
+  cursor: zoom-in;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent 45%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+}
+
+.pgallery__item:hover img {
+  transform: scale(1.06);
+}
+
+.pgallery__item:hover::after,
+.pgallery__item:focus-visible::after {
+  opacity: 1;
+}
+
+.pgallery__meta {
+  position: absolute;
+  z-index: 1;
+  left: 0.85rem;
+  right: 0.85rem;
+  bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  font-family: $font-nav;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pgallery__item:hover .pgallery__meta,
+.pgallery__item:focus-visible .pgallery__meta {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 700px) {
+  .pgallery {
+    padding: 60px 0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Projects: an index of rows (see Projects.jsx). The same six columns in the
+// header and every row, so numbers, titles, stacks and statuses line up down
+// the page.
+// ---------------------------------------------------------------------------
+.work {
+  --work-cols: 2.5rem 8.5rem minmax(0, 1fr) 13rem 7.5rem 4.5rem;
+
+  position: relative;
+}
+
+.work__head,
+.work__row {
+  display: grid;
+  grid-template-columns: var(--work-cols);
+  align-items: center;
+  column-gap: clamp(1rem, 2vw, 1.75rem);
+}
+
+.work__head {
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid $border;
+  font-family: $font-nav;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $text-muted;
+}
+
+.work__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.work__row {
+  position: relative;
+  padding: clamp(0.85rem, 1.6vw, 1.15rem) 0;
+  border-bottom: 1px solid $border;
+  transition: background 0.35s ease;
+
+  &:hover {
+    background: linear-gradient(90deg, rgba($accent, 0.08), transparent 80%);
+  }
+}
+
+.work__num {
+  font-family: $font-nav;
+  font-size: 0.75rem;
+  color: $text-muted;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.3s ease;
+}
+
+.work__row:hover .work__num {
+  color: $accent-text;
+}
+
+.work__thumb {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 10px;
+  background: $chip-bg;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.7) contrast(1.05);
+    transition: filter 0.5s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+.work__row:hover .work__thumb img {
+  filter: none;
+  transform: scale(1.06);
+}
+
+.work__main {
+  min-width: 0;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work__row:hover .work__main {
+  transform: translateX(6px);
+}
+
+.work__title {
+  margin: 0;
+  font-family: $font-display;
+  font-size: clamp(1.1rem, 1.7vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: $text;
+}
+
+// The title's link covers the whole row, so the row is one click target.
+.work__link {
+  color: inherit;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+}
+
+.work__desc {
+  margin: 0.3rem 0 0;
+  overflow: hidden;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: $text-muted;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.work__tags {
+  margin: 0;
+  font-family: $font-nav;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $text-soft;
+}
+
+.work__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: $font-nav;
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $text-muted;
+
+  i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+}
+
+.work__status--live i {
+  background: #3ddc84;
+  box-shadow: 0 0 10px rgba(61, 220, 132, 0.7);
+}
+
+.work__status--in-progress i {
+  background: $accent-2;
+}
+
+.work__end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.work__video,
+.work__arrow {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid $border;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  color: $text;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+// Sits above the row's stretched link.
+.work__video {
+  position: relative;
+  z-index: 1;
+
+  &:hover {
+    border-color: $accent;
+    background: $accent;
+    color: #140803;
+  }
+}
+
+.work__row:hover .work__arrow {
+  border-color: $accent;
+  background: $accent;
+  color: #140803;
+  transform: rotate(45deg);
+}
+
+// The floating preview, trailing the cursor over the list.
+.work__preview {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  width: clamp(16rem, 24vw, 22rem);
+  aspect-ratio: 16 / 10;
+  // Offset from the cursor so it never sits under the pointer.
+  translate: 1.75rem -50%;
+  pointer-events: none;
+}
+
+.work__preview-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+
+  img,
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 1100px) {
+  .work {
+    --work-cols: 2rem 7rem minmax(0, 1fr) 10rem 3rem;
+  }
+
+  .work__head span:nth-child(5),
+  .work__status {
+    display: none;
+  }
+}
+
+// Phones: thumbnail left, title and summary right, stack underneath.
+@media (max-width: 760px) {
+  .work__head {
+    display: none;
+  }
+
+  .work__row {
+    grid-template-columns: 5.75rem minmax(0, 1fr) auto;
+    grid-template-areas:
+      'thumb main end'
+      'thumb tags end';
+    row-gap: 0.4rem;
+  }
+
+  .work__num {
+    display: none;
+  }
+
+  .work__thumb {
+    grid-area: thumb;
+    align-self: start;
+  }
+
+  .work__main {
+    grid-area: main;
+  }
+
+  .work__tags {
+    grid-area: tags;
+    font-size: 0.62rem;
+  }
+
+  .work__end {
+    grid-area: end;
+    align-self: start;
+  }
+
+  .work__desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    font-size: 0.82rem;
+  }
+}
+
+// Holds a lazily loaded section's space until its code arrives.
+.section__placeholder {
+  min-height: 32rem;
+}
+
+// ---------------------------------------------------------------------------
+// Landing zone: the logos and the first band, right after the hero. Plain
+// dark, like the rest of the page — the flow-field vectors show through.
+// ---------------------------------------------------------------------------
+.landing {
+  position: relative;
+  padding-top: clamp(2.5rem, 7vh, 4.5rem);
+}

@@ -8,7 +8,11 @@
 }
 
 html {
+  // Native smooth scroll is the fallback for touch / reduced-motion; the
+  // lerp loop in useSmoothScroll drives the desktop feel.
   scroll-behavior: smooth;
+  // Anchored sections clear the fixed nav.
+  scroll-padding-top: 88px;
 }
 
 body {
@@ -17,8 +21,11 @@ body {
   background: $bg;
   color: $text;
   font-family: $font-sans;
-  line-height: 1.6;
+  font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  line-height: 1.65;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 #root {
@@ -39,9 +46,15 @@ button {
   color: inherit;
 }
 
+img,
+video {
+  max-width: 100%;
+}
+
 h1,
 h2,
 h3,
+h4,
 p {
   margin: 0;
 }
@@ -52,468 +65,349 @@ ul {
   list-style: none;
 }
 
-@keyframes shine-sweep {
-  0% {
-    transform: translateX(-130%) skewX(-15deg);
-  }
-  100% {
-    transform: translateX(230%) skewX(-15deg);
-  }
+:focus-visible {
+  outline: 2px solid $accent;
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
-@keyframes glow-pulse {
-  0%,
-  100% {
-    opacity: 0.55;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-@keyframes float-y {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
+::selection {
+  background: rgba($accent, 0.28);
+  color: $text;
 }
 
 // ---------------------------------------------------------------------------
-// Ambient background — a few large, heavily blurred blobs that drift slowly
-// and continuously on their own, layered under a soft, mostly-static mesh
-// wash. No pointer tracking, no grid lines, no pulsing — just a slow, calm
-// sense of motion. Both sit behind #root (z-index -1) and never intercept
-// input.
+// Page background. Two static layers only — a soft accent wash pinned near
+// the top and a fine grain. The old build animated three 90px-blurred blobs
+// forever; a large animated blur is one of the most expensive things a
+// browser can be asked to composite every frame, and it ran the whole time
+// you scrolled. Static gradients cost nothing.
 // ---------------------------------------------------------------------------
-@keyframes drift-a {
-  0% {
-    transform: translate(-8%, -6%) scale(1);
-  }
-  50% {
-    transform: translate(6%, 8%) scale(1.12);
-  }
-  100% {
-    transform: translate(-8%, -6%) scale(1);
-  }
-}
-
-@keyframes drift-b {
-  0% {
-    transform: translate(4%, -4%) scale(1.05);
-  }
-  50% {
-    transform: translate(-10%, 6%) scale(0.95);
-  }
-  100% {
-    transform: translate(4%, -4%) scale(1.05);
-  }
-}
-
-@keyframes drift-c {
-  0% {
-    transform: translate(0%, 8%) scale(0.9);
-  }
-  50% {
-    transform: translate(-6%, -10%) scale(1.08);
-  }
-  100% {
-    transform: translate(0%, 8%) scale(0.9);
-  }
-}
-
-@keyframes mesh-breathe {
-  0%,
-  100% {
-    opacity: 0.7;
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(-1.5%, 1.5%) scale(1.04);
-  }
-}
-
-.ambient-blobs {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.ambient-blob {
-  position: absolute;
-  width: 42vmax;
-  height: 42vmax;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: calc(var(--glow-opacity) * 0.16);
-  will-change: transform;
-}
-
-.ambient-blob--a {
-  top: -12%;
-  left: -8%;
-  background: radial-gradient(circle, rgba($accent, 0.55), transparent 70%);
-  animation: drift-a 26s ease-in-out infinite;
-}
-
-.ambient-blob--b {
-  bottom: -16%;
-  right: -10%;
-  width: 36vmax;
-  height: 36vmax;
-  background: radial-gradient(circle, rgba($accent-2, 0.5), transparent 70%);
-  animation: drift-b 32s ease-in-out infinite;
-}
-
-.ambient-blob--c {
-  top: 40%;
-  left: 55%;
-  width: 30vmax;
-  height: 30vmax;
-  background: radial-gradient(circle, rgba($accent, 0.35), transparent 70%);
-  animation: drift-c 38s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ambient-blob,
-  .ambient-mesh {
-    animation: none;
-  }
-}
-
-// Soft, mostly-static wash that replaces the old moving/pulsing grid —
-// two gentle radial glows top-left and top-right, breathing very slowly.
-// No grid lines, no pointer tracking.
-.ambient-mesh {
+.page-wash {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(circle at 16% 6%, rgba(255, 107, 53, 0.07), transparent 34%),
-    radial-gradient(circle at 84% 2%, rgba(255, 178, 56, 0.045), transparent 30%);
-  mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-  animation: mesh-breathe 18s ease-in-out infinite;
-  will-change: transform, opacity;
+    radial-gradient(90vw 60vh at 12% -10%, rgba($accent, 0.14), transparent 60%),
+    radial-gradient(70vw 50vh at 92% 4%, rgba($accent-2, 0.09), transparent 60%),
+    radial-gradient(60vw 40vh at 50% 108%, rgba($accent, 0.07), transparent 60%);
+  opacity: var(--glow-opacity);
 }
 
+.page-grain {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+[data-theme='light'] .page-grain {
+  opacity: 0.05;
+}
+
+// ---------------------------------------------------------------------------
+// Section rhythm — the vertical beat of the single-page scroll.
+// ---------------------------------------------------------------------------
+.layout__main {
+  position: relative;
+}
+
+.section {
+  --section-pad: clamp(5rem, 10vw, 9rem);
+
+  position: relative;
+  padding: var(--section-pad) clamp(1.15rem, 5vw, 3rem);
+  scroll-margin-top: 80px;
+}
+
+.section__inner {
+  position: relative;
+  width: min(100%, #{$max-width});
+  margin: 0 auto;
+}
+
+// A hairline between sections keeps the long scroll legible without putting
+// a box around anything.
+.section + .section .section__inner::before {
+  content: '';
+  position: absolute;
+  top: calc(clamp(5rem, 10vw, 9rem) * -0.5);
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, $border 18%, $border 82%, transparent);
+}
+
+// ---------------------------------------------------------------------------
+// Section headings
+// ---------------------------------------------------------------------------
 .section-heading {
-  margin-bottom: clamp(1.1rem, 4vw, 1.75rem);
-
-  h2 {
-    position: relative;
-    display: inline-block;
-    font-family: $font-display;
-    // Scales continuously with viewport width instead of hitting a fixed
-    // floor, so it keeps shrinking all the way down to small phones.
-    font-size: clamp(1.5rem, 6.5vw, 2.8rem);
-    font-weight: 400;
-    letter-spacing: 0.01em;
-    background: linear-gradient(90deg, $text 55%, $accent 130%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
+  margin-bottom: clamp(2.25rem, 4vw, 3.5rem);
 }
 
+.section-heading__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.7rem;
+}
+
+// The aside sits at the far end of the meta row.
+.section-heading__note {
+  margin-left: auto;
+  font-size: 0.7rem;
+  line-height: 1;
+  color: $text-muted;
+  white-space: nowrap;
+}
+
+.section-heading__index {
+  font-family: $font-nav;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: $accent-text;
+}
+
+.section-heading__kicker {
+  font-family: $font-nav;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: $text-muted;
+}
+
+// The mask is what the title slides up out of.
+.section-heading__title-mask {
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+.section-heading__title {
+  font-family: $font-display;
+  font-weight: 800;
+  font-size: clamp(2.1rem, 5.2vw, 4.1rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.section-heading__rule {
+  display: block;
+  height: 1px;
+  margin-top: clamp(1rem, 2vw, 1.6rem);
+  transform-origin: left center;
+  background: linear-gradient(90deg, $accent, rgba($accent-2, 0.5) 40%, transparent);
+}
+
+// ---------------------------------------------------------------------------
+// Shared small pieces
+// ---------------------------------------------------------------------------
 .tag-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
 
   li {
-    font-family: $font-mono;
-    font-size: clamp(0.64rem, 2.4vw, 0.72rem);
-    padding: clamp(0.25rem, 1.2vw, 0.35rem) clamp(0.5rem, 2vw, 0.65rem);
-    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
     border: 1px solid $border;
-    color: $text-muted;
+    border-radius: 999px;
     background: $chip-bg;
-    transition: border-color 0.2s ease, color 0.2s ease;
-  }
-
-  li:hover {
-    border-color: rgba($accent, 0.4);
-    color: $accent-2-text;
+    font-family: $font-nav;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: $text-soft;
   }
 }
 
-.tag-list--wrap li {
-  font-size: clamp(0.7rem, 2.6vw, 0.78rem);
+.section-lead {
+  max-width: 62ch;
+  margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+  color: $text-soft;
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.15rem);
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: clamp(0.6rem, 2.4vw, 0.85rem) clamp(0.85rem, 3.2vw, 1.2rem);
-  border-radius: 10px;
-  font-size: clamp(0.82rem, 3vw, 1rem);
+  gap: 0.4rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid $border;
+  font-family: $font-nav;
+  font-size: 0.82rem;
   font-weight: 600;
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  letter-spacing: 0.06em;
+  color: $text;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s ease,
+    border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn:hover {
   transform: translateY(-2px);
 }
 
-.btn--primary {
-  position: relative;
-  overflow: hidden;
-  background: $gradient-accent;
-  color: $accent-ink;
-  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.28);
+.btn--ghost:hover {
+  border-color: rgba($accent, 0.6);
+  color: $accent-text;
 }
 
+.btn--primary {
+  padding: 0.32rem 0.32rem 0.32rem 1.15rem;
+  background: $accent;
+  border-color: transparent;
+  color: #fff;
+  gap: 0.55rem;
+}
+
+// Circular arrow badge on the trailing edge, matching the nav CTA.
 .btn--primary::after {
   content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-  transform: translateX(-130%) skewX(-15deg);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f2571d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h13M12 5l7 7-7 7'/%3E%3C/svg%3E");
+  background-size: 15px 15px;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .btn--primary:hover {
-  box-shadow: 0 14px 34px rgba(255, 107, 53, 0.42);
+  box-shadow: $shadow-glow;
 }
 
 .btn--primary:hover::after {
-  animation: shine-sweep 0.85s ease forwards;
+  transform: translateX(2px);
 }
-
-.btn--ghost {
-  border: 1px solid $border;
-  background: $chip-bg;
-}
-
-.btn--ghost:hover {
-  border-color: rgba($accent, 0.5);
-  background: $accent-soft;
-  box-shadow: 0 0 24px rgba(255, 107, 53, 0.16);
-}
-
-.hero__eyebrow {
-  font-family: $font-mono;
-  font-size: clamp(0.7rem, 2.6vw, 0.85rem);
-  color: $accent-2-text;
-  margin-bottom: 0.75rem;
-}
-
-.hero__role {
-  margin-top: 0.5rem;
-  color: $accent-text;
-  font-weight: 400;
-}
-
-.hero__role-line {
-  display: inline-block;
-  font-size: clamp(0.95rem, 3.6vw, 1.2rem);
-  line-height: 1.4;
-
-  strong {
-    font-weight: 700;
-  }
-}
-
-.hero__role-line--edu {
-  font-size: clamp(0.82rem, 3vw, 1rem);
-}
-
-.hero__tagline {
-  margin-top: 0.85rem;
-  color: $text-muted;
-  font-size: clamp(0.8rem, 3vw, 1rem);
-  max-width: 34rem;
-}
-
-.hero__location {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.6rem;
-  font-family: $font-nav;
-  font-size: clamp(0.72rem, 2.6vw, 0.85rem);
-  color: $text-muted;
-}
-
-.hero__bio {
-  margin-top: 1.1rem;
-  color: $text-muted;
-  font-size: clamp(0.76rem, 2.6vw, 0.92rem);
-  line-height: 1.7;
-  max-width: none;
-  text-align: justify;
-  text-align-last: left; // keep the final line ragged instead of stretched
-  hyphens: none;
-}
-
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
-}
-
-@media (max-width: 600px) {
-  .hero__actions {
-    flex-wrap: nowrap;
-    gap: 0.4rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .hero__actions::-webkit-scrollbar {
-    display: none;
-  }
-
-  .hero__actions .btn {
-    flex: 0 0 auto;
-    padding: 0.42rem 0.6rem;
-    font-size: 0.66rem;
-    white-space: nowrap;
-  }
-}
-
 
 // ---------------------------------------------------------------------------
-// Loading screen — shown on first boot. Minimal robotics/HUD styling: a
-// small terminal block that prints boot lines one at a time (nods to the
-// robotics/autonomy content without being literal), a monospace wordmark
-// with a blinking cursor, and a percentage readout synced to the progress
-// bar. Fully theme-aware via CSS custom props, so it looks right whether
-// dark or light mode was last saved.
+// Loading curtain
 // ---------------------------------------------------------------------------
-$loading-mono: ui-monospace, 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
-
-@keyframes loading-cursor-blink {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
-}
-
-.loading-screen {
+.loader {
   position: fixed;
   inset: 0;
   z-index: 200;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.4rem;
+  align-items: flex-end;
+  padding: clamp(1.5rem, 5vw, 4rem);
   background: $bg;
-  overflow: hidden;
+  will-change: clip-path;
 }
 
-.loading-screen__mark {
+.loader::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60vw 60vh at 20% 90%, rgba($accent, 0.16), transparent 65%);
+  pointer-events: none;
+}
+
+.loader__inner {
   position: relative;
+  width: 100%;
+}
+
+.loader__name {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
+  font-family: $font-nav;
+  font-size: clamp(0.7rem, 1.6vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  color: $text-soft;
+  margin-bottom: clamp(1.5rem, 5vh, 3rem);
+}
+
+.loader__glyph {
+  display: inline-block;
+  overflow: hidden;
+  white-space: pre;
+
+  > span {
+    display: inline-block;
+    white-space: pre;
+  }
+}
+
+.loader__row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
   gap: 1rem;
 }
 
-// Small boot log: each line is a separate element, animated in with a
-// staggered fade + rise (see terminalVariants/terminalLineVariants in
-// LoadingScreen.jsx), so they read as printing one after another.
-.loading-screen__terminal {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.3rem;
-  width: fit-content;
-  margin: 0 auto;
-}
-
-.loading-screen__terminal-line {
-  font-family: $loading-mono;
-  font-size: 0.72rem;
-  letter-spacing: 0.01em;
-  color: $text-muted;
-  white-space: nowrap;
-}
-
-.loading-screen__word {
-  font-family: $font-sans;
-  font-size: clamp(1.4rem, 5vw, 2rem);
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  text-transform: lowercase;
-  background: $gradient-accent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.loading-screen__cursor {
-  display: inline-block;
-  margin-left: 0.06em;
-  color: $accent;
-  -webkit-text-fill-color: $accent;
-  animation: loading-cursor-blink 1s step-end infinite;
-}
-
-.loading-screen__status {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.loading-screen__bar {
+.loader__words {
   position: relative;
-  width: 140px;
-  height: 3px;
-  border-radius: 999px;
-  background: $chip-bg;
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 4.5vw, 2.6rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: $accent-text;
+
+  > span {
+    display: block;
+  }
+}
+
+.loader__count {
+  font-family: $font-display;
+  font-weight: 800;
+  font-size: clamp(4.5rem, 22vw, 15rem);
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: $text;
+  font-variant-numeric: tabular-nums;
+}
+
+.loader__rule {
+  margin-top: clamp(1rem, 2.5vh, 1.75rem);
+  height: 1px;
+  background: $border;
   overflow: hidden;
 }
 
-.loading-screen__bar-fill {
+.loader__rule-fill {
   display: block;
   height: 100%;
-  width: 100%;
   transform-origin: left center;
-  border-radius: inherit;
   background: $gradient-accent;
+  transition: transform 0.12s linear;
 }
 
-.loading-screen__percent {
-  font-family: $loading-mono;
-  font-size: 0.72rem;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
-  color: $text-muted;
-  min-width: 3.4em;
-}
+// ---------------------------------------------------------------------------
+// Reduced motion — strip every non-essential movement site-wide. Driven by
+// data-motion (lib/motionPreference.js), which is currently always "on".
+// ---------------------------------------------------------------------------
+html[data-motion='off'] {
+  scroll-behavior: auto;
 
-.loading-screen__label {
-  font-family: $loading-mono;
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  color: $text-muted;
-  text-align: center;
-}
-
-.loading-screen__prompt {
-  color: $accent;
-  margin-right: 0.35em;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .loading-screen__cursor {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Flow-field background canvas (FlowField.jsx). Sits with the other fixed
+// background layers, behind all content, and never takes pointer input —
+// the component listens on window instead.
+// ---------------------------------------------------------------------------
+.flow-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+

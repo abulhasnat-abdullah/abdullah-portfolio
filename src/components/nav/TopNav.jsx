@@ -1,9 +1,17 @@
 // Target path: src/components/nav/TopNav.jsx
-import { useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
+// Deliberately minimal: a brand mark with an availability pill on the left
+// and a single Menu control on the right, matching the reference layouts.
+//
+// The inline link strip is gone. Ten labels crowded the bar, clipped below
+// 1440px, and fought the front page for attention — every section is still
+// one click away in the full-screen overlay, and the side rail tracks
+// position while scrolling.
+import { useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { profile } from '../../data/portfolio'
 import { useNavigation } from '../../context/NavigationContext'
 import { useTheme } from '../../context/ThemeContext'
+import { EASE } from '../../lib/motion'
 
 function SunIcon() {
   return (
@@ -23,96 +31,116 @@ function MoonIcon() {
 }
 
 export default function TopNav() {
-  const { sections, activeSectionId, navigateToSection } = useNavigation()
+  const { sections, atTop, scrollToSection, scrollToTop } = useNavigation()
   const { theme, toggleTheme } = useTheme()
-  const pillsRef = useRef(null)
-  const activePillRef = useRef(null)
+  const [menuOpen, setMenuOpen] = useState(false)
 
-  // Whenever the active section changes (via clicking a pill, edge-scroll
-  // navigation, or the URL hash on load), make sure its pill is fully
-  // visible inside the horizontally-scrollable pill strip instead of
-  // sitting clipped at the edge.
+  // The overlay owns the scroll while it's open.
   useEffect(() => {
-    const pillEl = activePillRef.current
-    const containerEl = pillsRef.current
-    if (!pillEl || !containerEl) return
-
-    const containerRect = containerEl.getBoundingClientRect()
-    const pillRect = pillEl.getBoundingClientRect()
-    const isFullyVisible =
-      pillRect.left >= containerRect.left && pillRect.right <= containerRect.right
-
-    if (!isFullyVisible) {
-      pillEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
     }
-  }, [activeSectionId])
+  }, [menuOpen])
+
+  useEffect(() => {
+    const onKey = (e) => e.key === 'Escape' && setMenuOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  const go = (id) => {
+    setMenuOpen(false)
+    // Let the overlay finish closing before the scroll starts.
+    window.setTimeout(() => scrollToSection(id), menuOpen ? 220 : 0)
+  }
 
   return (
-    <motion.header
-      className="topnav"
-      initial={{ opacity: 0, y: -14 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <motion.button
-        type="button"
-        className="topnav__brand"
-        onClick={() => navigateToSection('about')}
-        whileHover={{ scale: 1.04 }}
-        whileTap={{ scale: 0.96 }}
+    <>
+      <motion.header
+        className={`topnav ${atTop ? 'topnav--top' : 'topnav--stuck'}`}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
       >
-        <img className="topnav__avatar" src={profile.photo} alt={profile.name} />
-        <span className="topnav__brand-text">{profile.shortName}</span>
-      </motion.button>
+        <div className="topnav__lead">
+          <button type="button" className="topnav__brand" onClick={scrollToTop}>
+            <span className="topnav__brand-mark">{profile.shortName}</span>
+            <span className="topnav__brand-reg">&reg;</span>
+          </button>
+          <span className="topnav__status">
+            <span className="topnav__status-dot" aria-hidden="true" />
+            Available
+          </span>
+        </div>
 
-      <nav className="topnav__pills" aria-label="Sections" ref={pillsRef}>
-        {sections.map((section) => {
-          const isActive = activeSectionId === section.id
-          return (
-            <motion.button
-              key={section.id}
-              type="button"
-              ref={isActive ? activePillRef : null}
-              className={`topnav__pill ${isActive ? 'topnav__pill--active' : ''}`}
-              onClick={() => navigateToSection(section.id)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {isActive && (
-                <motion.span
-                  layoutId="topnav-indicator"
-                  className="topnav__pill-bg"
-                  transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-                />
-              )}
-              <span className="topnav__pill-label">{section.label}</span>
-            </motion.button>
-          )
-        })}
-      </nav>
+        <div className="topnav__actions">
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={theme}
+                initial={{ opacity: 0, rotate: -60, scale: 0.6 }}
+                animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                exit={{ opacity: 0, rotate: 60, scale: 0.6 }}
+                transition={{ duration: 0.28, ease: EASE }}
+              >
+                {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+              </motion.span>
+            </AnimatePresence>
+          </button>
 
-      <div className="topnav__actions">
-        <motion.button
-          type="button"
-          className="theme-toggle"
-          onClick={toggleTheme}
-          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          whileHover={{ scale: 1.08, rotate: 8 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-        </motion.button>
+          <a className="topnav__cta" href={profile.links.email}>
+            Let&rsquo;s Talk
+          </a>
 
-        <motion.a
-          className="topnav__cta"
-          href={profile.links.email}
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.96 }}
-        >
-          Let&rsquo;s Talk
-        </motion.a>
-      </div>
-    </motion.header>
+          <button
+            type="button"
+            className={`topnav__menu ${menuOpen ? 'topnav__menu--open' : ''}`}
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+          >
+            <span className="topnav__menu-label">{menuOpen ? 'Close' : 'Menu'}</span>
+            <span className="topnav__menu-bars" aria-hidden="true">
+              <span />
+              <span />
+            </span>
+          </button>
+        </div>
+      </motion.header>
+
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            className="nav-overlay"
+            initial={{ clipPath: 'inset(0 0 100% 0)' }}
+            animate={{ clipPath: 'inset(0 0 0% 0)' }}
+            exit={{ clipPath: 'inset(0 0 100% 0)' }}
+            transition={{ duration: 0.5, ease: EASE }}
+          >
+            <ul className="nav-overlay__list">
+              {sections.map((section, i) => (
+                <motion.li
+                  key={section.id}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.12 + i * 0.04, ease: EASE }}
+                >
+                  <button type="button" onClick={() => go(section.id)}>
+                    <span className="nav-overlay__index">{String(i + 1).padStart(2, '0')}</span>
+                    {section.label}
+                  </button>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
