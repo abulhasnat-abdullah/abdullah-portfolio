@@ -147,11 +147,16 @@ function WaveLetter({ char, index, count, progress, wave }) {
 // couple of pulses travelling along it. Drawn from the items' measured
 // layout positions (offsetTop ignores the entrance transforms), so it stays
 // aligned at any size. The hovered item's node lights up.
-function SideNetwork({ containerRef, active, reduced }) {
+function SideNetwork({ active, reduced }) {
   const [geo, setGeo] = useState(null)
+  // A hidden marker inside the column: its parent is the column. Read through
+  // the marker because a ref on the column itself is only attached after
+  // this component's layout effect has run (in production builds, where
+  // effects run once, that left the network never drawn).
+  const markerRef = useRef(null)
 
   useLayoutEffect(() => {
-    const el = containerRef.current
+    const el = markerRef.current?.parentElement
     if (!el) return undefined
     const measure = () => {
       const items = [...el.querySelectorAll('.hero__side')]
@@ -177,10 +182,13 @@ function SideNetwork({ containerRef, active, reduced }) {
     measure()
     const observer = new ResizeObserver(measure)
     observer.observe(el)
+    // The display font arrives after first paint and can change line breaks.
+    document.fonts?.ready.then(measure)
     return () => observer.disconnect()
-  }, [containerRef])
+  }, [])
 
-  if (!geo) return null
+  const marker = <span ref={markerRef} hidden />
+  if (!geo) return marker
 
   const { w, h, x, span, ys } = geo
   const r = span * 0.42
@@ -208,7 +216,9 @@ function SideNetwork({ containerRef, active, reduced }) {
   const routeD = route.map(([px, py], i) => `${i ? 'L' : 'M'}${px.toFixed(1)} ${py.toFixed(1)}`).join(' ')
 
   return (
-    <svg className="hero__net" viewBox={`0 0 ${w} ${h}`} width={w} height={h} aria-hidden="true">
+    <>
+      {marker}
+      <svg className="hero__net" viewBox={`0 0 ${w} ${h}`} width={w} height={h} aria-hidden="true">
       <g className="hero__net-edges">
         {edges.map(([[x1, y1], [x2, y2]], i) => (
           <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} />
@@ -230,6 +240,7 @@ function SideNetwork({ containerRef, active, reduced }) {
         </g>
       ))}
     </svg>
+    </>
   )
 }
 
@@ -255,7 +266,6 @@ export default function Hero() {
   const lineRef = useRef(null)
   const nameBoxRef = useRef(null)
   const cardRef = useRef(null)
-  const factsRef = useRef(null)
   const [activeSide, setActiveSide] = useState(null)
   const reduced = useReducedMotion()
   const { introReady } = useIntro()
@@ -434,8 +444,8 @@ export default function Hero() {
           </motion.figure>
 
           {/* ------------------------------------------------ right: facts */}
-          <dl className="hero__facts" ref={factsRef} onPointerLeave={() => setActiveSide(null)}>
-            <SideNetwork containerRef={factsRef} active={activeSide} reduced={reduced} />
+          <dl className="hero__facts" onPointerLeave={() => setActiveSide(null)}>
+            <SideNetwork active={activeSide} reduced={reduced} />
             {SIDE.map((item, i) => (
               <motion.div
                 className="hero__side"
