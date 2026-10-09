@@ -1,6 +1,7 @@
 // Target path: src/components/sections/Projects.jsx
 // Projects as an index: one row per project — number, thumbnail, title with
-// a one-line summary, stack, status — so the whole body of work reads at a
+// a one-line summary (and a small tag on team work), stack, status — so the
+// whole body of work reads at a
 // glance. On a hovering pointer a large preview follows the cursor over the
 // list (the video plays where there is one); touch screens rely on the
 // thumbnail in each row.
@@ -17,6 +18,9 @@ const STATUS = {
 }
 
 const pad = (n) => String(n).padStart(2, '0')
+
+// Small tag on rows that were done as part of a team.
+const TEAMS = { interplanetar: 'Team Interplanetar' }
 
 // The preview only makes sense where there is a pointer to follow.
 function useHoverPointer() {
@@ -59,6 +63,7 @@ function Row({ project, index, onActivate }) {
 
       <div className="work__main">
         <h3 className="work__title">{title}</h3>
+        {project.team && <span className="work__team">{TEAMS[project.team] ?? project.team}</span>}
         <p className="work__desc">{project.description}</p>
       </div>
 

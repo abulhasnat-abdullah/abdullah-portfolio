@@ -1,0 +1,563 @@
+// Target path: src/styles/_featured.scss
+@use 'variables' as *;
+
+// ---------------------------------------------------------------------------
+// Highlighted projects — compact case studies (FeaturedProjects.jsx).
+//
+// Everything sits on theme tokens, so it follows light and dark mode; the
+// only fixed colours are the orange glow behind the vehicle (the accent,
+// matching the portrait card in the hero) and the film's dark backdrop.
+// All blocks share one 12-column grid and one gap.
+// ---------------------------------------------------------------------------
+.featured {
+  display: grid;
+  gap: clamp(4rem, 8vw, 6rem);
+}
+
+.case {
+  --case-gap: clamp(1rem, 2vw, 1.5rem);
+  --case-radius: clamp(14px, 1.6vw, 20px);
+
+  display: grid;
+  gap: var(--case-gap);
+}
+
+// ---------------------------------------------------------------------------
+// Intro: text on the left (1–6), the vehicle on its orange glow (7–12).
+// ---------------------------------------------------------------------------
+.case__intro {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--case-gap);
+  align-items: center;
+  margin-bottom: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.case__intro-text {
+  grid-column: 1 / span 6;
+}
+
+.case__name {
+  margin: 0;
+  font-family: $font-hero-name;
+  font-size: clamp(3.5rem, 9vw, 7rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  // The same ink as the hero name: see-through orange at the top, solid at
+  // the foot.
+  background: linear-gradient(to bottom, rgba(255, 107, 53, 0.6) 0%, $text 75%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.case__title {
+  margin-top: 1rem;
+  font-family: $font-display;
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: $text;
+}
+
+.case__summary {
+  margin-top: 0.9rem;
+  font-family: $font-sans;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: $text-soft;
+}
+
+.case__meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--case-gap);
+  margin: 1.5rem 0 0;
+
+  div {
+    padding-top: 0.6rem;
+    border-top: 1px solid $border;
+  }
+
+  dt {
+    font-family: $font-nav;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $text-muted;
+  }
+
+  dd {
+    margin: 0.3rem 0 0;
+    font-family: $font-sans;
+    font-size: 0.86rem;
+    line-height: 1.4;
+    color: $text;
+  }
+}
+
+.case__links {
+  margin-top: 1.5rem;
+}
+
+.case__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: $accent;
+  color: #140803;
+  font-family: $font-nav;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 0.3s ease, transform 0.3s ease;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    background: #ff7d4d;
+    transform: translateY(-1px);
+  }
+}
+
+.case__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 0.3rem 0.65rem;
+    border: 1px solid $border;
+    border-radius: 999px;
+    background: $chip-bg;
+    font-family: $font-nav;
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    color: $text-soft;
+  }
+}
+
+.case__hero {
+  grid-column: 7 / span 6;
+  position: relative;
+  aspect-ratio: 5 / 4;
+  border-radius: var(--case-radius);
+  overflow: hidden;
+  background:
+    radial-gradient(60% 55% at 50% 45%, #ffe1c8 0%, #ffb27f 30%, rgba(255, 140, 80, 0) 72%),
+    linear-gradient(to bottom, #ff9a5c 0%, #f26a2e 50%, #5e1f07 100%);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25);
+
+  img {
+    position: absolute;
+    inset: 6% 4%;
+    width: 92%;
+    height: 88%;
+    object-fit: contain;
+    filter: drop-shadow(0 24px 30px rgba(40, 10, 0, 0.45));
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Shared tile
+// ---------------------------------------------------------------------------
+%case-tile {
+  border: 1px solid $border;
+  border-radius: var(--case-radius);
+  background: $bg-card;
+}
+
+// Headline figures: four across.
+.case__metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--case-gap);
+}
+
+.case__metric {
+  @extend %case-tile;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: clamp(0.9rem, 1.4vw, 1.2rem);
+
+  strong {
+    font-family: $font-hero-name;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: $accent-text;
+  }
+
+  span {
+    font-family: $font-sans;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: $text-soft;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Film (1–7) beside the two missions (8–12).
+// ---------------------------------------------------------------------------
+.case__body {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--case-gap);
+  align-items: stretch;
+}
+
+.case__body-film {
+  grid-column: 1 / span 7;
+}
+
+.case__missions {
+  grid-column: 8 / span 5;
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: var(--case-gap);
+}
+
+.case__film {
+  position: relative;
+  height: 100%;
+  min-height: 16rem;
+  border-radius: var(--case-radius);
+  overflow: hidden;
+  background: #0b0908;
+
+  iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+}
+
+.case__film-poster {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.82);
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.03);
+    filter: brightness(0.92);
+  }
+}
+
+.case__film-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: clamp(3.75rem, 7vw, 5.5rem);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: $accent;
+  box-shadow: 0 18px 50px rgba(255, 107, 53, 0.45);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+  svg {
+    width: 40%;
+    fill: #140803;
+    translate: 6% 0;
+  }
+}
+
+.case__film-poster:hover .case__film-play {
+  transform: scale(1.08);
+}
+
+.case__film-label {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  font-family: $font-nav;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+// A mission: image on the left, two lines on the right.
+.case__mission {
+  @extend %case-tile;
+
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  padding: 0.75rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    min-height: 8rem;
+    object-fit: cover;
+    border-radius: calc(var(--case-radius) - 6px);
+  }
+
+  h5 {
+    margin: 0.3rem 0 0;
+    font-family: $font-display;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: $text;
+  }
+
+  p:not(.case__mission-tag) {
+    margin-top: 0.4rem;
+    font-family: $font-sans;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: $text-soft;
+  }
+}
+
+.case__mission-tag {
+  font-family: $font-nav;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $accent-text;
+}
+
+// ---------------------------------------------------------------------------
+// Key ideas: four across.
+// ---------------------------------------------------------------------------
+.case__ideas {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--case-gap);
+}
+
+.case__idea {
+  @extend %case-tile;
+
+  padding: clamp(0.9rem, 1.4vw, 1.2rem);
+
+  h5 {
+    margin: 0.5rem 0 0;
+    font-family: $font-display;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: $text;
+  }
+
+  p {
+    margin-top: 0.45rem;
+    font-family: $font-sans;
+    font-size: 0.84rem;
+    line-height: 1.55;
+    color: $text-soft;
+  }
+}
+
+.case__idea-num {
+  font-family: $font-nav;
+  font-size: 0.68rem;
+  color: $accent-text;
+}
+
+// ---------------------------------------------------------------------------
+// Photo strip: four across, same crop.
+// ---------------------------------------------------------------------------
+.case__strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--case-gap);
+}
+
+.case__shot {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid $border;
+  border-radius: var(--case-radius);
+  background: $bg-elevated;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  figcaption {
+    position: absolute;
+    left: 0.6rem;
+    bottom: 0.6rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    font-family: $font-nav;
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  &:hover img {
+    transform: scale(1.04);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Responsive
+// ---------------------------------------------------------------------------
+@media (max-width: 1000px) {
+  .case__metrics,
+  .case__ideas,
+  .case__strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .case__body-film,
+  .case__missions {
+    grid-column: 1 / -1;
+  }
+
+  .case__film {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+
+  .case__missions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .case__intro-text,
+  .case__hero {
+    grid-column: 1 / -1;
+  }
+
+  .case__hero {
+    grid-row: 1;
+  }
+
+  .case__missions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// Phones: tighter everything — figures two across, missions as compact
+// rows, photos two across.
+@media (max-width: 600px) {
+  .case {
+    --case-gap: 0.6rem;
+  }
+
+  .case__hero {
+    aspect-ratio: 16 / 11;
+  }
+
+  .case__summary {
+    font-size: 0.92rem;
+  }
+
+  .case__tags {
+    display: none;
+  }
+
+  .case__metric {
+    padding: 0.75rem;
+
+    strong {
+      font-size: 1.6rem;
+    }
+
+    span {
+      font-size: 0.74rem;
+    }
+  }
+
+  .case__mission {
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.5rem;
+
+    img {
+      min-height: 5.5rem;
+    }
+
+    h5 {
+      font-size: 0.92rem;
+    }
+
+    p:not(.case__mission-tag) {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      font-size: 0.76rem;
+    }
+  }
+
+  .case__ideas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .case__idea {
+    padding: 0.75rem;
+
+    h5 {
+      font-size: 0.85rem;
+    }
+
+    p {
+      font-size: 0.74rem;
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .case__meta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

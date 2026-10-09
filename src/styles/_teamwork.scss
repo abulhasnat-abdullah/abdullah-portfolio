@@ -1,0 +1,474 @@
+// Target path: src/styles/_teamwork.scss
+@use 'variables' as *;
+
+// ---------------------------------------------------------------------------
+// Teamwork — Team Interplanetar (Teamwork.jsx).
+//
+// Same language as the highlighted case study: theme tokens, one gap, one
+// radius, orange only as the accent. Every image row is uniform: same
+// aspect ratio, same radius, same caption pill.
+// ---------------------------------------------------------------------------
+.team {
+  --team-gap: clamp(0.85rem, 1.6vw, 1.25rem);
+  --team-radius: clamp(12px, 1.4vw, 18px);
+
+  display: grid;
+  gap: var(--team-gap);
+}
+
+.team__label {
+  display: block;
+  font-family: $font-nav;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $text-muted;
+}
+
+// ---------------------------------------------------------------------------
+// Intro: text on 1–7, the rover photo on 8–12, same height.
+// ---------------------------------------------------------------------------
+.team__intro {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--team-gap);
+  align-items: stretch;
+}
+
+.team__intro-text {
+  grid-column: 1 / span 7;
+  padding-right: clamp(0rem, 2vw, 1.5rem);
+}
+
+.team__head {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.team__logo {
+  width: clamp(2.75rem, 4.5vw, 3.5rem);
+  aspect-ratio: 1;
+  border: 1px solid $border;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.team__name {
+  margin: 0;
+  font-family: $font-hero-name;
+  font-size: clamp(2rem, 4.4vw, 3.4rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  background: linear-gradient(to bottom, rgba(255, 107, 53, 0.6) 0%, $text 75%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.team__tagline {
+  margin-top: 0.3rem;
+  font-family: $font-nav;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $text-muted;
+}
+
+.team__role-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.1rem;
+  margin-top: 1.2rem;
+}
+
+.team__role {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: $accent;
+  color: #140803;
+  font-family: $font-nav;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.team__site {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid $border;
+  font-family: $font-nav;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $text;
+  transition: border-color 0.3s ease, color 0.3s ease;
+
+  svg {
+    width: 13px;
+    height: 13px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    border-color: $accent;
+    color: $accent-text;
+  }
+}
+
+.team__summary {
+  margin-top: 0.9rem;
+  font-family: $font-sans;
+  font-size: clamp(0.98rem, 1.15vw, 1.08rem);
+  line-height: 1.6;
+  color: $text-soft;
+}
+
+.team__chips {
+  margin-top: 1.1rem;
+}
+
+.team__chips-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 0.3rem 0.7rem;
+    border: 1px solid $border;
+    border-radius: 999px;
+    background: $chip-bg;
+    font-family: $font-sans;
+    font-size: 0.8rem;
+    color: $text-soft;
+  }
+
+  &--strong li {
+    border-color: rgba($accent, 0.45);
+    background: none;
+    font-weight: 500;
+    color: $text;
+  }
+}
+
+// The role timeline: a thin rail with a dot per role, newest last.
+.team__timeline {
+  display: grid;
+  gap: 0.55rem;
+  margin: 1.3rem 0 0;
+  padding: 0 0 0 1rem;
+  border-left: 1px solid $border;
+  list-style: none;
+
+  li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.1rem 0.75rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: calc(-1rem - 4px);
+      top: 0.45rem;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: $border;
+    }
+
+    &:last-child::before {
+      background: $accent;
+      box-shadow: 0 0 0 4px rgba($accent, 0.2);
+    }
+  }
+}
+
+.team__timeline-period {
+  font-family: $font-nav;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  color: $text-muted;
+}
+
+.team__timeline-title {
+  font-family: $font-sans;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  color: $text;
+}
+
+.team__photo {
+  grid-column: 8 / span 5;
+  min-height: 22rem;
+  overflow: hidden;
+  border-radius: var(--team-radius);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 60%;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Photos: one row of four, all 4:3.
+// ---------------------------------------------------------------------------
+.team__row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--team-gap);
+}
+
+.team__shot {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid $border;
+  border-radius: var(--team-radius);
+  background: #0b0b0a;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  figcaption {
+    position: absolute;
+    left: 0.55rem;
+    bottom: 0.55rem;
+    padding: 0.28rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    font-family: $font-nav;
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  &:hover img {
+    transform: scale(1.04);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Team projects: four across.
+// ---------------------------------------------------------------------------
+.team__projects-block {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 0.5rem;
+}
+
+.team__projects {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--team-gap);
+
+  > * {
+    display: flex;
+  }
+}
+
+.team__project {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid $border;
+  border-radius: var(--team-radius);
+  background: $bg-card;
+  color: inherit;
+  transition: border-color 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+  &--link:hover {
+    border-color: rgba($accent, 0.5);
+    transform: translateY(-3px);
+  }
+}
+
+.team__project-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: $bg-elevated;
+
+  > img,
+  > video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Extra images for a project, as small thumbnails in the corner.
+.team__project-thumbs {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  display: flex;
+  gap: 0.35rem;
+
+  img {
+    width: 3.4rem;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  }
+}
+
+.team__project-body {
+  display: grid;
+  gap: 0.45rem;
+  align-content: start;
+  padding: 0.7rem 0.8rem 0.85rem;
+
+  strong {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.4rem;
+    font-family: $font-display;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: $text;
+  }
+
+  svg {
+    flex: none;
+    width: 13px;
+    height: 13px;
+    margin-top: 0.1rem;
+    fill: none;
+    stroke: $accent;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.team__project-desc {
+  font-family: $font-sans;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: $text-soft;
+}
+
+.team__status {
+  justify-self: start;
+  font-family: $font-nav;
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $text-muted;
+
+  &--live,
+  &--in-progress {
+    color: $accent-text;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Responsive
+// ---------------------------------------------------------------------------
+@media (max-width: 1000px) {
+  .team__projects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .team__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .team__intro-text,
+  .team__photo {
+    grid-column: 1 / -1;
+  }
+
+  .team__intro-text {
+    padding-right: 0;
+  }
+
+  .team__photo {
+    grid-row: 1;
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+
+  .team__timeline li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// Phones: each project becomes a compact row — a small thumbnail beside
+// the title and a two-line description.
+@media (max-width: 600px) {
+  .team__projects {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.6rem;
+  }
+
+  .team__project {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .team__project-media {
+    flex: none;
+    width: 6.5rem;
+    aspect-ratio: auto;
+    min-height: 5.5rem;
+  }
+
+  .team__project-thumbs {
+    display: none;
+  }
+
+  .team__project-body {
+    gap: 0.25rem;
+    padding: 0.6rem 0.75rem;
+
+    strong {
+      font-size: 0.85rem;
+    }
+  }
+
+  .team__project-desc {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 0.76rem;
+  }
+
+  .team__row {
+    gap: 0.6rem;
+  }
+}

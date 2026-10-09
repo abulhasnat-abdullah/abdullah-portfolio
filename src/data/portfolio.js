@@ -39,7 +39,9 @@ export const sections = [
   { id: 'dashboard', label: 'Dashboard', title: 'At a Glance', kicker: 'Live numbers', note: 'updated as you read' },
   { id: 'education', label: 'Education', title: 'Education', kicker: 'Where I studied', note: 'still learning' },
   { id: 'experience', label: 'Experience', title: 'Experience & Activities', kicker: 'Where I work', note: 'the teams I build with' },
-  { navPrimary: true, id: 'projects', label: 'Projects', title: 'Selected Projects', kicker: 'What I build', note: 'hover a row to peek' },
+  { navPrimary: true, id: 'teamwork', label: 'Teamwork', title: 'Teamwork', kicker: 'Mars rover team', note: 'built together' },
+  { navPrimary: true, id: 'featured', label: 'Highlights', title: 'Highlighted Projects', kicker: 'Case study', note: 'the long version' },
+  { navPrimary: true, id: 'projects', label: 'Projects', title: 'Projects', kicker: 'What I build', note: 'hover a row to peek' },
   { navPrimary: true, id: 'art-design', label: 'Art & Design', title: 'Art & Design', kicker: 'The other half', note: 'painted by hand' },
   { navPrimary: true, id: 'skills', label: 'Skills', title: 'Technical Stack', kicker: 'What I use', note: 'daily drivers' },
   { id: 'research', label: 'Research', title: 'Research Interests', kicker: 'What I explore', note: 'favourite rabbit holes' },
@@ -334,9 +336,13 @@ export const creativePortfolios = [
   },
 ]
 
+// `team: 'interplanetar'` marks work done in Team Interplanetar: it is
+// listed in Projects with a small team tag, and also in the Teamwork
+// section.
 export const projects = [
   {
     id: '01',
+    team: 'interplanetar',
     title: 'Autonmous Navigation Stack for Mars Rover',
     status: 'live',
     href: 'https://github.com/abulhasnat-abdullah/interplanetar_mars_rover',
@@ -345,6 +351,18 @@ export const projects = [
     description:
       'Full autonomy stack — SLAM, Nav2 waypoint nav, ROS2 architecture, and Gazebo digital twin for a competition-grade Mars rover.',
     tags: ['ROS2', 'Nav2', 'SLAM', 'Gazebo', 'C++'],
+  },
+  {
+    id: '17',
+    team: 'interplanetar',
+    title: 'Rover Robotic Arm — URDF, Control GUI & MoveIt 2 IK',
+    status: 'in-progress',
+    href: 'https://github.com/abulhasnat-abdullah/rover_arm_urdf',
+    image: '/images/projects/rover-arm.webp',
+    gallery: ['/images/projects/rover-arm-cad.webp', '/images/projects/rover-arm-urdf.webp'],
+    description:
+      'Six-joint rover arm taken from CAD to a URDF, with a control GUI for the operators and inverse kinematics through a MoveIt 2 setup.',
+    tags: ['ROS2', 'URDF', 'MoveIt 2', 'Inverse Kinematics', 'GUI'],
   },
   {
     id: '02',
@@ -358,16 +376,39 @@ export const projects = [
   },
   {
     id: '03',
-    title: 'Autonomous GPS-Denied Tunnel Inspection Drone',
-    status: 'in-progress',
+    title: 'VENTRA — Autonomous UAV for Indoor Exploration & Tunnel Inspection',
+    status: 'completed',
+    href: 'https://github.com/abulhasnat-abdullah/Indoor_drone_project',
     image: '/images/projects/gps-denied-tunnel-inspection-drone.webp',
     video: '/images/projects/gps-denied-tunnel-inspection-drone.mp4',
     description:
-      'Autonomous inspection drone for GPS-denied tunnels — SLAM-based localization and obstacle-aware navigation for underground infrastructure inspection.',
-    tags: ['ROS2', 'SLAM', 'Drones', 'GPS-Denied Navigation'],
+      'LiDAR-anchored quadrotor for GPS-denied indoor exploration and shaft inspection — PX4 + ROS 2, SLAM pose fed back to EKF2, frontier exploration and a SLAM-free shaft mode. Full case study in Highlighted Projects.',
+    tags: ['PX4', 'ROS2', 'SLAM', 'Nav2', 'GPS-Denied Navigation'],
+  },
+  {
+    id: '16',
+    team: 'interplanetar',
+    title: 'FastDEM Terrain Mapping & Nav2 Traversability Costmap Plugin',
+    status: 'completed',
+    href: 'https://github.com/abulhasnat-abdullah/nav2_traversability_layer',
+    image: '/images/projects/fastdem-traversability.webp',
+    description:
+      'FastDEM elevation mapping on the rover, and a Nav2 costmap plugin I wrote that turns its slope, step and roughness layers into traversability costs.',
+    tags: ['ROS2', 'Nav2', 'Costmap Plugin', 'FastDEM', 'C++'],
+  },
+  {
+    id: '18',
+    title: 'Autonomous Vertical Shaft Inspection',
+    status: 'completed',
+    href: 'https://github.com/abulhasnat-abdullah/shaft_inspection',
+    image: '/images/featured/ventra/shaft-sim.webp',
+    description:
+      'GPS-denied shaft inspection for a drone: every 2D LiDAR scan yields the bore centre as an absolute position fix for PX4, so it descends centred, turns above the floor and climbs out with a 3D cloud and radius profile.',
+    tags: ['PX4', 'ROS2', 'LiDAR', 'Gazebo', 'Python'],
   },
   {
     id: '04',
+    team: 'interplanetar',
     title: 'Swerve Drive Setup with CAN-Bus & ROS2 Control',
     status: 'in-progress',
     image: '/images/projects/swerve-drive-canbus-ros2.webp',
@@ -428,6 +469,7 @@ export const projects = [
   },
   {
     id: '10',
+    team: 'interplanetar',
     title: 'Autonomous Navigation GUI',
     status: 'in-progress',
     image: '/images/projects/autonomous-navigation-gui.webp',
@@ -437,6 +479,7 @@ export const projects = [
   },
   {
     id: '11',
+    team: 'interplanetar',
     title: 'Gazebo ROS2 Digital Twin of BUET Mars Rover',
     status: 'completed',
     image: '/images/projects/buet-mars-rover-digital-twin.webp',
@@ -454,16 +497,8 @@ export const projects = [
     tags: ['React', 'Vite', 'SCSS', 'Framer Motion'],
   },
   {
-    id: '13',
-    title: '3D Printing',
-    status: 'completed',
-    image: '/images/projects/3d-designing.webp',
-    description:
-      'CAD modeling and 3D prinitng work spanning mechanical parts, assemblies, and concept models for robotics platforms.',
-    tags: ['SolidWorks', 'CAD', '3D Modeling'],
-  },
-  {
     id: '14',
+    team: 'interplanetar',
     title: 'Rover Field Test — Prochesta V1',
     status: 'completed',
     image: '/images/projects/rover-field-test-prochesta-v1.webp',
@@ -473,6 +508,7 @@ export const projects = [
   },
   {
     id: '15',
+    team: 'interplanetar',
     title: 'Differential Drive Setup with ROS2 Control',
     status: 'completed',
     image: '/images/projects/differential-drive-ros2-control.webp',

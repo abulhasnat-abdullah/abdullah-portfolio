@@ -125,7 +125,7 @@ $font-display: 'Instrument Sans', system-ui, sans-serif;         // headings
 $font-poster: $font-display;                                     // big figures and titles
 $font-condensed: 'Sofia Sans Extra Condensed', 'Arial Narrow', sans-serif; // big figures, surname
 $font-name: 'Big Shoulders Display', $font-condensed;             // section titles
-$font-hero-name: 'Roboto Flex', $font-name;                       // the hero name: narrowest width, tallest caps
+$font-hero-name: 'Rink', 'Instrument Sans', sans-serif; // the hero name (self-hosted, see _hero.scss)
 $font-sign: 'Pinyon Script', cursive;                              // the surname, as a signature
 $font-nav: 'IBM Plex Mono', ui-monospace, monospace;             // labels, kickers, UI
 $font-mono: $font-nav;

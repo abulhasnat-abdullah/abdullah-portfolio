@@ -3,6 +3,8 @@
 @use 'components';
 @use 'dashboard';
 @use 'sections';
+@use 'featured';
+@use 'teamwork';
 @use 'navigation';
 @use 'motion';
 // Loaded last: the type system overrides per-component font rules.

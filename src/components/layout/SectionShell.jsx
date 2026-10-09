@@ -1,9 +1,10 @@
 // Target path: src/components/layout/SectionShell.jsx
 // Wraps each section with its heading and the shared scroll rhythm.
 import { lazy, Suspense } from 'react'
-import About from '../sections/About'
 import Experience from '../sections/Experience'
 import Education from '../sections/Education'
+import FeaturedProjects from '../sections/FeaturedProjects'
+import Teamwork from '../sections/Teamwork'
 import Projects from '../sections/Projects'
 import ArtDesign from '../sections/ArtDesign'
 import Skills from '../sections/Skills'
@@ -22,15 +23,15 @@ const Dashboard = lazy(() => import('../sections/Dashboard'))
 // The original site's wave artwork, kept as a faint band along the bottom
 // of these sections.
 const sectionWaves = {
-  about: '/images/decorative/about-pattern.webp',
   contact: '/images/decorative/contact-pattern.webp',
 }
 
 const sectionComponents = {
-  about: About,
   dashboard: Dashboard,
   education: Education,
   experience: Experience,
+  teamwork: Teamwork,
+  featured: FeaturedProjects,
   projects: Projects,
   'art-design': ArtDesign,
   skills: Skills,

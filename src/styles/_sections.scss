@@ -1257,6 +1257,30 @@ a.dash-tile__inner:hover {
   color: $text;
 }
 
+// Small tag on rows that were team work.
+.work__team {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  padding: 0.18rem 0.55rem;
+  border: 1px solid rgba($accent, 0.45);
+  border-radius: 999px;
+  font-family: $font-nav;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $accent-text;
+
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: $accent;
+  }
+}
+
 // The title's link covers the whole row, so the row is one click target.
 .work__link {
   color: inherit;

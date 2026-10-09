@@ -1,94 +1,93 @@
 // Target path: src/components/sections/Hero.jsx
-// The front page.
+// The front page, with the About section folded into it.
 //
-// A close-up poster. The face fills the centre of the frame; "ABUL HASNAT",
-// in narrow, very tall capitals, runs edge to edge across the upper half
-// behind the head, and "Abdullah" is signed under its right end in a cream
-// cursive. The capitals are drawn twice: solid behind the
-// face and as a thin outline in front, so they stay readable where the head
-// covers them. Behind everything, nested discs fall off from an orange
-// core into black, with rings rippling outward through them.
+// One continuous panel on a 12-column grid. "ABUL HASNAT" runs edge to edge
+// across the top, inked from a see-through orange at the top of the capitals
+// to solid at the foot. Under it, a mirrored row: the introduction and links
+// on the left (columns 1–4), the portrait — black and white over an orange
+// glow, in a plain rounded card — in the middle (5–8), the facts on the
+// right (9–12). Both side columns run from the card's top edge to its
+// bottom edge: the intro with a row of figures filling its middle, the
+// facts as a 2×3 grid of tiles. Under the row, the bio across the full
+// width as large type, then the quote.
 //
-// Around it: a rail along the top (tags, availability, local time) and a
-// row along the bottom (the rotating role, the statement and actions on
-// the left; three figures on the right).
+// The About content carries id="about", so the nav and the side rail still
+// land on it and track it.
 //
-// Layers, back to front: field (core + rings) → solid name → face →
-// outline name → shade → copy.
+// Colours come from the theme: dark paper and light ink in dark mode,
+// light paper and dark ink in light mode. The card's orange glow is the
+// accent and stays the same in both.
 //
-// Scrolling out: nothing pins — the page keeps moving, and the sequence
-// plays while the hero leaves the screen. The copy clears first, the
-// name's letters leave in a wave (each rising out of the line), the face
-// pushes toward the camera and fades into the glowing core, and from the
-// core a dark circle with a soft orange heart opens across the whole hero,
-// handing over to the page's black — the band right after the hero is
-// already rising into view, so the scroll flows straight on into it.
-//
-// Motion budget: transform/opacity/clip-path only; pointer input goes
-// through motion values (no React re-render per mousemove); the intro runs
-// once, gated on the loading curtain; the rings and grain are CSS and stop
-// under prefers-reduced-motion.
+// Motion: the name rises in once the loading curtain lifts and leaves in a
+// wave as it scrolls off the top; the card rises in after it; everything
+// below the fold reveals as it scrolls into view. Pointer parallax moves
+// the photo inside its card. Transform/opacity only.
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import {
-  AnimatePresence,
-  animate,
-  motion,
-  useMotionValue,
-  useScroll,
-  useSpring,
-  useTransform,
-} from 'framer-motion'
+import { animate, motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { certificates, experience, profile, projects } from '../../data/portfolio'
 import { useIntro } from '../../context/IntroContext'
 import { useNavigation } from '../../context/NavigationContext'
 import { EASE, EASE_OUT } from '../../lib/motion'
 import Magnetic from '../motion/Magnetic'
+import Reveal from '../motion/Reveal'
+import ScrubText from '../motion/ScrubText'
 
 const GIVEN_NAME = 'Abul Hasnat'
-const SURNAME = 'Abdullah'
-const TAGS = ['Robotics', 'AI', 'Software', 'Design']
 // Background-removed portrait: WebP for size, PNG as the fallback.
 const CUTOUT = '/images/profile/photo-cutout'
 const SPRING = { stiffness: 70, damping: 20, mass: 0.6 }
-const RIPPLES = [0, 1, 2, 3]
+const YEAR = new Date().getFullYear()
+
+// The right column: three items with one shape — a label, a short
+// statement and a tall outlined numeral — strung on a vertical spine and
+// spread from the top of the photo to its foot, mirroring the left
+// column's top, middle and bottom.
+const SIDE = [
+  { label: 'Research focus', value: 'Uncertainty-aware multi-agent, multi-sensor fusion' },
+  { label: 'University', value: 'Bangladesh University of Engineering and Technology' },
+  { label: 'Role', value: 'Software & Autonomy Lead, Team Interplanetar' },
+]
+
+// Icon buttons beside the main action.
+const SOCIALS = [
+  {
+    label: 'GitHub',
+    href: profile.links.github,
+    path: 'M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z',
+    fill: true,
+  },
+  {
+    label: 'LinkedIn',
+    href: profile.links.linkedin,
+    path: 'M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4V21H3V9.75Zm6.5 0h3.83v1.54h.05c.53-1 1.84-2.06 3.79-2.06 4.05 0 4.8 2.67 4.8 6.13V21h-4v-4.98c0-1.19-.02-2.72-1.66-2.72-1.66 0-1.91 1.3-1.91 2.63V21h-4V9.75Z',
+    fill: true,
+  },
+  {
+    label: 'Email',
+    href: profile.links.email,
+    path: 'M3 6.5h18v11H3zM3.5 7l8.5 6.5L20.5 7',
+    fill: false,
+  },
+]
 
 // Counted from the portfolio data, so they can't drift out of date.
 const STATS = [
   { value: projects.length, label: 'Projects' },
-  { value: experience.length, label: 'Teams' },
+  { value: experience.length, label: 'Teams & clubs' },
   { value: certificates.length, label: 'Certifications' },
 ]
 
-const LOCALE = { place: 'Dhaka, BD', timeZone: 'Asia/Dhaka', zone: 'GMT+6' }
-
-const formatTime = (timeZone) =>
-  new Intl.DateTimeFormat('en-GB', {
-    timeZone,
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date())
-
-// Live local time; updates a few times a minute so it never reads stale.
-function useLocalTime(timeZone) {
-  const [time, setTime] = useState(() => formatTime(timeZone))
-  useEffect(() => {
-    const id = window.setInterval(() => setTime(formatTime(timeZone)), 15000)
-    return () => window.clearInterval(id)
-  }, [timeZone])
-  return time
-}
-
-// Each line rises out of its own mask.
+// The name rises out of its mask.
 // Both sets end at full opacity and no offset, so flipping the Motion
 // switch mid-reveal can never strand the name half-faded.
 const lineVariants = {
   hidden: { y: '105%', opacity: 1 },
-  show: (i) => ({
+  show: {
     y: '0%',
     opacity: 1,
-    transition: { duration: 1.2, delay: 0.3 + i * 0.16, ease: EASE_OUT },
-  }),
+    transition: { duration: 1.2, delay: 0.3, ease: EASE_OUT },
+  },
 }
 
 const lineVariantsReduced = {
@@ -96,34 +95,82 @@ const lineVariantsReduced = {
   show: { y: '0%', opacity: 1, transition: { duration: 0.4 } },
 }
 
-// Cycles through the roles in place, each sliding up out of a mask.
-function RotatingRole({ roles, start, reduced }) {
-  const [index, setIndex] = useState(0)
-  useEffect(() => {
-    if (!start) return undefined
-    const id = window.setInterval(() => setIndex((i) => (i + 1) % roles.length), 2800)
-    return () => window.clearInterval(id)
-  }, [start, roles.length])
+// Sizes the name so it spans the name box, and writes the size to
+// --name-size on the frame. Type width scales linearly with font-size, so
+// measure at 100px and scale. The box's width never depends on the name,
+// so there is no feedback loop.
+function useNameSize(frameRef, lineRef, boxRef) {
+  useLayoutEffect(() => {
+    const frame = frameRef.current
+    const line = lineRef.current
+    const box = boxRef.current
+    if (!frame || !line || !box) return undefined
 
+    let lastWidth = 0
+    const fit = (force) => {
+      const width = box.clientWidth
+      if (!width || (!force && width === lastWidth)) return
+      lastWidth = width
+      frame.style.setProperty('--name-size', '100px')
+      // Layout width, not the on-screen box: the scroll sequence moves the
+      // letters, and measuring that would shift the fit.
+      const natural = line.offsetWidth
+      if (natural) frame.style.setProperty('--name-size', `${(width / natural) * 100}px`)
+    }
+
+    fit(true)
+    const observer = new ResizeObserver(() => fit(false))
+    observer.observe(box)
+    const refit = () => fit(true)
+    window.addEventListener('resize', refit)
+    // The display face arrives after first paint; re-measure once it has.
+    document.fonts?.ready.then(refit)
+    document.fonts?.addEventListener?.('loadingdone', refit)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', refit)
+      document.fonts?.removeEventListener?.('loadingdone', refit)
+    }
+  }, [frameRef, lineRef, boxRef])
+}
+
+// One letter of the name. As the name scrolls off the top, the letters
+// leave in a wave, left to right, each rising out of the mask.
+function WaveLetter({ char, index, count, progress, wave }) {
+  const start = (index / count) * 0.35
+  const y = useTransform(progress, [start, start + 0.45], ['0%', '-110%'])
+  if (char === ' ') return <span className="hero__space"> </span>
   return (
-    <>
-      {/* Screen readers get the full list once, not an endless rotation. */}
-      <span className="visually-hidden">{roles.join(', ')}</span>
-      <span className="hero__role" aria-hidden="true">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.span
-            key={roles[index]}
-            initial={reduced ? { opacity: 0 } : { y: '100%', opacity: 0 }}
-            animate={{ y: '0%', opacity: 1 }}
-            exit={reduced ? { opacity: 0 } : { y: '-100%', opacity: 0 }}
-            transition={{ duration: 0.45, ease: EASE }}
-          >
-            {roles[index]}
-          </motion.span>
-        </AnimatePresence>
-      </span>
-    </>
+    <motion.span className="hero__letter" style={wave ? { y } : undefined}>
+      {char}
+    </motion.span>
   )
+}
+
+// Counts up from zero once the intro starts. Writes straight to the DOM, so
+// the count doesn't re-render the hero on every frame.
+function CountUp({ value, start, reduced, delay }) {
+  const ref = useRef(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return undefined
+    if (reduced) {
+      el.textContent = String(value).padStart(2, '0')
+      return undefined
+    }
+    if (!start) return undefined
+    const controls = animate(0, value, {
+      duration: 1.4,
+      delay,
+      ease: EASE_OUT,
+      onUpdate: (v) => {
+        el.textContent = String(Math.round(v)).padStart(2, '0')
+      },
+    })
+    return () => controls.stop()
+  }, [value, start, reduced, delay])
+  return <span ref={ref}>{reduced ? String(value).padStart(2, '0') : '00'}</span>
 }
 
 function ArrowUpRight() {
@@ -142,156 +189,19 @@ function ArrowUpRight() {
   )
 }
 
-// Counts up from zero once the intro starts. Writes straight to the DOM, so
-// the count doesn't re-render the hero on every frame.
-function CountUp({ value, start, reduced, delay }) {
-  const ref = useRef(null)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return undefined
-    if (reduced) {
-      el.textContent = String(value)
-      return undefined
-    }
-    if (!start) return undefined
-    const controls = animate(0, value, {
-      duration: 1.4,
-      delay,
-      ease: EASE_OUT,
-      onUpdate: (v) => {
-        el.textContent = String(Math.round(v))
-      },
-    })
-    return () => controls.stop()
-  }, [value, start, reduced, delay])
-  return <span ref={ref}>{reduced ? value : 0}</span>
-}
-
-// Sizes the name so it spans the name box, and writes the size to
-// --name-size on the stage, where both copies of the name read it. Type
-// width scales linearly with font-size, so measure at 100px and scale. The
-// box's width never depends on the name, so there is no feedback loop.
-function useNameSize(stageRef, lineRef, boxRef) {
-  useLayoutEffect(() => {
-    const stage = stageRef.current
-    const line = lineRef.current
-    const box = boxRef.current
-    if (!stage || !line || !box) return undefined
-
-    let lastWidth = 0
-    const fit = (force) => {
-      const width = box.clientWidth
-      if (!width || (!force && width === lastWidth)) return
-      lastWidth = width
-      stage.style.setProperty('--name-size', '100px')
-      // Layout width, not the on-screen box: the scroll sequence scales the
-      // name, and measuring that would shrink the fit.
-      const natural = line.offsetWidth
-      if (natural) stage.style.setProperty('--name-size', `${(width / natural) * 100}px`)
-    }
-
-    fit(true)
-    const observer = new ResizeObserver(() => fit(false))
-    observer.observe(box)
-    const refit = () => fit(true)
-    window.addEventListener('resize', refit)
-    // The display face arrives after first paint; re-measure once it has.
-    document.fonts?.ready.then(refit)
-    document.fonts?.addEventListener?.('loadingdone', refit)
-
-    return () => {
-      observer.disconnect()
-      window.removeEventListener('resize', refit)
-      document.fonts?.removeEventListener?.('loadingdone', refit)
-    }
-  }, [stageRef, lineRef, boxRef])
-}
-
-// One letter of the name. On the way out the letters leave in a wave, left
-// to right, each rising out of the line's mask with a slight tilt.
-function WaveLetter({ char, index, count, progress, wave }) {
-  const start = 0.02 + (index / count) * 0.18
-  const y = useTransform(progress, [start, start + 0.16], ['0%', '-115%'])
-  const rotate = useTransform(progress, [start, start + 0.16], [0, -10])
-  if (char === ' ') return ' '
-  return (
-    <motion.span className="hero__letter" style={wave ? { y, rotate } : undefined}>
-      {char}
-    </motion.span>
-  )
-}
-
-// One copy of the name. The solid copy is the page's h1 (labelled with the
-// full name); the front copy — the outline and the surname — is decoration
-// and hidden from assistive tech.
-function Name({ variant, phase, reduced, boxRef, lineRef, progress, surnameStyle }) {
-  const solid = variant === 'solid'
-  const Tag = solid ? 'h1' : 'div'
-  const variants = reduced ? lineVariantsReduced : lineVariants
-
-  return (
-    <div
-      className={`hero__name-box hero__name-box--${variant}`}
-      ref={boxRef}
-      aria-hidden={solid ? undefined : 'true'}
-    >
-      <Tag className="hero__name" aria-label={solid ? profile.name : undefined}>
-        <span className="hero__line-mask" aria-hidden="true">
-          <motion.span
-            className="hero__line"
-            ref={lineRef}
-            variants={variants}
-            custom={0}
-            initial="hidden"
-            animate={phase}
-          >
-            {GIVEN_NAME.split('').map((char, i) => (
-              <WaveLetter
-                key={i}
-                char={char}
-                index={i}
-                count={GIVEN_NAME.length}
-                progress={progress}
-                wave={!reduced}
-              />
-            ))}
-          </motion.span>
-        </span>
-      </Tag>
-      {!solid && (
-        <motion.span className="hero__surname" style={reduced ? undefined : surnameStyle}>
-          <motion.span
-            className="hero__surname-inner"
-            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 30, clipPath: 'inset(0% 100% 0% 0%)' }}
-          animate={phase === 'show' ? { opacity: 1, y: 0, clipPath: 'inset(0% 0% 0% 0%)' } : undefined}
-          transition={{
-            duration: 1.3,
-            delay: reduced ? 0 : 0.9,
-            ease: EASE_OUT,
-          }}
-        >
-            {SURNAME}
-          </motion.span>
-        </motion.span>
-      )}
-    </div>
-  )
-}
-
 export default function Hero() {
-  const sectionRef = useRef(null)
   const frameRef = useRef(null)
-  const stageRef = useRef(null)
-  const measureLineRef = useRef(null)
+  const nameRef = useRef(null)
+  const lineRef = useRef(null)
   const nameBoxRef = useRef(null)
+  const cardRef = useRef(null)
   const reduced = useReducedMotion()
   const { introReady } = useIntro()
   const { scrollToSection } = useNavigation()
   const [parallax, setParallax] = useState(false)
   const [cutoutMissing, setCutoutMissing] = useState(false)
-  const localTime = useLocalTime(LOCALE.timeZone)
 
-  useNameSize(stageRef, measureLineRef, nameBoxRef)
+  useNameSize(frameRef, lineRef, nameBoxRef)
 
   // Pointer parallax only where there is a real hovering pointer.
   useEffect(() => {
@@ -312,15 +222,17 @@ export default function Hero() {
     }
   }, [cutoutMissing])
 
-  // Pointer position, normalised to -1..1 across the frame, then sprung.
+  // Pointer position over the card, normalised to -1..1, then sprung.
   const pointerX = useMotionValue(0)
   const pointerY = useMotionValue(0)
   const px = useSpring(pointerX, SPRING)
   const py = useSpring(pointerY, SPRING)
+  const photoX = useTransform(px, (v) => v * 12)
+  const photoY = useTransform(py, (v) => v * 8)
 
   const onPointerMove = (event) => {
-    if (!parallax || event.pointerType !== 'mouse' || !frameRef.current) return
-    const rect = frameRef.current.getBoundingClientRect()
+    if (!parallax || event.pointerType !== 'mouse' || !cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
     pointerX.set(((event.clientX - rect.left) / rect.width - 0.5) * 2)
     pointerY.set(((event.clientY - rect.top) / rect.height - 0.5) * 2)
   }
@@ -330,270 +242,164 @@ export default function Hero() {
     pointerY.set(0)
   }
 
-  // Scroll progress: 0 → 1 as the hero scrolls off the top of the screen.
-  const { scrollYProgress: p } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
-  // 1. The copy clears.
-  const fade = useTransform(p, [0, 0.22], [1, 0])
-  const copyY = useTransform(p, [0, 0.3], [0, -60])
-  // 2. The name's letters wave out (see WaveLetter); the surname slides off.
-  const surnameX = useTransform(p, [0.05, 0.32], [0, 220])
-  const surnameFade = useTransform(p, [0.05, 0.3], [1, 0])
-  // 3. The face pushes toward the camera and fades into the glowing core;
-  //    the rings swell behind it.
-  const faceScale = useTransform(p, [0, 0.5], [1, 1.28])
-  const faceFade = useTransform(p, [0.22, 0.45], [1, 0])
-  const fieldScale = useTransform(p, [0, 0.6], [1, 2.2])
-  // 4. From the core, a dark circle with an orange heart opens across the
-  //    whole hero, handing over to the page's black as the next band rises
-  //    into view. Smoothstepped, so it starts gently and lands softly.
-  //    Centred on the face, measured on resize (see below).
-  const circleOrigin = useRef('53% 49%')
-  const circle = useTransform(p, (v) => {
-    const t = Math.min(1, Math.max(0, (v - 0.25) / 0.4))
-    const r = 150 * t * t * (3 - 2 * t)
-    return `circle(${r.toFixed(2)}% at ${circleOrigin.current})`
+  // 0 → 1 as the name scrolls off the top of the screen.
+  const { scrollYProgress: nameProgress } = useScroll({
+    target: nameRef,
+    offset: ['start 90px', 'end start'],
   })
-
-  // The circle opens from the face: 59% across and 33% down the portrait
-  // box, as a share of the hero block. Measured with transforms at rest.
-  useLayoutEffect(() => {
-    const measure = () => {
-      const block = sectionRef.current?.querySelector('.hero__sticky')
-      const face = sectionRef.current?.querySelector('.hero__portrait')
-      if (!block || !face) return
-      const b = block.getBoundingClientRect()
-      const f = face.getBoundingClientRect()
-      const x = ((f.left + f.width * 0.59 - b.left) / b.width) * 100
-      const y = ((f.top + f.height * 0.33 - b.top) / b.height) * 100
-      circleOrigin.current = `${x.toFixed(1)}% ${y.toFixed(1)}%`
-    }
-    measure()
-    window.addEventListener('resize', measure)
-    return () => window.removeEventListener('resize', measure)
-  }, [cutoutMissing])
-
-  // Depth per plane, in px at the frame edge: the rings drift against the
-  // pointer, the name a little, the face with it.
-  const fieldX = useTransform(px, (v) => v * -22)
-  const fieldY = useTransform(py, (v) => v * -16)
-  const nameX = useTransform(px, (v) => v * -10)
-  const nameY = useTransform(py, (v) => v * -6)
-  const faceX = useTransform(px, (v) => v * 12)
-  const faceY = useTransform(py, (v) => v * 8)
 
   const phase = introReady ? 'show' : 'hidden'
 
-  // Standard entrance for a block of copy.
+  // Entrance for copy that is on screen at load.
   const rise = (delay, from = { y: 18 }) => ({
     initial: reduced ? { opacity: 0 } : { opacity: 0, ...from },
     animate: introReady ? { opacity: 1, x: 0, y: 0 } : undefined,
     transition: { duration: 0.8, delay: reduced ? 0 : delay, ease: EASE },
   })
 
-  const nameStyle = reduced ? undefined : { x: nameX, y: nameY }
-  const surnameStyle = { x: surnameX, opacity: surnameFade }
-
   return (
-    <section
-      className="hero"
-      id="hero"
-      ref={sectionRef}
-      onPointerMove={onPointerMove}
-      onPointerLeave={onPointerLeave}
-    >
-      <div className="hero__sticky">
-        <div className="hero__frame" ref={frameRef}>
-          {/* Top rail: three slots, left / centre / right. */}
-          <motion.div className="hero__top" style={reduced ? undefined : { opacity: fade }}>
-            <motion.p className="hero__tags" {...rise(0.8, { y: -12 })}>
-              {TAGS.join(' / ')}
-            </motion.p>
-            <motion.p className="hero__avail" {...rise(0.85, { y: -12 })}>
-              <i aria-hidden="true" />
-              Available for work
-            </motion.p>
-            <motion.p className="hero__locale" {...rise(0.9, { y: -12 })}>
-              <span className="hero__place">{LOCALE.place} · </span>
-              <time>{localTime}</time> {LOCALE.zone}
-            </motion.p>
-          </motion.div>
+    <section className="hero" id="hero">
+      <div className="hero__frame" ref={frameRef}>
+        <span className="hero__glow" aria-hidden="true" />
 
-          {/* ------------------------------------------------ the stage */}
-          <div className="hero__stage" ref={stageRef}>
-            <motion.div
-              className="hero__field"
-              aria-hidden="true"
-              style={
-                reduced
-                  ? undefined
-                  : {
-                      x: fieldX,
-                      y: fieldY,
-                      scale: fieldScale,
-                    }
-              }
-            >
-              <motion.div
-                className="hero__field-inner"
-                initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.6 }}
-                animate={introReady ? { opacity: 1, scale: 1 } : undefined}
-                transition={{ duration: 1.6, ease: EASE_OUT }}
+        {/* ------------------------------------------------ the name */}
+        <div className="hero__name-box" ref={nameBoxRef}>
+          <h1 className="hero__name" ref={nameRef} aria-label={profile.name}>
+            <span className="hero__line-mask" aria-hidden="true">
+              <motion.span
+                className="hero__line"
+                ref={lineRef}
+                variants={reduced ? lineVariantsReduced : lineVariants}
+                initial="hidden"
+                animate={phase}
               >
-                <span className="hero__core" />
-                <span className="hero__bands">
-                  <i />
-                  <i />
-                  <i />
-                  <i />
-                  <i />
-                </span>
-                {RIPPLES.map((i) => (
-                  <span key={i} className="hero__ripple" style={{ animationDelay: `${i * 2}s` }} />
+                {GIVEN_NAME.split('').map((char, i) => (
+                  <WaveLetter
+                    key={i}
+                    char={char}
+                    index={i}
+                    count={GIVEN_NAME.length}
+                    progress={nameProgress}
+                    wave={!reduced}
+                  />
                 ))}
-              </motion.div>
-            </motion.div>
-
-            <motion.div className="hero__name-layer hero__name-layer--back" style={nameStyle}>
-              <Name
-                variant="solid"
-                progress={p}
-                phase={phase}
-                reduced={reduced}
-                boxRef={nameBoxRef}
-                lineRef={measureLineRef}
-              />
-            </motion.div>
-
-            {!cutoutMissing && (
-              <div className="hero__portrait">
-                <motion.div
-                  className="hero__portrait-move"
-                  style={
-                    reduced
-                      ? undefined
-                      : {
-                          x: faceX,
-                          y: faceY,
-                          scale: faceScale,
-                          opacity: faceFade,
-                          transformOrigin: '59% 33%',
-                        }
-                  }
-                >
-                  <motion.div
-                    className="hero__portrait-intro"
-                    style={{ transformOrigin: '59% 33%' }}
-                    initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 1.12 }}
-                    animate={introReady ? { opacity: 1, scale: 1 } : undefined}
-                    transition={{
-                      duration: 1.5,
-                      delay: reduced ? 0 : 0.45,
-                      ease: EASE_OUT,
-                    }}
-                  >
-                    <picture>
-                      <source srcSet={`${CUTOUT}.webp`} type="image/webp" />
-                      <img
-                        src={`${CUTOUT}.png`}
-                        alt={`Portrait of ${profile.name}`}
-                        draggable="false"
-                        fetchpriority="high"
-                        onError={() => setCutoutMissing(true)}
-                      />
-                    </picture>
-                    {/* Film grain on the photo alone, clipped to the silhouette
-                      by using the cutout itself as the mask. */}
-                    <span
-                      className="hero__portrait-grain"
-                      style={{
-                        WebkitMaskImage: `url(${CUTOUT}.webp)`,
-                        maskImage: `url(${CUTOUT}.webp)`,
-                      }}
-                      aria-hidden="true"
-                    />
-                  </motion.div>
-                </motion.div>
-              </div>
-            )}
-
-            <motion.div
-              className="hero__name-layer hero__name-layer--front"
-              style={nameStyle}
-              aria-hidden="true"
-            >
-              <Name
-                variant="outline"
-                phase={phase}
-                reduced={reduced}
-                progress={p}
-                surnameStyle={surnameStyle}
-              />
-            </motion.div>
-
-            {/* Darkens the base of the frame so the copy reads over the shawl. */}
-            <span className="hero__shade" aria-hidden="true" />
-
-            {/* A finer grain over the whole poster, so photo, type and field
-              read as one printed image. */}
-            <span className="hero__grain" aria-hidden="true">
-              <span />
+              </motion.span>
             </span>
-          </div>
-
-          {/* ------------------------------------------------ the copy */}
-          <motion.div className="hero__bottom" style={reduced ? undefined : { y: copyY, opacity: fade }}>
-            <div className="hero__intro">
-              <motion.p className="hero__hello" aria-hidden="true" {...rise(1)}>
-                Currently
-              </motion.p>
-              <motion.p className="hero__roleline" {...rise(1.05)}>
-                <RotatingRole roles={profile.roles} start={introReady} reduced={reduced} />
-              </motion.p>
-              <motion.p className="hero__lead" {...rise(1.1)}>
-                Building <em>autonomous systems</em>, and the interfaces that make them usable.
-              </motion.p>
-              <motion.div className="hero__actions" {...rise(1.2)}>
-                <Magnetic>
-                  <button type="button" className="hero__cta" onClick={() => scrollToSection('projects')}>
-                    View work
-                    <ArrowUpRight />
-                  </button>
-                </Magnetic>
-                <a className="hero__link" href={profile.links.email}>
-                  Let&rsquo;s talk
-                </a>
-              </motion.div>
-            </div>
-
-            <div className="hero__facts">
-              <motion.p className="hero__note" aria-hidden="true" {...rise(1.5)}>
-                <span className="hero__note-text--hover">Hover the portrait for colour</span>
-                <span className="hero__note-text--touch">Based in Dhaka · BUET</span>
-              </motion.p>
-              <motion.ul className="hero__stats" {...rise(1.25)}>
-                {STATS.map((stat, i) => (
-                  <li className="hero__stat" key={stat.label} aria-label={`${stat.value} ${stat.label}`}>
-                    <span className="hero__stat-value" aria-hidden="true">
-                      <CountUp
-                        value={stat.value}
-                        start={introReady}
-                        reduced={reduced}
-                        delay={1.3 + i * 0.12}
-                      />
-                    </span>
-                    <span className="hero__stat-label" aria-hidden="true">
-                      {stat.label}
-                    </span>
-                  </li>
-                ))}
-              </motion.ul>
-            </div>
-          </motion.div>
-
+          </h1>
         </div>
 
-        {/* The hand-off: the circle that opens into the next section. */}
-        {!reduced && <motion.span className="hero__circle" aria-hidden="true" style={{ clipPath: circle }} />}
+        {/* The poster row, mirrored: intro on the left, the card in the
+          middle, facts on the right. Both side columns run from the card's
+          top edge to its bottom edge. */}
+        <div className="hero__body" id="about">
+          {/* ------------------------------------------------ left: intro */}
+          <div className="hero__intro">
+            <div>
+              <motion.p className="hero__kicker" {...rise(0.95)}>
+                About me
+              </motion.p>
+              <motion.p className="hero__lead" {...rise(1.05)}>
+                Mechanical Engineering at BUET — building <strong>autonomous systems</strong> by day,
+                painting watercolour and designing by night.
+              </motion.p>
+            </div>
+            <motion.ul className="hero__stats" {...rise(1.1)}>
+              {STATS.map((stat, i) => (
+                <li className="hero__stat" key={stat.label} aria-label={`${stat.value} ${stat.label}`}>
+                  <span className="hero__stat-value" aria-hidden="true">
+                    <CountUp value={stat.value} start={introReady} reduced={reduced} delay={1.2 + i * 0.12} />
+                  </span>
+                  <span className="hero__stat-label" aria-hidden="true">
+                    {stat.label}
+                  </span>
+                </li>
+              ))}
+            </motion.ul>
+            <motion.div className="hero__actions" {...rise(1.15)}>
+              <Magnetic>
+                <button type="button" className="hero__cta" onClick={() => scrollToSection('projects')}>
+                  <span>View work</span>
+                  <span className="hero__cta-badge" aria-hidden="true">
+                    <ArrowUpRight />
+                  </span>
+                </button>
+              </Magnetic>
+              <span className="hero__socials">
+                {SOCIALS.map((s) => (
+                  <Magnetic key={s.label}>
+                    <a
+                      className="hero__social"
+                      href={s.href}
+                      aria-label={s.label}
+                      title={s.label}
+                      {...(s.href.startsWith('mailto:') ? {} : { target: '_blank', rel: 'noreferrer' })}
+                    >
+                      <svg viewBox="0 0 24 24" aria-hidden="true" className={s.fill ? 'is-fill' : 'is-line'}>
+                        <path d={s.path} />
+                      </svg>
+                    </a>
+                  </Magnetic>
+                ))}
+              </span>
+            </motion.div>
+          </div>
+
+          {/* ------------------------------------------------ middle: card */}
+          <motion.figure
+            className="hero__card"
+            ref={cardRef}
+            onPointerMove={onPointerMove}
+            onPointerLeave={onPointerLeave}
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 50 }}
+            animate={introReady ? { opacity: 1, y: 0 } : undefined}
+            transition={{ duration: 1.3, delay: reduced ? 0 : 0.55, ease: EASE_OUT }}
+          >
+            <div className="hero__card-window">
+              {!cutoutMissing && (
+                <motion.picture
+                  className="hero__photo"
+                  style={reduced ? undefined : { x: photoX, y: photoY }}
+                >
+                  <source srcSet={`${CUTOUT}.webp`} type="image/webp" />
+                  <img
+                    src={`${CUTOUT}.png`}
+                    alt={`Portrait of ${profile.name}`}
+                    draggable="false"
+                    fetchpriority="high"
+                    onError={() => setCutoutMissing(true)}
+                  />
+                </motion.picture>
+              )}
+            </div>
+            <figcaption className="hero__caption">
+              <span>{profile.name}</span>
+              <span>Dhaka, {YEAR}</span>
+            </figcaption>
+          </motion.figure>
+
+          {/* ------------------------------------------------ right: facts */}
+          <dl className="hero__facts">
+            {SIDE.map((item, i) => (
+              <motion.div className="hero__side" key={item.label} {...rise(0.95 + i * 0.1)}>
+                <div className="hero__side-text">
+                  <dt className="hero__side-label">{item.label}</dt>
+                  <dd className="hero__side-value">{item.value}</dd>
+                </div>
+                <span className="hero__side-num" aria-hidden="true">
+                  0{i + 1}
+                </span>
+              </motion.div>
+            ))}
+          </dl>
+
+          {/* ------------------------------------------------ bio, full width */}
+          <ScrubText className="hero__bio" text={profile.bio} />
+        </div>
+
+        <Reveal className="hero__quote" as="blockquote" direction="none">
+          <span aria-hidden="true">&ldquo;</span>
+          {profile.quote}
+        </Reveal>
       </div>
     </section>
   )
