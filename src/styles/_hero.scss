@@ -221,7 +221,7 @@
   margin-top: 0.8rem;
   line-height: 0.9rem;
   font-family: $font-nav;
-  font-size: 0.64rem;
+  font-size: 0.74rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--hero-faint);
@@ -245,9 +245,10 @@
 .hero__kicker {
   // The same label style as the right column's, so the two groups match.
   font-family: $font-condensed;
-  font-size: clamp(1.3rem, 1.65vw, 1.55rem);
+  // Clearly larger than the intro under it: a heading, not a label.
+  font-size: clamp(1.9rem, 2.7vw, 2.6rem);
   font-weight: 700;
-  line-height: 1;
+  line-height: 0.95;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: $accent-text;
@@ -724,7 +725,7 @@
   flex-shrink: 0;
   max-width: 8.5rem;
   font-family: $font-nav;
-  font-size: 0.64rem;
+  font-size: 0.74rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
