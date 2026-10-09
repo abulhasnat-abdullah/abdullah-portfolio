@@ -40,7 +40,7 @@ export const sections = [
   { id: 'education', label: 'Education', title: 'Education', kicker: 'Where I studied', note: 'still learning' },
   { id: 'experience', label: 'Experience', title: 'Experience & Activities', kicker: 'Where I work', note: 'the teams I build with' },
   { navPrimary: true, id: 'teamwork', label: 'Teamwork', title: 'Teamwork', kicker: 'Mars rover team', note: 'built together' },
-  { navPrimary: true, id: 'featured', label: 'Highlights', title: 'Highlighted Projects', kicker: 'Case study', note: 'the long version' },
+  { navPrimary: true, id: 'featured', label: 'Highlights', title: 'Highlighted Projects', kicker: 'Case study', note: 'in brief' },
   { navPrimary: true, id: 'projects', label: 'Projects', title: 'Projects', kicker: 'What I build', note: 'hover a row to peek' },
   { navPrimary: true, id: 'art-design', label: 'Art & Design', title: 'Art & Design', kicker: 'The other half', note: 'painted by hand' },
   { navPrimary: true, id: 'skills', label: 'Skills', title: 'Technical Stack', kicker: 'What I use', note: 'daily drivers' },
@@ -314,7 +314,7 @@ export const creativePortfolios = [
     id: 'art',
     platform: 'Instagram',
     handle: '@aquarelle_verse',
-    title: 'Art Gallery - Aquarelle Verse',
+    title: 'Watercolour Art · Aquarelle Verse',
     role: 'Artist',
     description:
       'Watercolour paintings, visual studies, and creative experiments — a growing collection of original art shared on Instagram.',

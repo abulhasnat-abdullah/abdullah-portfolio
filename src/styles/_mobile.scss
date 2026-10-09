@@ -1,0 +1,100 @@
+// Target path: src/styles/_mobile.scss
+@use 'variables' as *;
+
+// ---------------------------------------------------------------------------
+// Phones. Loaded last, after the type system, so it wins.
+//
+// - Type one step smaller and spacing tighter, so a screen holds more and
+//   the page reads compact rather than blown up.
+// - Background blurs off: backdrop-filter re-blurs whatever scrolls under
+//   it on every frame, which is the most expensive thing a phone GPU does
+//   here. The surfaces keep their translucent fills, so they still read.
+// - Decorative loops off (glows, shimmer); entrances and the marquees stay.
+// ---------------------------------------------------------------------------
+@media (max-width: 600px) {
+  html {
+    font-size: 15px;
+  }
+
+  *,
+  *::before,
+  *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .section {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .section-heading {
+    margin-bottom: 1.4rem;
+  }
+
+  .section-heading__title {
+    font-size: clamp(2.4rem, 12vw, 3.2rem);
+  }
+
+  .scroll-marquee__word {
+    font-size: 2rem;
+  }
+
+  // Hero
+  .hero {
+    padding-top: 4.4rem;
+  }
+
+  .hero__frame {
+    padding-top: 1.1rem;
+  }
+
+  .hero__lead {
+    font-size: 1.25rem;
+  }
+
+  .hero__cta {
+    padding-left: 1.2rem;
+    font-size: 0.7rem;
+  }
+
+  .hero__cta-badge {
+    width: 2.3rem;
+  }
+
+  .hero__social {
+    width: 2.9rem;
+  }
+
+  .hero__side-value {
+    font-size: 1rem;
+  }
+
+  .hero__side-num {
+    font-size: 2.6rem;
+  }
+
+  .hero__bio {
+    margin-top: 2rem;
+    font-size: 1.15rem;
+    line-height: 1.35;
+  }
+
+  .hero__quote {
+    font-size: 1.35rem;
+  }
+
+  // Highlights and Teamwork headings
+  .case__name {
+    font-size: 3rem;
+  }
+
+  .team__name {
+    font-size: 1.9rem;
+  }
+
+  // Decorative loops
+  .timeline__marker {
+    animation: none;
+  }
+}

@@ -1,0 +1,143 @@
+<!doctype html>
+<!--
+  Source of public/resume/Abul-Hasnat-Abdullah-Resume.pdf (the Resume
+  button in the top bar downloads it). The content mirrors the resume doc;
+  after editing, regenerate the PDF:
+
+    "C:/Program Files/Google/Chrome/Application/chrome.exe" --headless=new --disable-gpu
+      --no-pdf-header-footer --print-to-pdf=public/resume/Abul-Hasnat-Abdullah-Resume.pdf
+      resume/resume.html
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Abul Hasnat Abdullah — Resume</title>
+<style>
+  @page { size: A4; margin: 9mm 12mm 8mm; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    margin: 0;
+    font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+    font-size: 9.4pt;
+    line-height: 1.21;
+    color: #1d1d1f;
+  }
+  a { color: inherit; text-decoration: none; }
+  header { text-align: center; margin-bottom: 7pt; }
+  h1 {
+    margin: 0;
+    font-size: 19pt;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .tagline { margin-top: 1pt; font-size: 10.5pt; color: #444; }
+  .contact { margin-top: 3pt; font-size: 8.6pt; color: #333; white-space: nowrap; }
+  .contact span + span::before { letter-spacing: -0.02em; }
+  .contact span + span::before { content: " | "; color: #aaa; white-space: pre; }
+  h2 {
+    margin: 6pt 0 2.5pt;
+    padding-bottom: 1.5pt;
+    border-bottom: 1.2pt solid #e8692e;
+    font-size: 10.5pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1d1d1f;
+  }
+  .row { display: flex; justify-content: space-between; gap: 10pt; }
+  .row .right { flex: none; color: #444; }
+  .sub { color: #444; font-style: italic; }
+  ul { margin: 2pt 0 0; padding-left: 13pt; }
+  li { margin: 0.6pt 0; }
+  p { margin: 0; }
+  .entry + .entry { margin-top: 3.5pt; }
+  .skills p { margin: 1pt 0; }
+  .muted { color: #444; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Abul Hasnat Abdullah</h1>
+    <div class="tagline">Robotics &amp; Autonomy · B.Sc. Mechanical Engineering, BUET</div>
+    <div class="contact">
+      <span>Dhaka, Bangladesh</span>
+      <span><a href="mailto:abdkalam22@gmail.com">abdkalam22@gmail.com</a></span>
+      <span><a href="https://abdullah-portfolio-mauve.vercel.app">abdullah-portfolio-mauve.vercel.app</a></span>
+      <span><a href="https://github.com/abulhasnat-abdullah">github.com/abulhasnat-abdullah</a></span>
+      <span><a href="https://linkedin.com/in/abul-hasnat-abdullah-2726aa304">linkedin.com/in/abul-hasnat-abdullah</a></span>
+    </div>
+  </header>
+
+  <h2>Profile</h2>
+  <p>Third-year Mechanical Engineering student at BUET (CGPA 3.95/4.00) working on state estimation and autonomous
+    navigation for ground and aerial robots. I lead the software and autonomy sub-team of Team Interplanetar, BUET's Mars
+    rover team, and have started an undergraduate thesis on uncertainty-aware multi-agent, multi-sensor fusion. Looking
+    for a robotics internship in autonomy, estimation, manipulation or simulation.</p>
+  <p style="margin-top:3pt"><b>Interests:</b> state estimation and sensor fusion · autonomous navigation · UAV and UGV
+    autonomy · robotic manipulation · digital twins and simulation</p>
+
+  <h2>Education</h2>
+  <div class="row"><b>Bangladesh University of Engineering and Technology (BUET), Dhaka</b><span class="right">Jul 2022 – expected 2028</span></div>
+  <div class="row"><span>B.Sc. in Mechanical Engineering · CGPA <b>3.95 / 4.00</b> (Level 3, Term 1)</span></div>
+  <p class="muted" style="margin-top:2pt">HSC, Notre Dame College (GPA 5.00/5.00) · SSC, RAJUK Uttara Model College (GPA 5.00/5.00)</p>
+
+  <h2>Research</h2>
+  <div class="row"><b>Undergraduate thesis: uncertainty-aware multi-agent, multi-sensor fusion</b><span class="right">2026 – present</span></div>
+  <p class="sub">Supervisor: Dr. Kazi Arafat Rahman, Professor, Department of Mechanical Engineering, BUET</p>
+  <ul>
+    <li>Modelling how sensor uncertainty propagates through state estimation, and how to fuse measurements consistently when several robots share them.</li>
+    <li>Background from VENTRA: fusing LiDAR, optical flow, range and barometer data in PX4's EKF2, with uncertainty set per measurement.</li>
+  </ul>
+
+  <h2>Experience</h2>
+  <div class="row"><b>Team Interplanetar, BUET Mars Rover Team</b><span class="right">Apr 2025 – present</span></div>
+  <p class="sub">Sub-Team Lead, Software &amp; Autonomy (Jul 2026 –) · Technical Lead, ERC Remote (Jan – Jul 2026) · Member (Apr 2025 – Jan 2026)</p>
+  <ul>
+    <li>Lead the sub-team that builds the rover's ROS 2 autonomy stack: localization, state estimation, path planning and waypoint navigation with Nav2.</li>
+    <li>Set up 3D LiDAR-inertial mapping with a Livox Mid-360 and FAST-LIO, and visual-inertial odometry with a ZED stereo camera; maps stream live to a handheld ground controller.</li>
+    <li>Wrote a Nav2 costmap plugin in C++ that turns FastDEM elevation layers (slope, step, roughness) into traversability costs.</li>
+    <li>Took the six-joint arm from CAD to URDF, configured MoveIt 2 for inverse kinematics, and built the operators' arm control GUI.</li>
+    <li>Built a Gazebo digital twin of the rover, and brought up swerve (CAN bus) and differential drive bases under ros2_control.</li>
+    <li>Configured the long-range radio link and network between rover and base station; integrated object detection for mission tasks.</li>
+    <li>Competitions: ERC Remote, Australian Rover Challenge, Anatolian Rover Challenge.</li>
+  </ul>
+
+  <h2>Projects</h2>
+  <div class="entry">
+    <div class="row"><b><a href="https://github.com/abulhasnat-abdullah/Indoor_drone_project">VENTRA: autonomous UAV for GPS-denied indoor exploration and tunnel inspection</a></b><span class="right">2026</span></div>
+    <p class="sub">ME 366 term project, team of 4 · PX4, ROS 2, Nav2, SLAM Toolbox, Gazebo</p>
+    <ul>
+      <li>Fed the 2D LiDAR SLAM pose back into PX4's EKF2 as external vision at 10 Hz, ending the position resets of flow-only flight; held 1.15 m altitude with a 7 cm standard deviation over a 283 s GPS-free flight.</li>
+      <li>Developed a SLAM-free shaft inspection mode that takes the bore centre from every scan as an absolute position fix: 24.8 m autonomous descent and return in PX4 SITL, 1–5 cm centre error across five shaft shapes.</li>
+      <li>Added frontier exploration with Nav2, a braking-limited avoidance filter, 3D mapping from stacked scans, and an open-source PX4 flight-log analyzer.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <p><b>Other projects:</b> warehouse AGV simulation (Nav2 with kinodynamic RRT* replanning in Gazebo) · closed-loop
+      drone simulation (PX4 and ArduPilot SITL with ROS 2) · robot arm visualizer (URDF, joint states, workspace) ·
+      voice-controlled TurtleBot3 (speech to ROS 2 motion)</p>
+  </div>
+
+  <h2>Technical Skills</h2>
+  <div class="skills">
+    <p><b>Robotics:</b> ROS 2, Nav2, MoveIt 2, ros2_control, PX4, Gazebo, RViz2, SLAM Toolbox, FAST-LIO</p>
+    <p><b>Estimation &amp; perception:</b> Kalman filtering (PX4 EKF2), LiDAR-inertial and visual-inertial odometry, sensor fusion, OpenCV, PyTorch</p>
+    <p><b>Programming:</b> C++, Python, C, Bash, CMake, Git, Docker, Linux</p>
+    <p><b>Hardware:</b> Pixhawk, Raspberry Pi, microcontrollers, CAN bus, 2D/3D LiDAR, stereo cameras</p>
+    <p><b>Mechanical:</b> SolidWorks (CSWA), AutoCAD, Fusion 360, ANSYS, FDM 3D printing</p>
+  </div>
+
+  <h2>Awards &amp; Certifications</h2>
+  <ul>
+    <li>Champion, Robo Soccer Challenge, Intra-BUET Robo Challenge 2024 (team lead, RC soccer robot)</li>
+    <li>SOLIDWORKS Certified Associate in Mechanical Design (CSWA), Dassault Systèmes, 2024</li>
+    <li>Self Driving and ROS 2, three-course series (82.5 h): localization, odometry and control, planning and navigation, 2025–26</li>
+  </ul>
+
+  <h2>Leadership &amp; Activities</h2>
+  <p>Co-founder and CTO, Ongikar (non-profit, 2021 – present) · Design leads at BUET Automobile Club and BUET Robotics
+    Society · Watercolour artist (Aquarelle Verse)</p>
+</body>
+</html>

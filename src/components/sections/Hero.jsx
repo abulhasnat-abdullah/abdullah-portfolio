@@ -23,9 +23,9 @@
 // below the fold reveals as it scrolls into view. Pointer parallax moves
 // the photo inside its card. Transform/opacity only.
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { animate, motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { certificates, experience, profile, projects } from '../../data/portfolio'
+import { profile } from '../../data/portfolio'
 import { useIntro } from '../../context/IntroContext'
 import { useNavigation } from '../../context/NavigationContext'
 import { EASE, EASE_OUT } from '../../lib/motion'
@@ -40,9 +40,9 @@ const SPRING = { stiffness: 70, damping: 20, mass: 0.6 }
 const YEAR = new Date().getFullYear()
 
 // The right column: three items with one shape — a label, a short
-// statement and a tall outlined numeral — strung on a vertical spine and
-// spread from the top of the photo to its foot, mirroring the left
-// column's top, middle and bottom.
+// statement and a tall outlined numeral — joined by a small network graph
+// (SideNetwork) and spread from the top of the photo to its foot,
+// mirroring the left column's top, middle and bottom.
 const SIDE = [
   { label: 'Research focus', value: 'Uncertainty-aware multi-agent, multi-sensor fusion' },
   { label: 'University', value: 'Bangladesh University of Engineering and Technology' },
@@ -71,12 +71,6 @@ const SOCIALS = [
   },
 ]
 
-// Counted from the portfolio data, so they can't drift out of date.
-const STATS = [
-  { value: projects.length, label: 'Projects' },
-  { value: experience.length, label: 'Teams & clubs' },
-  { value: certificates.length, label: 'Certifications' },
-]
 
 // The name rises out of its mask.
 // Both sets end at full opacity and no offset, so flipping the Motion
@@ -148,29 +142,95 @@ function WaveLetter({ char, index, count, progress, wave }) {
   )
 }
 
-// Counts up from zero once the intro starts. Writes straight to the DOM, so
-// the count doesn't re-render the hero on every frame.
-function CountUp({ value, start, reduced, delay }) {
-  const ref = useRef(null)
-  useEffect(() => {
-    const el = ref.current
+// The right column's network: the three items are the main nodes, joined
+// through small relay nodes by crossing edges, like a sensor network, with a
+// couple of pulses travelling along it. Drawn from the items' measured
+// layout positions (offsetTop ignores the entrance transforms), so it stays
+// aligned at any size. The hovered item's node lights up.
+function SideNetwork({ containerRef, active, reduced }) {
+  const [geo, setGeo] = useState(null)
+
+  useLayoutEffect(() => {
+    const el = containerRef.current
     if (!el) return undefined
-    if (reduced) {
-      el.textContent = String(value).padStart(2, '0')
-      return undefined
+    const measure = () => {
+      const items = [...el.querySelectorAll('.hero__side')]
+      if (!items.length) return
+      const first = items[0]
+      const text = first.querySelector('.hero__side-text')
+      const num = first.querySelector('.hero__side-num')
+      if (!text || !num || getComputedStyle(el).display !== 'flex') {
+        setGeo(null)
+        return
+      }
+      // The network column sits between the text and the numeral.
+      const left = text.offsetLeft + text.offsetWidth
+      const right = num.offsetLeft
+      setGeo({
+        w: el.offsetWidth,
+        h: el.offsetHeight,
+        x: (left + right) / 2,
+        span: right - left,
+        ys: items.map((it) => it.offsetTop + it.offsetHeight / 2),
+      })
     }
-    if (!start) return undefined
-    const controls = animate(0, value, {
-      duration: 1.4,
-      delay,
-      ease: EASE_OUT,
-      onUpdate: (v) => {
-        el.textContent = String(Math.round(v)).padStart(2, '0')
-      },
-    })
-    return () => controls.stop()
-  }, [value, start, reduced, delay])
-  return <span ref={ref}>{reduced ? String(value).padStart(2, '0') : '00'}</span>
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [containerRef])
+
+  if (!geo) return null
+
+  const { w, h, x, span, ys } = geo
+  const r = span * 0.42
+  const main = ys.map((y) => [x, y])
+  const relays = []
+  const edges = []
+  // Between each pair of main nodes: three relays, zig-zagging, with cross links.
+  for (let k = 0; k < main.length - 1; k += 1) {
+    const [, y0] = main[k]
+    const [, y1] = main[k + 1]
+    const d = y1 - y0
+    const a = [x - r, y0 + d * 0.28]
+    const b = [x + r * 0.8, y0 + d * 0.5]
+    const c = [x - r * 0.55, y0 + d * 0.74]
+    relays.push(a, b, c)
+    edges.push([main[k], a], [a, b], [b, c], [c, main[k + 1]], [main[k], b], [a, c], [b, main[k + 1]])
+  }
+  // Loose ends above the first node and below the last, fading out.
+  const top = [x + r * 0.6, Math.max(4, ys[0] - 34)]
+  const bottom = [x - r * 0.6, Math.min(h - 4, ys[ys.length - 1] + 34)]
+  edges.push([top, main[0]], [main[main.length - 1], bottom])
+
+  // The pulse route: down through every node in order.
+  const route = [top, ...main.flatMap((m, i) => (i < main.length - 1 ? [m, relays[i * 3], relays[i * 3 + 1], relays[i * 3 + 2]] : [m])), bottom]
+  const routeD = route.map(([px, py], i) => `${i ? 'L' : 'M'}${px.toFixed(1)} ${py.toFixed(1)}`).join(' ')
+
+  return (
+    <svg className="hero__net" viewBox={`0 0 ${w} ${h}`} width={w} height={h} aria-hidden="true">
+      <g className="hero__net-edges">
+        {edges.map(([[x1, y1], [x2, y2]], i) => (
+          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} />
+        ))}
+      </g>
+      {[top, bottom, ...relays].map(([cx, cy], i) => (
+        <circle key={i} className="hero__net-relay" cx={cx} cy={cy} r={2} />
+      ))}
+      {!reduced &&
+        [0, 1].map((i) => (
+          <circle key={i} className="hero__net-pulse" r={2.4}>
+            <animateMotion dur="7s" begin={`${-i * 3.5}s`} repeatCount="indefinite" path={routeD} />
+          </circle>
+        ))}
+      {main.map(([cx, cy], i) => (
+        <g key={i} className={`hero__net-node${active === i ? ' is-active' : ''}`}>
+          <circle className="hero__net-halo" cx={cx} cy={cy} r={10} />
+          <circle className="hero__net-core" cx={cx} cy={cy} r={4.5} />
+        </g>
+      ))}
+    </svg>
+  )
 }
 
 function ArrowUpRight() {
@@ -195,6 +255,8 @@ export default function Hero() {
   const lineRef = useRef(null)
   const nameBoxRef = useRef(null)
   const cardRef = useRef(null)
+  const factsRef = useRef(null)
+  const [activeSide, setActiveSide] = useState(null)
   const reduced = useReducedMotion()
   const { introReady } = useIntro()
   const { scrollToSection } = useNavigation()
@@ -303,23 +365,17 @@ export default function Hero() {
                 painting watercolour and designing by night.
               </motion.p>
             </div>
-            <motion.ul className="hero__stats" {...rise(1.1)}>
-              {STATS.map((stat, i) => (
-                <li className="hero__stat" key={stat.label} aria-label={`${stat.value} ${stat.label}`}>
-                  <span className="hero__stat-value" aria-hidden="true">
-                    <CountUp value={stat.value} start={introReady} reduced={reduced} delay={1.2 + i * 0.12} />
-                  </span>
-                  <span className="hero__stat-label" aria-hidden="true">
-                    {stat.label}
-                  </span>
-                </li>
-              ))}
-            </motion.ul>
             <motion.div className="hero__actions" {...rise(1.15)}>
               <Magnetic>
                 <button type="button" className="hero__cta" onClick={() => scrollToSection('projects')}>
-                  <span>View work</span>
+                  {/* The label rolls up to a fresh copy on hover; the arrow
+                    flies out of the badge as a new one flies in. */}
+                  <span className="hero__cta-label">
+                    <span>View work</span>
+                    <span aria-hidden="true">View work</span>
+                  </span>
                   <span className="hero__cta-badge" aria-hidden="true">
+                    <ArrowUpRight />
                     <ArrowUpRight />
                   </span>
                 </button>
@@ -378,13 +434,20 @@ export default function Hero() {
           </motion.figure>
 
           {/* ------------------------------------------------ right: facts */}
-          <dl className="hero__facts">
+          <dl className="hero__facts" ref={factsRef} onPointerLeave={() => setActiveSide(null)}>
+            <SideNetwork containerRef={factsRef} active={activeSide} reduced={reduced} />
             {SIDE.map((item, i) => (
-              <motion.div className="hero__side" key={item.label} {...rise(0.95 + i * 0.1)}>
+              <motion.div
+                className="hero__side"
+                key={item.label}
+                onPointerEnter={() => setActiveSide(i)}
+                {...rise(0.95 + i * 0.1)}
+              >
                 <div className="hero__side-text">
                   <dt className="hero__side-label">{item.label}</dt>
                   <dd className="hero__side-value">{item.value}</dd>
                 </div>
+                <span className="hero__side-net" aria-hidden="true" />
                 <span className="hero__side-num" aria-hidden="true">
                   0{i + 1}
                 </span>

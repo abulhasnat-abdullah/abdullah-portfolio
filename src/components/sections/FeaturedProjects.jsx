@@ -1,11 +1,10 @@
 // Target path: src/components/sections/FeaturedProjects.jsx
-// Highlighted projects as compact case studies (data: data/featured.js) —
-// the key ideas only; the full write-up lives behind the project's link.
+// Highlighted projects as compact case studies (data: data/featured.js);
+// the full write-up lives behind the project's link.
 //
-// Each reads top to bottom: an intro with the vehicle on the same orange
-// glow as the portrait in the hero, a row of headline figures, the film
-// beside the two missions, a row of key ideas, and a strip of photos.
-// Every block is optional — leave its data out and it's skipped.
+// Three rows: the name, title, a short summary and the link beside the
+// vehicle on the same orange glow as the portrait in the hero; the film
+// beside the two missions; a row of photos. Every block is optional.
 //
 // The film is a click-to-load YouTube embed: until it's clicked the page
 // loads one thumbnail, not YouTube's player, and nothing is sent to YouTube.
@@ -55,17 +54,6 @@ function CaseStudy({ project }) {
             {project.summary}
           </Reveal>
 
-          {project.meta && (
-            <Reveal as="dl" className="case__meta" delay={0.15}>
-              {project.meta.map((m) => (
-                <div key={m.label}>
-                  <dt>{m.label}</dt>
-                  <dd>{m.value}</dd>
-                </div>
-              ))}
-            </Reveal>
-          )}
-
           <Reveal className="case__links" delay={0.2}>
             {project.links?.map((link) => (
               <a key={link.href} className="case__link" href={link.href} target="_blank" rel="noreferrer">
@@ -76,13 +64,6 @@ function CaseStudy({ project }) {
               </a>
             ))}
           </Reveal>
-          {project.tags && (
-            <Reveal as="ul" className="case__tags" delay={0.25}>
-              {project.tags.map((tag) => (
-                <li key={tag}>{tag}</li>
-              ))}
-            </Reveal>
-          )}
         </div>
 
         {project.cutout && (
@@ -91,18 +72,6 @@ function CaseStudy({ project }) {
           </Reveal>
         )}
       </div>
-
-      {/* ------------------------------------------------ headline figures */}
-      {project.metrics && (
-        <Stagger className="case__metrics">
-          {project.metrics.map((m) => (
-            <StaggerItem className="case__metric" key={m.label}>
-              <strong>{m.value}</strong>
-              <span>{m.label}</span>
-            </StaggerItem>
-          ))}
-        </Stagger>
-      )}
 
       {/* ------------------------------------------------ film + missions */}
       <div className="case__body">
@@ -126,19 +95,6 @@ function CaseStudy({ project }) {
           </div>
         )}
       </div>
-
-      {/* ------------------------------------------------ key ideas */}
-      {project.keyIdeas && (
-        <Stagger className="case__ideas">
-          {project.keyIdeas.map((idea, i) => (
-            <StaggerItem className="case__idea" key={idea.title}>
-              <span className="case__idea-num">0{i + 1}</span>
-              <h5>{idea.title}</h5>
-              <p>{idea.text}</p>
-            </StaggerItem>
-          ))}
-        </Stagger>
-      )}
 
       {/* ------------------------------------------------ photos */}
       {project.gallery && (

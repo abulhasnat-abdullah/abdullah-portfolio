@@ -2,7 +2,7 @@
 // The artwork gallery: columns of images that drift at different speeds as
 // the gallery scrolls past, so the grid floats instead of sitting flat.
 // Click any piece for the full-size lightbox (arrow keys to browse, Esc to
-// close).
+// close). Two rows show at first; "Explore all" reveals the rest.
 //
 // Every image dropped into these folders appears automatically:
 //   - src/assets/artwork/  → Instagram watercolour art
@@ -46,10 +46,10 @@ const pad = (n) => String(n).padStart(2, '0')
 // Per-column drift in px across the gallery's pass through the viewport.
 // The container pads by the largest shift, so nothing is ever clipped.
 const DRIFT = [
-  [40, -40],
-  [110, -110],
-  [20, -70],
-  [90, -130],
+  [20, -20],
+  [55, -55],
+  [10, -35],
+  [45, -65],
 ]
 
 const columnsFor = (width) => (width >= 1100 ? 4 : width >= 700 ? 3 : 2)
@@ -169,9 +169,21 @@ function ParallaxGallery({ works, label }) {
     [works.length],
   )
 
+  // First two rows only, until "Explore all" is pressed. The lightbox still
+  // browses every piece.
+  const [showAll, setShowAll] = useState(false)
+  const preview = cols * 2
+  const visible = showAll ? works : works.slice(0, preview)
+  const toggle = () => {
+    if (showAll && (ref.current?.getBoundingClientRect().top ?? 0) < 0) {
+      ref.current.scrollIntoView({ block: 'start' })
+    }
+    setShowAll((v) => !v)
+  }
+
   // Deal the works round-robin so each column gets a fair mix.
   const columns = Array.from({ length: cols }, () => [])
-  works.forEach((work, i) => columns[i % cols].push({ work, i }))
+  visible.forEach((work, i) => columns[i % cols].push({ work, i }))
 
   return (
     <>
@@ -204,6 +216,17 @@ function ParallaxGallery({ works, label }) {
           </motion.div>
         ))}
       </div>
+
+      {works.length > preview && (
+        <div className="work__more">
+          <button type="button" className="work__more-btn" onClick={toggle} aria-expanded={showAll}>
+            {showAll ? 'Show fewer' : `Explore all ${works.length} works`}
+            <svg viewBox="0 0 24 24" aria-hidden="true" className={showAll ? 'is-up' : undefined}>
+              <path d="M12 5v14M6 13l6 6 6-6" />
+            </svg>
+          </button>
+        </div>
+      )}
 
       <AnimatePresence>
         {openIndex !== null && (

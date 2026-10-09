@@ -115,7 +115,18 @@ export default function Teamwork() {
                   <Tag className={`team__project${p.href ? ' team__project--link' : ''}`} {...linkProps}>
                     <span className="team__project-media">
                       {p.video ? (
-                        <video src={p.video} poster={p.image} muted loop playsInline autoPlay preload="none" />
+                        // Plays only while hovered, so its few MB load only for
+                        // visitors who look; touch screens keep the poster.
+                        <video
+                          src={p.video}
+                          poster={p.image}
+                          muted
+                          loop
+                          playsInline
+                          preload="none"
+                          onPointerEnter={(e) => e.pointerType === 'mouse' && e.currentTarget.play().catch(() => {})}
+                          onPointerLeave={(e) => e.currentTarget.pause()}
+                        />
                       ) : (
                         <img src={p.image} alt="" loading="lazy" decoding="async" />
                       )}

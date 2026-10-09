@@ -10,6 +10,8 @@
 //   - neighbour lines use a spatial grid, not an every-pair check
 //   - the loop stops while the tab is hidden
 //   - prefers-reduced-motion draws a single still frame and never animates
+//   - phones and touch screens get a lite mode: a third of the particles,
+//     drawn at ~30 fps
 import { useEffect, useRef } from 'react'
 import { isReducedMotion, subscribeMotion } from '../../lib/motionPreference'
 
@@ -19,6 +21,11 @@ const LINK_DIST = 115
 const MOUSE_RADIUS = 180
 const CRUISE = 0.32
 const MAX_SPEED = 4
+// Lite mode (phones, touch screens): fewer particles, half the frame rate.
+const LITE_QUERY = '(pointer: coarse), (max-width: 760px)'
+const LITE_MAX_PARTICLES = 40
+const LITE_AREA_PER_PARTICLE = 26000
+const LITE_FRAME_MS = 33
 
 const PALETTE = {
   dark: { base: '241, 239, 233', vector: 0.26, line: 0.09 },
@@ -65,6 +72,8 @@ export default function FlowField() {
     const particles = []
     let frame = 0
     let running = false
+    let lite = false
+    let lastDraw = 0
 
     const draw = (t, move) => {
       ctx.clearRect(0, 0, width, height)
@@ -185,7 +194,10 @@ export default function FlowField() {
       rows = Math.ceil(height / LINK_DIST) + 1
       grid = Array.from({ length: cols * rows }, () => [])
 
-      const target = Math.min(MAX_PARTICLES, Math.round((width * height) / AREA_PER_PARTICLE))
+      lite = window.matchMedia(LITE_QUERY).matches
+      const target = lite
+        ? Math.min(LITE_MAX_PARTICLES, Math.round((width * height) / LITE_AREA_PER_PARTICLE))
+        : Math.min(MAX_PARTICLES, Math.round((width * height) / AREA_PER_PARTICLE))
       while (particles.length < target) {
         const x = Math.random() * width
         const y = Math.random() * height
@@ -200,7 +212,10 @@ export default function FlowField() {
     }
 
     const tick = (t) => {
-      draw(t, true)
+      if (!lite || t - lastDraw >= LITE_FRAME_MS) {
+        lastDraw = t
+        draw(t, true)
+      }
       frame = window.requestAnimationFrame(tick)
     }
 

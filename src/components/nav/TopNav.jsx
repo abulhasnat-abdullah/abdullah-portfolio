@@ -30,6 +30,40 @@ function MoonIcon() {
   )
 }
 
+const RESUME_URL = '/resume/Abul-Hasnat-Abdullah-Resume.pdf'
+const RESUME_FILE = 'Abul-Hasnat-Abdullah-Resume.pdf'
+
+// Downloads the PDF as a file. Fetches it first and checks it really is a
+// PDF, then saves it from memory, which works even where a plain download
+// link is blocked or ignored. If anything fails, the PDF opens in a new tab
+// instead, so the visitor always gets the resume.
+async function downloadResume(event) {
+  event.preventDefault()
+  try {
+    const res = await fetch(RESUME_URL)
+    const type = res.headers.get('content-type') || ''
+    if (!res.ok || !type.includes('pdf')) throw new Error('not a pdf')
+    const url = URL.createObjectURL(await res.blob())
+    const link = document.createElement('a')
+    link.href = url
+    link.download = RESUME_FILE
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    window.setTimeout(() => URL.revokeObjectURL(url), 10000)
+  } catch {
+    window.open(RESUME_URL, '_blank', 'noopener')
+  }
+}
+
+function DownloadIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 4v11M7 10l5 5 5-5M5 20h14" />
+    </svg>
+  )
+}
+
 export default function TopNav() {
   const { sections, atTop, scrollToSection, scrollToTop } = useNavigation()
   const { theme, toggleTheme } = useTheme()
@@ -93,6 +127,18 @@ export default function TopNav() {
               </motion.span>
             </AnimatePresence>
           </button>
+
+          {/* Downloads the PDF (built from resume/resume.html). */}
+          <a
+            className="topnav__resume"
+            href={RESUME_URL}
+            download={RESUME_FILE}
+            onClick={downloadResume}
+            aria-label="Download resume (PDF)"
+          >
+            <DownloadIcon />
+            <span>Resume</span>
+          </a>
 
           <a className="topnav__cta" href={profile.links.email}>
             Let&rsquo;s Talk

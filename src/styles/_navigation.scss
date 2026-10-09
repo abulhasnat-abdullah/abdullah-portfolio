@@ -103,6 +103,43 @@
   }
 }
 
+// Resume download: orange text and border on an orange tint, so it reads
+// as part of the accent family beside Let's Talk; on hover it fills solid
+// and the arrow dips.
+.topnav__resume {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  height: 36px;
+  padding: 0 0.95rem 0 0.8rem;
+  border: 1px solid rgba($accent, 0.65);
+  border-radius: 999px;
+  background: rgba($accent, 0.12);
+  color: $accent-text;
+  font-family: $font-nav;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover {
+    border-color: $accent;
+    background: $accent;
+    color: #140803;
+    box-shadow: $shadow-glow;
+  }
+
+  &:hover svg {
+    transform: translateY(2px);
+  }
+}
+
 .topnav__cta {
   display: inline-flex;
   align-items: center;

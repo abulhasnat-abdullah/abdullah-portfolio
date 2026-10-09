@@ -638,72 +638,115 @@ a.dash-tile__inner:hover {
 }
 
 // ---------------------------------------------------------------------------
-// Art & Design — large link rows in place of cards.
+// Art & Design — two portfolio cards that read as buttons: the platform's
+// mark, what's there, and a solid call to action. The whole card is the
+// link; on hover it lifts, takes an orange outline and the arrow moves.
 // ---------------------------------------------------------------------------
 .creative-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
   margin-bottom: clamp(2rem, 4vw, 3rem);
-  border-top: 1px solid $border;
 }
 
-.creative-link {
-  @extend %row;
+.portal {
+  position: relative;
   display: grid;
-  grid-template-columns: 9rem minmax(0, 1fr) auto 48px;
-  align-items: center;
-  gap: clamp(1rem, 2.4vw, 2rem);
-  padding: clamp(1.1rem, 2.4vw, 1.6rem) 0;
-  color: inherit;
-}
-
-.creative-link__platform {
-  font-family: $font-nav;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: $accent-text;
-}
-
-.creative-link__title {
-  font-family: $font-poster;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  font-size: clamp(1.4rem, 3.12vw, 2.5rem);
-  line-height: 0.95;
-  text-transform: none;
-  color: $text;
-  transition: translate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.creative-link:hover .creative-link__title {
-  translate: 10px 0;
-}
-
-.creative-link__handle {
-  font-size: 0.85rem;
-  color: $text-muted;
-}
-
-.creative-link__arrow {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: 1fr auto;
+  gap: 1.1rem 1.1rem;
+  height: 100%;
+  padding: clamp(1.2rem, 2.2vw, 1.6rem);
   border: 1px solid $border;
-  border-radius: 50%;
-  color: $text;
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  border-radius: clamp(14px, 1.6vw, 20px);
+  background: $bg-card;
+  color: inherit;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.4s ease;
 
-  svg {
-    width: 18px;
-    height: 18px;
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba($accent, 0.7);
+    box-shadow: 0 22px 50px rgba(255, 107, 53, 0.16);
   }
 }
 
-.creative-link:hover .creative-link__arrow {
-  border-color: $accent;
+.portal__icon {
+  display: grid;
+  place-items: center;
+  width: 3.2rem;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  background: rgba($accent, 0.14);
+  color: $accent-text;
+
+  svg {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+}
+
+.portal__body {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+}
+
+.portal__platform {
+  font-family: $font-nav;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $text-muted;
+}
+
+.portal__title {
+  font-family: $font-display;
+  font-size: clamp(1.25rem, 2.1vw, 1.7rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: $text;
+}
+
+.portal__desc {
+  font-family: $font-sans;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: $text-soft;
+}
+
+// The call to action: a solid pill, the clearest "press me" on the card.
+.portal__cta {
+  grid-column: 1 / -1;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 999px;
   background: $accent;
-  color: #fff;
+  color: #140803;
+  font-family: $font-nav;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 26px rgba(255, 107, 53, 0.25);
+  transition: background 0.3s ease;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+.portal:hover .portal__cta {
+  background: #ff7d4d;
+
+  svg {
+    transform: translate(3px, -3px);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -869,25 +912,8 @@ a.dash-tile__inner:hover {
     gap: 0.75rem;
   }
 
-  .creative-link {
-    grid-template-columns: minmax(0, 1fr) 44px;
-    gap: 0.35rem 1rem;
-  }
-
-  .creative-link__platform,
-  .creative-link__title {
-    grid-column: 1;
-  }
-
-  .creative-link__handle {
-    display: none;
-  }
-
-  .creative-link__arrow {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    width: 44px;
-    height: 44px;
+  .creative-links {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .contact__lead {
@@ -1076,7 +1102,8 @@ a.dash-tile__inner:hover {
   grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
   align-items: start;
   gap: clamp(0.6rem, 1.4vw, 1rem);
-  padding: 130px 0;
+  // Room for the largest column drift (see DRIFT in CreativeGallery.jsx).
+  padding: 65px 0;
   overflow: clip;
 }
 
@@ -1186,6 +1213,60 @@ a.dash-tile__inner:hover {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: $text-muted;
+}
+
+// "View all" under the list: an orange-tinted pill, centred.
+.work__more {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.work__more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.4rem;
+  border: 1px solid rgba($accent, 0.6);
+  border-radius: 999px;
+  background: rgba($accent, 0.1);
+  color: $accent-text;
+  font-family: $font-nav;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  svg.is-up {
+    transform: rotate(180deg);
+  }
+
+  &:hover {
+    border-color: $accent;
+    background: $accent;
+    color: #140803;
+  }
+
+  &:hover svg {
+    transform: translateY(2px);
+  }
+
+  &:hover svg.is-up {
+    transform: rotate(180deg) translateY(2px);
+  }
 }
 
 .work__list {

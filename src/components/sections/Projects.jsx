@@ -1,5 +1,5 @@
 // Target path: src/components/sections/Projects.jsx
-// Projects as an index: one row per project — number, thumbnail, title with
+// Projects as an index (the first five, then "View all"): one row per project — number, thumbnail, title with
 // a one-line summary (and a small tag on team work), stack, status — so the
 // whole body of work reads at a
 // glance. On a hovering pointer a large preview follows the cursor over the
@@ -18,6 +18,9 @@ const STATUS = {
 }
 
 const pad = (n) => String(n).padStart(2, '0')
+
+// Rows shown before "View all".
+const INITIAL_ROWS = 5
 
 // Small tag on rows that were done as part of a team.
 const TEAMS = { interplanetar: 'Team Interplanetar' }
@@ -101,6 +104,19 @@ export default function Projects() {
   const hover = useHoverPointer()
   const reduced = useReducedMotion()
   const [active, setActive] = useState(null)
+  const [expanded, setExpanded] = useState(false)
+  const shown = expanded ? projects : projects.slice(0, INITIAL_ROWS)
+  const hidden = projects.length - INITIAL_ROWS
+
+  // Collapsing brings the list's top back into view, so the reader isn't
+  // left far below a section that just got shorter.
+  const toggle = () => {
+    if (expanded) {
+      const top = listRef.current?.getBoundingClientRect().top ?? 0
+      if (top < 0) listRef.current.scrollIntoView({ block: 'start' })
+    }
+    setExpanded((v) => !v)
+  }
 
   // Cursor position within the list, sprung so the preview trails a little.
   const x = useMotionValue(0)
@@ -130,10 +146,21 @@ export default function Projects() {
       </div>
 
       <ol className="work__list">
-        {projects.map((project, i) => (
+        {shown.map((project, i) => (
           <Row key={project.id} project={project} index={i} onActivate={setActive} />
         ))}
       </ol>
+
+      {hidden > 0 && (
+        <div className="work__more">
+          <button type="button" className="work__more-btn" onClick={toggle} aria-expanded={expanded}>
+            {expanded ? 'Show fewer' : `View all ${projects.length} projects`}
+            <svg viewBox="0 0 24 24" aria-hidden="true" className={expanded ? 'is-up' : undefined}>
+              <path d="M12 5v14M6 13l6 6 6-6" />
+            </svg>
+          </button>
+        </div>
+      )}
 
       {hover && (
         <AnimatePresence>
