@@ -8,6 +8,9 @@
 }
 
 html {
+  // One step under the browser's 16px, so the whole site reads a little
+  // finer; everything sized in rem scales with it.
+  font-size: 15px;
   // Native smooth scroll is the fallback for touch / reduced-motion; the
   // lerp loop in useSmoothScroll drives the desktop feel.
   scroll-behavior: smooth;
