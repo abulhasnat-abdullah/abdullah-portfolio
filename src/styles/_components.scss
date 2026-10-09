@@ -376,41 +376,10 @@
   z-index: 2;
 }
 
-// Decorative wave artwork anchored to the bottom of every creative card,
-// faded into the card background so text on top stays readable.
-.creative-card::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 62%;
-  background-image: url('/images/decorative/wave-pattern.webp');
-  background-repeat: no-repeat;
-  background-position: bottom center;
-  background-size: cover;
-  opacity: 0.22;
-  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0) 100%);
-  pointer-events: none;
-  transition: opacity 0.35s ease, transform 0.5s ease;
-  z-index: 0;
-}
-
-[data-theme='light'] .creative-card::after {
-  opacity: 0.38;
-}
-
 .creative-card:hover {
   transform: translateY(-3px);
   box-shadow: $shadow-glow;
 
-  &::after {
-    opacity: 0.36;
-    transform: translateY(-4px);
-  }
-}
-
-[data-theme='light'] .creative-card:hover::after {
-  opacity: 0.55;
 }
 
 .creative-card > * {
@@ -1042,29 +1011,6 @@
   backdrop-filter: blur(var(--card-blur));
   -webkit-backdrop-filter: blur(var(--card-blur));
   overflow: hidden;
-}
-
-// Decorative artwork anchored to the bottom of the Contact card,
-// faded into the card background so text on top stays readable.
-.contact::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 55%;
-  background-image: url('/images/decorative/contact-pattern.webp');
-  background-repeat: no-repeat;
-  background-position: bottom center;
-  background-size: cover;
-  opacity: 0.22;
-  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0) 100%);
-  pointer-events: none;
-  transition: opacity 0.35s ease;
-  z-index: 0;
-}
-
-[data-theme='light'] .contact::after {
-  opacity: 0.38;
 }
 
 .contact > * {

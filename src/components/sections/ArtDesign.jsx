@@ -4,7 +4,6 @@ import { creativePortfolios } from '../../data/portfolio'
 import Reveal from '../motion/Reveal'
 import ScrubItem from '../motion/ScrubItem'
 import CreativeGallery from './CreativeGallery'
-import WaveArt from '../effects/WaveArt'
 
 // Platform marks for the two portfolio cards.
 const ICONS = {
@@ -43,7 +42,6 @@ export default function ArtDesign() {
       {/* Two cards that read as buttons: logo, what's there, and an explicit
         call to action. */}
       <div className="creative-links">
-        <WaveArt src="/images/decorative/wave-pattern.webp" className="wave-art--band" />
         {creativePortfolios.map((portfolio, i) => (
           <ScrubItem key={portfolio.id} preset={i % 2 === 0 ? 'slide-left' : 'slide-right'}>
             <a className="portal" href={portfolio.href} target="_blank" rel="noreferrer">

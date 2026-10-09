@@ -13,18 +13,11 @@ import Certificates from '../sections/Certificates'
 import Achievements from '../sections/Achievements'
 import Contact from '../sections/Contact'
 import SectionHeading from '../SectionHeading'
-import WaveArt from '../effects/WaveArt'
 
 // The dashboard carries the chart library, the heaviest code on the page;
 // it loads in its own chunk after the first paint. The placeholder holds
 // roughly its height so the page doesn't jump when it arrives.
 const Dashboard = lazy(() => import('../sections/Dashboard'))
-
-// The original site's wave artwork, kept as a faint band along the bottom
-// of these sections.
-const sectionWaves = {
-  contact: '/images/decorative/contact-pattern.webp',
-}
 
 const sectionComponents = {
   dashboard: Dashboard,
@@ -47,7 +40,6 @@ export default function SectionShell({ section, index }) {
 
   return (
     <section className={`section section--${section.id}`} id={section.id}>
-      {sectionWaves[section.id] && <WaveArt src={sectionWaves[section.id]} />}
       <div className="section__inner">
         <SectionHeading section={section} index={index} />
         <Suspense fallback={<div className="section__placeholder" aria-hidden="true" />}>
