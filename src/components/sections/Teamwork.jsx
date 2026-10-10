@@ -117,7 +117,9 @@ export default function Teamwork() {
           <Reveal as="p" className="team__label">
             Team projects
           </Reveal>
-          <Stagger className="team__projects">
+          {/* Keyed on `expanded`: the reveal runs once, so cards added to an
+            already-revealed grid would stay hidden. A fresh grid reveals all. */}
+          <Stagger className="team__projects" key={expanded ? 'all' : 'some'}>
             {shownProjects.map((p) => {
               const Tag = p.href ? 'a' : 'div'
               const linkProps = p.href ? { href: p.href, target: '_blank', rel: 'noreferrer' } : {}
