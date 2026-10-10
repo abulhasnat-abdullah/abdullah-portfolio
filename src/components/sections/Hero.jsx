@@ -286,34 +286,6 @@ export default function Hero() {
   const cardRef = useRef(null)
   const [activeSide, setActiveSide] = useState(null)
   const reduced = useReducedMotion()
-  const bodyRef = useRef(null)
-  const factsRef = useRef(null)
-
-  // The left main group (About me → actions) spans exactly as tall as the
-  // right items (Research focus → last item), so "About me" sits level with
-  // "Research focus" and both groups end level with the photo.
-  useLayoutEffect(() => {
-    const body = bodyRef.current
-    const facts = factsRef.current
-    if (!body || !facts) return
-    const measure = () => {
-      const items = facts.querySelectorAll('.hero__side')
-      if (!items.length || getComputedStyle(facts).display !== 'flex') {
-        body.style.removeProperty('--side-h')
-        return
-      }
-      const first = items[0]
-      const last = items[items.length - 1]
-      const h = last.offsetTop + last.offsetHeight - first.offsetTop
-      body.style.setProperty('--side-h', `${h}px`)
-    }
-    measure()
-    const observer = new ResizeObserver(measure)
-    observer.observe(facts)
-    facts.querySelectorAll('.hero__side').forEach((item) => observer.observe(item))
-    document.fonts?.ready.then(measure)
-    return () => observer.disconnect()
-  }, [])
   const { introReady } = useIntro()
   const { scrollToSection } = useNavigation()
   const [parallax, setParallax] = useState(false)
@@ -409,7 +381,7 @@ export default function Hero() {
         {/* The poster row, mirrored: intro on the left, the card in the
           middle, facts on the right. Both side columns run from the card's
           top edge to its bottom edge. */}
-        <div className="hero__body" id="about" ref={bodyRef}>
+        <div className="hero__body" id="about">
           {/* ------------------------------------------------ left: intro */}
           <div className="hero__intro">
             <motion.div className="hero__corner" {...rise(0.9)}>
@@ -419,50 +391,48 @@ export default function Hero() {
               </p>
               <p className="hero__corner-sub">{STATUS.sub}</p>
             </motion.div>
-            <div className="hero__intro-main">
-              <div>
-                <motion.p className="hero__kicker" {...rise(0.95)}>
-                  About me
-                </motion.p>
-                <motion.p className="hero__lead" {...rise(1.05)}>
-                  Mechanical Engineering at BUET — building <strong>autonomous systems</strong> by day,
-                  painting watercolour and designing by night.
-                </motion.p>
-              </div>
-              <motion.div className="hero__actions" {...rise(1.15)}>
-                <Magnetic>
-                  <button type="button" className="hero__cta" onClick={() => scrollToSection('projects')}>
-                    {/* The label rolls up to a fresh copy on hover; the arrow
-                      flies out of the badge as a new one flies in. */}
-                    <span className="hero__cta-label">
-                      <span>View work</span>
-                      <span aria-hidden="true">View work</span>
-                    </span>
-                    <span className="hero__cta-badge" aria-hidden="true">
-                      <ArrowUpRight />
-                      <ArrowUpRight />
-                    </span>
-                  </button>
-                </Magnetic>
-                <span className="hero__socials">
-                  {SOCIALS.map((s) => (
-                    <Magnetic key={s.label}>
-                      <a
-                        className="hero__social"
-                        href={s.href}
-                        aria-label={s.label}
-                        title={s.label}
-                        {...(s.href.startsWith('mailto:') ? {} : { target: '_blank', rel: 'noreferrer' })}
-                      >
-                        <svg viewBox="0 0 24 24" aria-hidden="true" className={s.fill ? 'is-fill' : 'is-line'}>
-                          <path d={s.path} />
-                        </svg>
-                      </a>
-                    </Magnetic>
-                  ))}
-                </span>
-              </motion.div>
+            <div>
+              <motion.p className="hero__kicker" {...rise(0.95)}>
+                About me
+              </motion.p>
+              <motion.p className="hero__lead" {...rise(1.05)}>
+                Mechanical Engineering at BUET — building <strong>autonomous systems</strong> by day,
+                painting watercolour and designing by night.
+              </motion.p>
             </div>
+            <motion.div className="hero__actions" {...rise(1.15)}>
+              <Magnetic>
+                <button type="button" className="hero__cta" onClick={() => scrollToSection('projects')}>
+                  {/* The label rolls up to a fresh copy on hover; the arrow
+                    flies out of the badge as a new one flies in. */}
+                  <span className="hero__cta-label">
+                    <span>View work</span>
+                    <span aria-hidden="true">View work</span>
+                  </span>
+                  <span className="hero__cta-badge" aria-hidden="true">
+                    <ArrowUpRight />
+                    <ArrowUpRight />
+                  </span>
+                </button>
+              </Magnetic>
+              <span className="hero__socials">
+                {SOCIALS.map((s) => (
+                  <Magnetic key={s.label}>
+                    <a
+                      className="hero__social"
+                      href={s.href}
+                      aria-label={s.label}
+                      title={s.label}
+                      {...(s.href.startsWith('mailto:') ? {} : { target: '_blank', rel: 'noreferrer' })}
+                    >
+                      <svg viewBox="0 0 24 24" aria-hidden="true" className={s.fill ? 'is-fill' : 'is-line'}>
+                        <path d={s.path} />
+                      </svg>
+                    </a>
+                  </Magnetic>
+                ))}
+              </span>
+            </motion.div>
           </div>
 
           {/* ------------------------------------------------ middle: card */}
@@ -499,7 +469,7 @@ export default function Hero() {
           </motion.figure>
 
           {/* ------------------------------------------------ right: facts */}
-          <dl className="hero__facts" ref={factsRef} onPointerLeave={() => setActiveSide(null)}>
+          <dl className="hero__facts" onPointerLeave={() => setActiveSide(null)}>
             <SideNetwork active={activeSide} reduced={reduced} />
             <motion.div className="hero__corner hero__corner--end" {...rise(0.9)}>
               <p className="hero__corner-title">

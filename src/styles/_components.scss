@@ -58,7 +58,7 @@
 
 .about__meta dt {
   font-family: $font-nav;
-  font-size: 0.68rem;
+  font-size: 0.74rem;
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -97,7 +97,7 @@
 
 .highlight__label {
   font-family: $font-nav;
-  font-size: 0.68rem;
+  font-size: 0.74rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -490,7 +490,7 @@
   align-items: center;
   gap: 0.4rem;
   font-family: $font-mono;
-  font-size: 0.7rem;
+  font-size: 0.74rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -508,7 +508,7 @@
   border-radius: 999px;
   border: 1px solid transparent;
   font-family: $font-mono;
-  font-size: 0.68rem;
+  font-size: 0.74rem;
   font-weight: 600;
 }
 
@@ -588,7 +588,7 @@
 
   span {
     font-family: $font-mono;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: $text-muted;
@@ -644,7 +644,7 @@
   bottom: 0;
   padding: 1.5rem 0.7rem 0.55rem;
   font-family: $font-mono;
-  font-size: 0.7rem;
+  font-size: 0.74rem;
   letter-spacing: 0.03em;
   text-align: left;
   color: #fff;
@@ -730,7 +730,7 @@
 
     span {
       color: $accent-2-text;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
     }
   }
 }
@@ -902,7 +902,7 @@
 
 .skill-badge__label {
   font-family: $font-nav;
-  font-size: clamp(0.68rem, 2.2vw, 0.74rem);
+  font-size: clamp(0.74rem, 2.2vw, 0.74rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   color: $text;
@@ -911,7 +911,7 @@
 
 .skill-badge__percent {
   font-family: $font-nav;
-  font-size: clamp(0.68rem, 2vw, 0.66rem);
+  font-size: clamp(0.74rem, 2vw, 0.66rem);
   font-weight: 600;
   color: $accent-text;
 }
@@ -1054,7 +1054,7 @@
 
 .contact-link span {
   font-family: $font-mono;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: $accent-text;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -1140,7 +1140,7 @@
 .org-card__duration {
   margin-top: 0.15rem;
   font-family: $font-mono;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: $accent-2-text;
 }
 
@@ -1172,7 +1172,7 @@
   time {
     flex-shrink: 0;
     font-family: $font-mono;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     color: $text-muted;
     white-space: nowrap;
   }
@@ -1187,7 +1187,7 @@
 .org-role__tags {
   margin-top: 0.35rem;
   font-family: $font-mono;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: $accent-2-text;
 }
 
@@ -1270,12 +1270,12 @@
   }
 
   .about__hero-info .hero__role {
-    font-size: clamp(0.72rem, 2.6vw, 0.92rem);
+    font-size: clamp(0.74rem, 2.6vw, 0.92rem);
     line-height: 1.35;
   }
 
   .about__hero-info .hero__location {
-    font-size: clamp(0.68rem, 2.1vw, 0.8rem);
+    font-size: clamp(0.74rem, 2.1vw, 0.8rem);
   }
 
   .about__hero-info .hero__tagline,
@@ -1330,11 +1330,11 @@
   }
 
   .about__hero-info .hero__role {
-    font-size: clamp(0.68rem, 2.8vw, 0.78rem);
+    font-size: clamp(0.74rem, 2.8vw, 0.78rem);
   }
 
   .about__hero-info .hero__location {
-    font-size: clamp(0.68rem, 2.2vw, 0.68rem);
+    font-size: clamp(0.74rem, 2.2vw, 0.68rem);
   }
 
   .about__hero-info .hero__tagline,
@@ -1419,7 +1419,7 @@
   }
 
   .achievement-card__context {
-    font-size: 0.68rem !important;
+    font-size: 0.74rem !important;
   }
 
   .creative-card {
@@ -1436,7 +1436,7 @@
   }
 
   .creative-card__handle {
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     margin-bottom: 0.55rem;
   }
 
@@ -1450,22 +1450,22 @@
     margin-bottom: 0.55rem;
 
     li {
-      font-size: 0.68rem;
+      font-size: 0.74rem;
       padding: 0.2rem 0.45rem;
     }
   }
 
   .creative-card__platform {
-    font-size: 0.68rem;
+    font-size: 0.74rem;
   }
 
   .creative-card__role {
-    font-size: 0.68rem;
+    font-size: 0.74rem;
     padding: 0.18rem 0.4rem;
   }
 
   .creative-card__link {
-    font-size: 0.72rem;
+    font-size: 0.74rem;
   }
 
   .skills-card,
@@ -1496,15 +1496,15 @@
   }
 
   .certificate-card__issuer {
-    font-size: 0.72rem;
+    font-size: 0.74rem;
   }
 
   .certificate-card__meta span {
-    font-size: 0.72rem;
+    font-size: 0.74rem;
   }
 
   .certificate-card__id {
-    font-size: 0.7rem;
+    font-size: 0.74rem;
   }
 
   .certificate-card__link {
@@ -1529,7 +1529,7 @@
   }
 
   .contact-link span {
-    font-size: 0.68rem;
+    font-size: 0.74rem;
   }
 
   .org-card__header {
@@ -1547,7 +1547,7 @@
   }
 
   .org-card__duration {
-    font-size: 0.68rem;
+    font-size: 0.74rem;
   }
 
   .org-role {
@@ -1559,7 +1559,7 @@
   }
 
   .org-role__top time {
-    font-size: 0.68rem;
+    font-size: 0.74rem;
   }
 
   .org-role__meta {
@@ -1567,11 +1567,11 @@
   }
 
   .org-role__tags {
-    font-size: 0.68rem;
+    font-size: 0.74rem;
   }
 
   .org-card__toggle {
-    font-size: 0.7rem;
+    font-size: 0.74rem;
     padding: 0.5rem 0.85rem;
   }
 
@@ -1612,7 +1612,7 @@
   }
 
   .creative-card__handle {
-    font-size: 0.68rem;
+    font-size: 0.74rem;
   }
 
   .creative-card p:not(.creative-card__handle) {
