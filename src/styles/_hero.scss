@@ -221,7 +221,7 @@
   margin-top: 0.8rem;
   line-height: 0.9rem;
   font-family: $font-nav;
-  font-size: 0.74rem;
+  font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--hero-faint);
@@ -247,6 +247,16 @@
 // margin-bottom: auto pushes them up while the main group stays at the foot.
 .hero__corner {
   margin-bottom: auto;
+}
+
+// Label + lead at the top, actions at the foot, as tall as the right items
+// (--side-h is measured in Hero.jsx), so the two columns line up row for row.
+.hero__intro-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(1.6rem, 2.6vw, 2.2rem);
+  min-height: var(--side-h, 0px);
 }
 
 .hero__corner--end {
@@ -318,10 +328,9 @@ html[data-motion='off'] .hero__corner-dot::after {
 .hero__kicker {
   // The same label style as the right column's, so the two groups match.
   font-family: $font-condensed;
-  // Clearly larger than the intro under it: a heading, not a label.
-  font-size: clamp(1.9rem, 2.7vw, 2.6rem);
+  font-size: clamp(1.3rem, 1.65vw, 1.55rem);
   font-weight: 700;
-  line-height: 0.95;
+  line-height: 1;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: $accent-text;
@@ -802,7 +811,7 @@ html[data-motion='off'] .hero__corner-dot::after {
   flex-shrink: 0;
   max-width: 8.5rem;
   font-family: $font-nav;
-  font-size: 0.74rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
