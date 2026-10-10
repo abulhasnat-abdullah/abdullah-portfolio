@@ -8,9 +8,10 @@
 //
 // The film is a click-to-load YouTube embed: until it's clicked the page
 // loads one thumbnail, not YouTube's player, and nothing is sent to YouTube.
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { featuredProjects } from '../../data/featured'
 import Reveal, { Stagger, StaggerItem } from '../motion/Reveal'
+import MoreButton from '../MoreButton'
 
 function Film({ id, title }) {
   const [playing, setPlaying] = useState(false)
@@ -39,8 +40,14 @@ function Film({ id, title }) {
 }
 
 function CaseStudy({ project }) {
+  // Collapsed: the intro, the film and the missions. "View more" opens
+  // the photos.
+  const [expanded, setExpanded] = useState(false)
+  const rootRef = useRef(null)
+  const hasMore = Boolean(project.gallery)
+
   return (
-    <article className="case" id={`case-${project.id}`}>
+    <article className="case" id={`case-${project.id}`} ref={rootRef}>
       {/* ------------------------------------------------ intro */}
       <div className="case__intro">
         <div className="case__intro-text">
@@ -97,7 +104,7 @@ function CaseStudy({ project }) {
       </div>
 
       {/* ------------------------------------------------ photos */}
-      {project.gallery && (
+      {expanded && project.gallery && (
         <Stagger className="case__strip">
           {project.gallery.map((img) => (
             <StaggerItem as="figure" className="case__shot" key={img.src}>
@@ -106,6 +113,15 @@ function CaseStudy({ project }) {
             </StaggerItem>
           ))}
         </Stagger>
+      )}
+
+      {hasMore && (
+        <MoreButton
+          expanded={expanded}
+          onToggle={() => setExpanded((v) => !v)}
+          label="View more photos"
+          targetRef={rootRef}
+        />
       )}
     </article>
   )

@@ -1,14 +1,17 @@
 // Target path: src/components/sections/Teamwork.jsx
 // Teamwork: my work in Team Interplanetar (data: data/teamwork.js).
 //
-// Compact: an intro (role, competitions, focus areas, the role timeline)
-// beside a photo of the rover; one uniform row of four images; then the
-// team projects, moved here from Selected Projects, as a 4-across grid of
-// cards (a project's extra images show as thumbnails on its card). The timeline is read from `experience` and the projects from
-// `projects` (team: 'interplanetar'), so they never drift.
+// Compact: an intro (role, competitions, focus areas) beside a photo of the
+// rover, then one row of team projects. "View more" opens the role
+// timeline, a row of four photos and every team project (a project's
+// extra images show as thumbnails on its card). The timeline is read from
+// `experience` and the projects from `projects` (team: 'interplanetar'), so
+// they never drift.
+import { useRef, useState } from 'react'
 import { experience, projects } from '../../data/portfolio'
 import { teamwork } from '../../data/teamwork'
 import Reveal, { Stagger, StaggerItem } from '../motion/Reveal'
+import MoreButton from '../MoreButton'
 
 const STATUS = { live: 'Live', 'in-progress': 'In progress', completed: 'Completed' }
 
@@ -16,6 +19,9 @@ const org = experience.find((e) => e.org.includes('Interplanetar'))
 // Oldest first, so the timeline reads as a climb.
 const roles = org ? [...org.roles].reverse() : []
 const teamProjects = projects.filter((p) => p.team === 'interplanetar')
+// Collapsed, the section shows one row of projects; "View more" opens the
+// role timeline, the photo row and the rest of the projects.
+const INITIAL_PROJECTS = 4
 
 function ArrowUpRight() {
   return (
@@ -27,9 +33,12 @@ function ArrowUpRight() {
 
 export default function Teamwork() {
   const t = teamwork
+  const [expanded, setExpanded] = useState(false)
+  const rootRef = useRef(null)
+  const shownProjects = expanded ? teamProjects : teamProjects.slice(0, INITIAL_PROJECTS)
 
   return (
-    <div className="team">
+    <div className="team" ref={rootRef}>
       {/* ------------------------------------------------ intro */}
       <div className="team__intro">
         <div className="team__intro-text">
@@ -73,7 +82,7 @@ export default function Teamwork() {
             </ul>
           </Reveal>
 
-          {roles.length > 0 && (
+          {expanded && roles.length > 0 && (
             <Reveal as="ol" className="team__timeline" delay={0.25}>
               {roles.map((r) => (
                 <li key={r.title}>
@@ -91,14 +100,16 @@ export default function Teamwork() {
       </div>
 
       {/* ------------------------------------------------ photos: one row */}
-      <Stagger className="team__row">
-        {t.gallery.map((img) => (
-          <StaggerItem as="figure" className="team__shot" key={img.src}>
-            <img src={img.src} alt={img.caption} loading="lazy" decoding="async" />
-            <figcaption>{img.caption}</figcaption>
-          </StaggerItem>
-        ))}
-      </Stagger>
+      {expanded && (
+        <Stagger className="team__row">
+          {t.gallery.map((img) => (
+            <StaggerItem as="figure" className="team__shot" key={img.src}>
+              <img src={img.src} alt={img.caption} loading="lazy" decoding="async" />
+              <figcaption>{img.caption}</figcaption>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      )}
 
       {/* ------------------------------------------------ team projects: one row */}
       {teamProjects.length > 0 && (
@@ -107,7 +118,7 @@ export default function Teamwork() {
             Team projects
           </Reveal>
           <Stagger className="team__projects">
-            {teamProjects.map((p) => {
+            {shownProjects.map((p) => {
               const Tag = p.href ? 'a' : 'div'
               const linkProps = p.href ? { href: p.href, target: '_blank', rel: 'noreferrer' } : {}
               return (
@@ -153,6 +164,13 @@ export default function Teamwork() {
           </Stagger>
         </div>
       )}
+
+      <MoreButton
+        expanded={expanded}
+        onToggle={() => setExpanded((v) => !v)}
+        label={`View all ${teamProjects.length} projects & photos`}
+        targetRef={rootRef}
+      />
     </div>
   )
 }
