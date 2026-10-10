@@ -11,7 +11,22 @@ import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { EASE, EASE_OUT } from '../../lib/motion'
 import { useIntro } from '../../context/IntroContext'
 
-const MIN_VISIBLE_MS = 1900
+// Long enough for the counter to read as an intro, short enough not to keep
+// anyone waiting. A visitor who has already seen it this session gets a
+// brief beat instead.
+const FIRST_VISIT_MS = 1100
+const RETURN_VISIT_MS = 450
+const SEEN_KEY = 'intro-seen'
+
+function introLength() {
+  try {
+    const seen = sessionStorage.getItem(SEEN_KEY)
+    sessionStorage.setItem(SEEN_KEY, '1')
+    return seen ? RETURN_VISIT_MS : FIRST_VISIT_MS
+  } catch {
+    return FIRST_VISIT_MS
+  }
+}
 const WORDS = ['Robotics', 'Autonomy', 'Art', 'Design']
 const NAME = 'ABUL HASNAT ABDULLAH'
 
@@ -28,12 +43,13 @@ export default function LoadingScreen() {
   }, [isLoading, markIntroReady])
 
   useEffect(() => {
+    const MIN_VISIBLE_MS = introLength()
     const start = performance.now()
     let cancelled = false
     let frame
 
-    // The bar is time-based but *waits* at 99 until the real work is done,
-    // so it never claims 100% before the page can actually render.
+    // The bar is time-based but *waits* at 99 until the fonts are in, so the
+    // hero never flashes in a fallback face.
     const tick = (now) => {
       if (cancelled) return
       const elapsed = now - start
@@ -45,7 +61,7 @@ export default function LoadingScreen() {
       if (capped >= 1) {
         window.setTimeout(() => {
           if (!cancelled) setIsLoading(false)
-        }, 260)
+        }, 120)
         return
       }
       frame = window.requestAnimationFrame(tick)
@@ -56,13 +72,13 @@ export default function LoadingScreen() {
       readyRef.current = true
     }
 
+    // Fonts only: images below the fold load lazily and shouldn't hold the
+    // curtain.
     if (document.fonts?.ready) document.fonts.ready.then(markReady).catch(markReady)
     else markReady()
-    if (document.readyState === 'complete') markReady()
-    else window.addEventListener('load', markReady, { once: true })
 
     // Safety net: never trap the visitor behind the curtain.
-    const fallback = window.setTimeout(markReady, MIN_VISIBLE_MS + 1800)
+    const fallback = window.setTimeout(markReady, MIN_VISIBLE_MS + 1200)
 
     // The counter above is driven by requestAnimationFrame, which the
     // browser PAUSES entirely while the tab is in the background — so a
@@ -73,14 +89,13 @@ export default function LoadingScreen() {
       if (cancelled) return
       setPercent(100)
       setIsLoading(false)
-    }, MIN_VISIBLE_MS + 2600)
+    }, MIN_VISIBLE_MS + 1800)
 
     return () => {
       cancelled = true
       window.clearTimeout(fallback)
       window.clearTimeout(hardFinish)
       window.cancelAnimationFrame(frame)
-      window.removeEventListener('load', markReady)
     }
   }, [])
 

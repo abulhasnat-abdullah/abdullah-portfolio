@@ -36,8 +36,8 @@
   // Dark theme.
   --hero-paper: #0e0b09;
   --hero-ink: #f5f1ea;
-  --hero-soft: rgba(245, 241, 234, 0.72);
-  --hero-faint: rgba(245, 241, 234, 0.48);
+  --hero-soft: rgba(245, 241, 234, 0.8);
+  --hero-faint: rgba(245, 241, 234, 0.62);
   --hero-line: rgba(245, 241, 234, 0.12);
   --hero-name-top: rgba(255, 107, 53, 0.55);
   --hero-name-foot: #f5f1ea;
@@ -51,8 +51,8 @@
 [data-theme='light'] .hero {
   --hero-paper: #fbf8f2;
   --hero-ink: #1d1a16;
-  --hero-soft: rgba(29, 26, 22, 0.74);
-  --hero-faint: rgba(29, 26, 22, 0.52);
+  --hero-soft: rgba(29, 26, 22, 0.82);
+  --hero-faint: rgba(29, 26, 22, 0.64);
   --hero-line: rgba(29, 26, 22, 0.12);
   --hero-name-top: rgba(178, 61, 15, 0.42);
   --hero-name-foot: #1d1a16;

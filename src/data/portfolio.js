@@ -5,7 +5,7 @@ export const profile = {
   subtitle: 'BSc Mechanical Engineering · BUET',
   eduLine1: 'Undergraduate Student (Junior Year)',
   eduLine2: 'Department of Mechanical Engineering, BUET',
-  bio: `Hi, I'm Abdullah. I'm a Mechanical Engineering student at BUET, focused on robotics and autonomous systems. I currently lead the software and autonomy team of Team Interplanetar, a Mars rover of BUET, where I work on developing control systems, implementing SLAM, and building an Autonomy Stack with custom behaviour trees to adapt in complex mission. When I'm away from my engineering projects, you'll usually find me painting under the name Aquarelle Verse, or designing visuals and branding for different events and creatives. I love building things that are both highly functional and visually beautiful.`,
+  bio: `Hi, I'm Abdullah. I'm a Mechanical Engineering student at BUET, focused on robotics and autonomous systems. I lead the software and autonomy sub-team of Team Interplanetar, BUET's Mars rover team, where I work on control systems, SLAM and an autonomy stack built on custom behaviour trees for complex missions. Away from engineering, you'll usually find me painting as Aquarelle Verse, or designing visuals and branding for events. I love building things that are both highly functional and visually beautiful.`,
   photo: '/images/profile/photo.webp',
   email: 'abdkalam22@gmail.com',
   location: 'Dhaka, Bangladesh',
@@ -36,17 +36,17 @@ export const profile = {
 // section, so nothing becomes unreachable.
 export const sections = [
   { navPrimary: true, id: 'about', label: 'About', title: 'About Me', kicker: 'Who I am', note: 'the short version' },
-  { id: 'dashboard', label: 'Dashboard', title: 'At a Glance', kicker: 'Live numbers', note: 'updated as you read' },
-  { id: 'education', label: 'Education', title: 'Education', kicker: 'Where I studied', note: 'still learning' },
-  { id: 'experience', label: 'Experience', title: 'Experience & Activities', kicker: 'Where I work', note: 'the teams I build with' },
-  { navPrimary: true, id: 'teamwork', label: 'Teamwork', title: 'Teamwork', kicker: 'Mars rover team', note: 'built together' },
   { navPrimary: true, id: 'featured', label: 'Highlights', title: 'Highlighted Projects', kicker: 'Case study', note: 'in brief' },
+  { navPrimary: true, id: 'teamwork', label: 'Teamwork', title: 'Teamwork', kicker: 'Mars rover team', note: 'built together' },
   { navPrimary: true, id: 'projects', label: 'Projects', title: 'Projects', kicker: 'What I build', note: 'hover a row to peek' },
-  { navPrimary: true, id: 'art-design', label: 'Art & Design', title: 'Art & Design', kicker: 'The other half', note: 'painted by hand' },
+  { id: 'experience', label: 'Experience', title: 'Experience & Activities', kicker: 'Where I work', note: 'the teams I build with' },
+  { id: 'education', label: 'Education', title: 'Education', kicker: 'Where I studied', note: 'still learning' },
   { navPrimary: true, id: 'skills', label: 'Skills', title: 'Technical Stack', kicker: 'What I use', note: 'daily drivers' },
   { id: 'research', label: 'Research', title: 'Research Interests', kicker: 'What I explore', note: 'favourite rabbit holes' },
-  { id: 'certificates', label: 'Certificates', title: 'Certifications & Courses', kicker: 'Credentials', note: 'homework, verified' },
+  { navPrimary: true, id: 'art-design', label: 'Art & Design', title: 'Art & Design', kicker: 'The other half', note: 'painted by hand' },
   { id: 'achievements', label: 'Achievements', title: 'Achievements', kicker: 'Recognition', note: 'proud of these' },
+  { id: 'certificates', label: 'Certificates', title: 'Certifications & Courses', kicker: 'Credentials', note: 'homework, verified' },
+  { id: 'dashboard', label: 'Dashboard', title: 'At a Glance', kicker: 'Live numbers', note: 'updated as you read' },
   { navPrimary: true, id: 'contact', label: 'Contact', title: 'Get In Touch', kicker: 'Say hello', note: 'I reply fast' },
 ]
 

@@ -344,7 +344,9 @@ export default function Hero() {
   const rise = (delay, from = { y: 18 }) => ({
     initial: reduced ? { opacity: 0 } : { opacity: 0, ...from },
     animate: introReady ? { opacity: 1, x: 0, y: 0 } : undefined,
-    transition: { duration: 0.8, delay: reduced ? 0 : delay, ease: EASE },
+    // Delays are written relative to the curtain lifting; the copy starts
+    // 0.35s earlier so the page is readable sooner.
+    transition: { duration: 0.8, delay: reduced ? 0 : Math.max(0, delay - 0.35), ease: EASE },
   })
 
   return (
@@ -443,7 +445,7 @@ export default function Hero() {
             onPointerLeave={onPointerLeave}
             initial={reduced ? { opacity: 0 } : { opacity: 0, y: 50 }}
             animate={introReady ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 1.3, delay: reduced ? 0 : 0.55, ease: EASE_OUT }}
+            transition={{ duration: 1.1, delay: reduced ? 0 : 0.3, ease: EASE_OUT }}
           >
             <div className="hero__card-window">
               {!cutoutMissing && (

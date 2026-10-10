@@ -11,7 +11,7 @@ import { useReducedMotion } from '../../hooks/useReducedMotion'
 // Each word's fade overlaps the next few, so the highlight reads as a soft
 // sweep rather than words switching on one at a time.
 const OVERLAP = 4
-const DIM = 0.16
+const DIM = 0.38
 
 // One scroll value drives every word: it is written to a CSS variable (--p)
 // on the paragraph, and each word's opacity is a CSS clamp() of it. No
