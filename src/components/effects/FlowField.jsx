@@ -12,10 +12,12 @@
 //   - prefers-reduced-motion draws a single still frame and never animates
 //   - phones and touch screens get a lite mode: a third of the particles,
 //     drawn at ~30 fps
+//   - drawing pauses while the page is scrolling, so the scroll gets the
+//     frame budget, and resumes a moment after it stops
 import { useEffect, useRef } from 'react'
 import { isReducedMotion, subscribeMotion } from '../../lib/motionPreference'
 
-const MAX_PARTICLES = 120
+const MAX_PARTICLES = 90
 const AREA_PER_PARTICLE = 15000 // px² per particle → ~86 on a 1440×900 window
 const LINK_DIST = 115
 const MOUSE_RADIUS = 180
@@ -74,6 +76,8 @@ export default function FlowField() {
     let running = false
     let lite = false
     let lastDraw = 0
+    let scrolling = false
+    let scrollTimer = 0
 
     const draw = (t, move) => {
       ctx.clearRect(0, 0, width, height)
@@ -212,7 +216,7 @@ export default function FlowField() {
     }
 
     const tick = (t) => {
-      if (!lite || t - lastDraw >= LITE_FRAME_MS) {
+      if (!scrolling && (!lite || t - lastDraw >= LITE_FRAME_MS)) {
         lastDraw = t
         draw(t, true)
       }
@@ -242,6 +246,14 @@ export default function FlowField() {
       if (!event.relatedTarget) mouse.active = false
     }
 
+    const onScroll = () => {
+      scrolling = true
+      window.clearTimeout(scrollTimer)
+      scrollTimer = window.setTimeout(() => {
+        scrolling = false
+      }, 140)
+    }
+
     const onVisibility = () => (document.hidden ? stop() : start())
 
     const onMotionPreference = () => {
@@ -262,6 +274,7 @@ export default function FlowField() {
     start()
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
     window.addEventListener('resize', resize)
+    window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('pointermove', onPointerMove, { passive: true })
     document.addEventListener('pointerout', onPointerOut)
     document.addEventListener('visibilitychange', onVisibility)
@@ -271,6 +284,8 @@ export default function FlowField() {
       stop()
       themeObserver.disconnect()
       window.removeEventListener('resize', resize)
+      window.removeEventListener('scroll', onScroll)
+      window.clearTimeout(scrollTimer)
       window.removeEventListener('pointermove', onPointerMove)
       document.removeEventListener('pointerout', onPointerOut)
       document.removeEventListener('visibilitychange', onVisibility)

@@ -414,3 +414,14 @@ html[data-motion='off'] {
   pointer-events: none;
 }
 
+
+// ---------------------------------------------------------------------------
+// Performance: backdrop blurs only on the top bar and the menu overlay.
+// A backdrop-filter re-blurs whatever moves behind it on every frame; with
+// the animated background behind every card that made scrolling stutter on
+// slower machines. Cards use near-opaque fills instead (--bg-card).
+// ---------------------------------------------------------------------------
+*:not(.topnav):not(.nav-overlay) {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}

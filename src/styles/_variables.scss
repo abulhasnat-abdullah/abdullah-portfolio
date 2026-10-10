@@ -16,7 +16,9 @@
   // fade-to-page-background must end on this token instead.
   --bg-transparent: rgba(6, 6, 6, 0);
   --bg-elevated: #0d0d0c;
-  --bg-card: rgba(18, 17, 16, 0.62);
+  // Solid enough to read without a backdrop blur (blurs are off for cards;
+  // see _base.scss).
+  --bg-card: rgba(18, 17, 16, 0.86);
   --border: rgba(255, 255, 255, 0.08);
 
   --text: #f5f4ef;
@@ -25,7 +27,7 @@
 
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
   --nav-bg: rgba(6, 6, 6, 0.72);
-  --pill-bg: rgba(18, 17, 16, 0.5);
+  --pill-bg: rgba(18, 17, 16, 0.78);
 
   // Glass blur applied to cards — a light glassy blur in dark mode so
   // cards read as translucent over the background, stronger in light
@@ -59,7 +61,7 @@
   --bg: #f3efe7;
   --bg-transparent: rgba(243, 239, 231, 0);
   --bg-elevated: #ffffff;
-  --bg-card: rgba(255, 255, 255, 0.82);
+  --bg-card: rgba(255, 255, 255, 0.93);
   --border: rgba(20, 18, 15, 0.18);
 
   --text: #201e1a;
@@ -68,7 +70,7 @@
 
   --shadow: 0 24px 60px rgba(30, 25, 15, 0.12);
   --nav-bg: rgba(255, 255, 255, 0.6);
-  --pill-bg: rgba(255, 255, 255, 0.55);
+  --pill-bg: rgba(255, 255, 255, 0.85);
 
   --card-blur: 18px;
 

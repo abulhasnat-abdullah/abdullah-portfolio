@@ -12,7 +12,6 @@ import Hero from '../sections/Hero'
 import LogoStrip from '../sections/LogoStrip'
 import SectionShell from './SectionShell'
 import { sections } from '../../data/portfolio'
-import { useSmoothScroll } from '../../hooks/useSmoothScroll'
 
 // Words for the two scroll-reactive bands: one after the hero, one leading
 // into Contact.
@@ -20,7 +19,8 @@ const BAND_INTRO = ['Robotics', 'Autonomy', 'Watercolour', 'Design']
 const BAND_CONTACT = ['Open to work', 'Collaborations', 'Commissions', 'Say hello']
 
 export default function Layout() {
-  useSmoothScroll()
+  // Native scrolling: a scripted smooth-scroll fought trackpads, high-refresh
+  // screens and the scroll-linked effects, and stuttered on slower PCs.
 
   return (
     <div className="layout">

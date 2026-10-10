@@ -1,55 +1,40 @@
 // Target path: src/components/motion/ScrubItem.jsx
-// A scroll-scrubbed entrance. The element's transform and opacity are tied
-// directly to its own position in the viewport, so it animates in as you
-// scroll down and back out as you scroll up, rather than firing once.
+// An entrance with a character: slide, flip, rise, skew or tilt in as the
+// element first scrolls into view, then stay put.
 //
-// Presets give each section its own motion. All of them use transform and
-// opacity only. Progress runs from the element's top entering the bottom of
-// the viewport to its top reaching 70% of the way up, so anything you can
-// comfortably read has already settled.
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+// It used to be scroll-scrubbed (recomputed on every scroll frame, in both
+// directions). With a dozen of these on the page that kept the main thread
+// busy for the whole scroll and stuttered on slower machines, so it now
+// plays once, on the compositor, like Reveal. Transform and opacity only.
+import { motion } from 'framer-motion'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { EASE } from '../../lib/motion'
 
+// Where each preset starts; every one ends at rest.
 const PRESETS = {
-  'slide-left': { x: [-90, 0] },
-  'slide-right': { x: [90, 0] },
-  flip: { rotateX: [42, 0], y: [70, 0] },
-  rise: { y: [90, 0], scale: [0.9, 1] },
-  skew: { y: [70, 0], skewY: [6, 0] },
-  tilt: { y: [70, 0], rotate: [-4, 0] },
+  'slide-left': { x: -70 },
+  'slide-right': { x: 70 },
+  flip: { rotateX: 35, y: 50 },
+  rise: { y: 60, scale: 0.94 },
+  skew: { y: 50, skewY: 5 },
+  tilt: { y: 50, rotate: -3 },
 }
 
-const STILL = [0, 0]
-const UNIT = [1, 1]
+const REST = { x: 0, y: 0, rotate: 0, rotateX: 0, skewY: 0, scale: 1, opacity: 1 }
 
 export default function ScrubItem({ preset = 'rise', className = '', as = 'div', children, ...rest }) {
-  const ref = useRef(null)
   const reduced = useReducedMotion()
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'start 0.7'] })
-  const p = PRESETS[preset] ?? PRESETS.rise
-
-  // Every transform is created every render (hooks can't be conditional);
-  // presets that don't use one map it to a constant.
-  const x = useTransform(scrollYProgress, [0, 1], p.x ?? STILL)
-  const y = useTransform(scrollYProgress, [0, 1], p.y ?? STILL)
-  const rotate = useTransform(scrollYProgress, [0, 1], p.rotate ?? STILL)
-  const rotateX = useTransform(scrollYProgress, [0, 1], p.rotateX ?? STILL)
-  const skewY = useTransform(scrollYProgress, [0, 1], p.skewY ?? STILL)
-  const scale = useTransform(scrollYProgress, [0, 1], p.scale ?? UNIT)
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [0, 1])
-
+  const from = PRESETS[preset] ?? PRESETS.rise
   const Tag = motion[as] ?? motion.div
 
   return (
     <Tag
-      ref={ref}
       className={`scrub-item ${className}`.trim()}
-      style={
-        reduced
-          ? undefined
-          : { x, y, rotate, rotateX, skewY, scale, opacity, transformPerspective: 1000 }
-      }
+      initial={reduced ? { opacity: 0 } : { ...from, opacity: 0 }}
+      whileInView={REST}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.8, ease: EASE }}
+      style={{ transformPerspective: 1000 }}
       {...rest}
     >
       {children}
