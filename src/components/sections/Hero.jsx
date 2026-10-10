@@ -43,6 +43,23 @@ const YEAR = new Date().getFullYear()
 // statement and a tall outlined numeral — joined by a small network graph
 // (SideNetwork) and spread from the top of the photo to its foot,
 // mirroring the left column's top, middle and bottom.
+// The small blocks level with the top of the photo, one each side.
+const STATUS = { title: 'Open to robotics internships', sub: 'Autonomy · Estimation · Simulation' }
+const LOCALE = { city: 'Dhaka', country: 'Bangladesh', zone: 'GMT+6', timeZone: 'Asia/Dhaka' }
+
+const formatTime = (timeZone) =>
+  new Intl.DateTimeFormat('en-GB', { timeZone, hour: '2-digit', minute: '2-digit' }).format(new Date())
+
+// Live local time, refreshed a few times a minute so it never reads stale.
+function useLocalTime(timeZone) {
+  const [time, setTime] = useState(() => formatTime(timeZone))
+  useEffect(() => {
+    const id = window.setInterval(() => setTime(formatTime(timeZone)), 15000)
+    return () => window.clearInterval(id)
+  }, [timeZone])
+  return time
+}
+
 const SIDE = [
   { label: 'Research focus', value: 'Uncertainty-aware multi-agent, multi-sensor fusion' },
   { label: 'University', value: 'Bangladesh University of Engineering and Technology' },
@@ -261,6 +278,7 @@ function ArrowUpRight() {
 }
 
 export default function Hero() {
+  const localTime = useLocalTime(LOCALE.timeZone)
   const frameRef = useRef(null)
   const nameRef = useRef(null)
   const lineRef = useRef(null)
@@ -366,6 +384,13 @@ export default function Hero() {
         <div className="hero__body" id="about">
           {/* ------------------------------------------------ left: intro */}
           <div className="hero__intro">
+            <motion.div className="hero__corner" {...rise(0.9)}>
+              <p className="hero__corner-title">
+                <i className="hero__corner-dot" aria-hidden="true" />
+                {STATUS.title}
+              </p>
+              <p className="hero__corner-sub">{STATUS.sub}</p>
+            </motion.div>
             <div>
               <motion.p className="hero__kicker" {...rise(0.95)}>
                 About me
@@ -446,6 +471,12 @@ export default function Hero() {
           {/* ------------------------------------------------ right: facts */}
           <dl className="hero__facts" onPointerLeave={() => setActiveSide(null)}>
             <SideNetwork active={activeSide} reduced={reduced} />
+            <motion.div className="hero__corner hero__corner--end" {...rise(0.9)}>
+              <p className="hero__corner-title">
+                {LOCALE.city} · <time>{localTime}</time> · {LOCALE.zone}
+              </p>
+              <p className="hero__corner-sub">{LOCALE.country}</p>
+            </motion.div>
             {SIDE.map((item, i) => (
               <motion.div
                 className="hero__side"

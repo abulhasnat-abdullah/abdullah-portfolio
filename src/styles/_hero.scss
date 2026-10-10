@@ -230,16 +230,89 @@
 // ---------------------------------------------------------------------------
 // About
 // ---------------------------------------------------------------------------
-// Left: a compact group — label, lead, actions — centred on the photo's
-// height, mirroring the group on the right.
+// Left: a small status block level with the top of the photo, and the
+// main group — label, lead, actions — ending level with its bottom. The
+// right column mirrors it.
 .hero__intro {
   grid-column: 1 / span 4;
   grid-row: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   gap: clamp(2rem, 3.2vw, 2.8rem);
   padding-bottom: var(--caption-h);
+}
+
+// The corner blocks: level with the top of the photo, one each side.
+// margin-bottom: auto pushes them up while the main group stays at the foot.
+.hero__corner {
+  margin-bottom: auto;
+}
+
+.hero__corner--end {
+  text-align: right;
+}
+
+.hero__corner-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: $font-nav;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hero-ink);
+
+  time {
+    color: $accent-text;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.hero__corner--end .hero__corner-title {
+  justify-content: flex-end;
+}
+
+.hero__corner-sub {
+  margin-top: 0.35rem;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  color: var(--hero-faint);
+}
+
+// A live dot: the status is current.
+.hero__corner-dot {
+  position: relative;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3ddc84;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border: 1.5px solid #3ddc84;
+    border-radius: 50%;
+    animation: hero-ping 2s ease-out infinite;
+  }
+}
+
+@keyframes hero-ping {
+  from {
+    transform: scale(0.4);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+html[data-motion='off'] .hero__corner-dot::after {
+  animation: none;
 }
 
 .hero__kicker {
@@ -449,9 +522,9 @@
   grid-row: 1;
   display: flex;
   flex-direction: column;
-  // A compact group, centred on the photo's height (the caption under the
-  // photo is left out of the centring).
-  justify-content: center;
+  // The items end level with the bottom of the photo (the caption under
+  // the photo is left out); the corner block sits at the top.
+  justify-content: flex-end;
   gap: clamp(1.4rem, 2.4vw, 2rem);
   margin: 0;
   padding-bottom: var(--caption-h);
@@ -618,6 +691,10 @@
     gap: var(--grid-gap);
     margin-top: clamp(2rem, 4vw, 3rem);
     padding-bottom: 0;
+  }
+
+  .hero__corner--end {
+    display: none;
   }
 
   // Numeral first, text after, left-aligned; no network.
