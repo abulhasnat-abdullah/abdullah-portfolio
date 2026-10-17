@@ -345,7 +345,7 @@ export const projects = [
     team: 'interplanetar',
     title: 'Autonmous Navigation Stack for Mars Rover',
     status: 'live',
-    href: 'https://github.com/abulhasnat-abdullah/interplanetar_mars_rover',
+    href: 'https://github.com/abulhasnat-abdullah/Mars-Rover-Simulation',
     image: '/images/projects/interplanetar_mars_rover.webp',
     // youtube: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
     description:
@@ -378,7 +378,7 @@ export const projects = [
     id: '03',
     title: 'VENTRA — Autonomous UAV for Indoor Exploration & Tunnel Inspection',
     status: 'completed',
-    href: 'https://github.com/abulhasnat-abdullah/Indoor_drone_project',
+    href: 'https://github.com/abulhasnat-abdullah/VENTRA',
     image: '/images/projects/gps-denied-tunnel-inspection-drone.webp',
     video: '/images/projects/gps-denied-tunnel-inspection-drone.mp4',
     description:
@@ -390,7 +390,7 @@ export const projects = [
     team: 'interplanetar',
     title: 'FastDEM Terrain Mapping & Nav2 Traversability Costmap Plugin',
     status: 'completed',
-    href: 'https://github.com/abulhasnat-abdullah/nav2_traversability_layer',
+    href: 'https://github.com/abulhasnat-abdullah/Nav2-Traversability-Layer',
     image: '/images/projects/fastdem-traversability.webp',
     description:
       'FastDEM elevation mapping on the rover, and a Nav2 costmap plugin I wrote that turns its slope, step and roughness layers into traversability costs.',
@@ -400,7 +400,7 @@ export const projects = [
     id: '18',
     title: 'Autonomous Vertical Shaft Inspection',
     status: 'completed',
-    href: 'https://github.com/abulhasnat-abdullah/shaft_inspection',
+    href: 'https://github.com/abulhasnat-abdullah/Shaft-Inspection',
     image: '/images/featured/ventra/shaft-sim.webp',
     description:
       'GPS-denied shaft inspection for a drone: every 2D LiDAR scan yields the bore centre as an absolute position fix for PX4, so it descends centred, turns above the floor and climbs out with a 3D cloud and radius profile.',

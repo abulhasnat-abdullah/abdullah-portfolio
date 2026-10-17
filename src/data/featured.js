@@ -19,7 +19,7 @@ export const featuredProjects = [
     cutout: `${V}/drone-cutout.webp`,
     cutoutAlt: 'The VENTRA quadrotor with its orange LiDAR mount and propeller guards',
     youtube: 'HdqpsQmI8uY',
-    links: [{ label: 'Full details on GitHub', href: 'https://github.com/abulhasnat-abdullah/Indoor_drone_project' }],
+    links: [{ label: 'Full details on GitHub', href: 'https://github.com/abulhasnat-abdullah/VENTRA' }],
     missions: [
       {
         name: 'Indoor exploration',
