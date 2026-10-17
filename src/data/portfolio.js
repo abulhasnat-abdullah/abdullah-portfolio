@@ -18,7 +18,7 @@ export const profile = {
   },
   quote:
     'The best engineers don\'t wait for the right opportunity. They simulate it first.',
-  credentials: ['CSWA', 'Robotics & ML', 'Artist', 'Graphics & Visual Design'],
+  credentials: ['CSWP', 'Robotics & ML', 'Artist', 'Graphics & Visual Design'],
   roles: [
     'Robotics & Automation Engineer',
     'Artist · Aquarelle Verse',
@@ -531,6 +531,16 @@ export const projects = [
 // ---------------------------------------------------------------------
 
 export const certificates = [
+  {
+    id: 'cswp',
+    issuer: 'Dassault Systèmes · SOLIDWORKS',
+    title: 'SOLIDWORKS Design Professional (CSWP)',
+    date: 'Oct 2026',
+    credentialId: 'C-7Z6JMUTSN8',
+    image: '/images/certificates/cswp.webp',
+    href: null,
+    tags: ['SolidWorks', 'CAD', 'CSWP'],
+  },
   {
     id: 'cswa',
     issuer: 'Dassault Systèmes · SOLIDWORKS',
