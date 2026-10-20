@@ -1,8 +1,8 @@
 // Target path: src/components/sections/CreativeGallery.jsx
 // The artwork gallery: columns of images that drift at different speeds as
 // the gallery scrolls past, so the grid floats instead of sitting flat.
-// Click any piece for the full-size lightbox (arrow keys to browse, Esc to
-// close). Two rows show at first; "Explore all" reveals the rest.
+// Click any piece for the full-size lightbox (Lightbox.jsx: arrow keys to
+// browse, Esc to close, a link to the Instagram or Behance page). Two rows show at first; "Explore all" reveals the rest.
 //
 // Every image dropped into these folders appears automatically:
 //   - src/assets/artwork/  → Instagram watercolour art
@@ -11,9 +11,11 @@
 // the long edge); the lightbox loads the full image. A piece without a
 // thumbnail falls back to its full image.
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { EASE } from '../../lib/motion'
+import { profile } from '../../data/portfolio'
+import Lightbox from '../Lightbox'
 
 const artModules = import.meta.glob(
   '../../assets/artwork/*.{jpg,jpeg,png,webp,gif,avif,JPG,JPEG,PNG,WEBP}',
@@ -66,90 +68,7 @@ function useColumns() {
   return cols
 }
 
-function Lightbox({ works, index, label, onClose, onNavigate }) {
-  const work = works[index]
-
-  const handleKey = useCallback(
-    (e) => {
-      if (e.key === 'Escape') onClose()
-      if (e.key === 'ArrowRight') onNavigate(1)
-      if (e.key === 'ArrowLeft') onNavigate(-1)
-    },
-    [onClose, onNavigate],
-  )
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      window.removeEventListener('keydown', handleKey)
-      document.body.style.overflow = ''
-    }
-  }, [handleKey])
-
-  if (!work) return null
-  const caption = `${label} · ${pad(index + 1)} / ${pad(works.length)}`
-
-  return (
-    <motion.div
-      className="lightbox"
-      data-native-scroll
-      role="dialog"
-      aria-modal="true"
-      aria-label={caption}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={onClose}
-    >
-      <button type="button" className="lightbox__close" onClick={onClose} aria-label="Close preview">
-        ×
-      </button>
-      {works.length > 1 && (
-        <button
-          type="button"
-          className="lightbox__nav lightbox__nav--prev"
-          onClick={(e) => {
-            e.stopPropagation()
-            onNavigate(-1)
-          }}
-          aria-label="Previous piece"
-        >
-          ‹
-        </button>
-      )}
-      <motion.figure
-        className="lightbox__figure"
-        key={work.file}
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.25, ease: EASE }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <img src={work.src} alt={caption} />
-        <figcaption>
-          {label}
-          <span>{`${pad(index + 1)} / ${pad(works.length)}`}</span>
-        </figcaption>
-      </motion.figure>
-      {works.length > 1 && (
-        <button
-          type="button"
-          className="lightbox__nav lightbox__nav--next"
-          onClick={(e) => {
-            e.stopPropagation()
-            onNavigate(1)
-          }}
-          aria-label="Next piece"
-        >
-          ›
-        </button>
-      )}
-    </motion.div>
-  )
-}
-
-function ParallaxGallery({ works, label }) {
+function ParallaxGallery({ works, label, link }) {
   const ref = useRef(null)
   const reduced = useReducedMotion()
   const cols = useColumns()
@@ -228,24 +147,34 @@ function ParallaxGallery({ works, label }) {
         </div>
       )}
 
-      <AnimatePresence>
-        {openIndex !== null && (
-          <Lightbox
-            works={works}
-            index={openIndex}
-            label={label}
-            onClose={() => setOpenIndex(null)}
-            onNavigate={navigate}
-          />
-        )}
-      </AnimatePresence>
+      <Lightbox
+        items={works.map((work) => ({ src: work.src, link }))}
+        index={openIndex}
+        label={label}
+        onClose={() => setOpenIndex(null)}
+        onNavigate={navigate}
+      />
     </>
   )
 }
 
 const GROUPS = [
-  { key: 'art', works: artWorks, title: 'Art Gallery', label: 'Aquarelle Verse', meta: 'Instagram · @aquarelle_verse' },
-  { key: 'design', works: designWorks, title: 'Design Gallery', label: 'Design', meta: 'Behance · abulhaabdulla' },
+  {
+    key: 'art',
+    works: artWorks,
+    title: 'Art Gallery',
+    label: 'Aquarelle Verse',
+    meta: 'Instagram · @aquarelle_verse',
+    link: { href: profile.links.instagram, label: 'Instagram' },
+  },
+  {
+    key: 'design',
+    works: designWorks,
+    title: 'Design Gallery',
+    label: 'Design',
+    meta: 'Behance · abulhaabdulla',
+    link: { href: profile.links.behance, label: 'Behance' },
+  },
 ]
 
 export default function CreativeGallery() {
@@ -274,7 +203,7 @@ export default function CreativeGallery() {
               {group.meta} · {pad(group.works.length)} works
             </span>
           </div>
-          <ParallaxGallery works={group.works} label={group.label} />
+          <ParallaxGallery works={group.works} label={group.label} link={group.link} />
         </section>
       ))}
     </div>

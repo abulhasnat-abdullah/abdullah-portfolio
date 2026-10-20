@@ -542,6 +542,16 @@ export const certificates = [
     tags: ['SolidWorks', 'CAD', 'CSWP'],
   },
   {
+    id: 'cswa-am',
+    issuer: 'Dassault Systèmes · SOLIDWORKS',
+    title: 'SOLIDWORKS Additive Manufacturing Associate (CSWA-AM)',
+    date: 'Oct 2026',
+    credentialId: 'C-9CFRWPAGQN',
+    image: '/images/certificates/cswa-am.webp',
+    href: null,
+    tags: ['SolidWorks', 'Additive Manufacturing', '3D Printing'],
+  },
+  {
     id: 'cswa',
     issuer: 'Dassault Systèmes · SOLIDWORKS',
     title: 'SOLIDWORKS CAD Design Associate (CSWA)',
