@@ -471,7 +471,7 @@ export default function Hero() {
           </motion.figure>
 
           {/* ------------------------------------------------ right: facts */}
-          <dl className="hero__facts" onPointerLeave={() => setActiveSide(null)}>
+          <div className="hero__facts" onPointerLeave={() => setActiveSide(null)}>
             <SideNetwork active={activeSide} reduced={reduced} />
             <motion.div className="hero__corner hero__corner--end" {...rise(0.9)}>
               <p className="hero__corner-title">
@@ -487,8 +487,8 @@ export default function Hero() {
                 {...rise(0.95 + i * 0.1)}
               >
                 <div className="hero__side-text">
-                  <dt className="hero__side-label">{item.label}</dt>
-                  <dd className="hero__side-value">{item.value}</dd>
+                  <p className="hero__side-label">{item.label}</p>
+                  <p className="hero__side-value">{item.value}</p>
                 </div>
                 <span className="hero__side-net" aria-hidden="true" />
                 <span className="hero__side-num" aria-hidden="true">
@@ -496,7 +496,7 @@ export default function Hero() {
                 </span>
               </motion.div>
             ))}
-          </dl>
+          </div>
 
           {/* ------------------------------------------------ bio, full width */}
           <ScrubText className="hero__bio" text={profile.bio} />

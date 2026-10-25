@@ -26,7 +26,7 @@ function Film({ id, title }) {
         />
       ) : (
         <button type="button" className="case__film-poster" onClick={() => setPlaying(true)}>
-          <img src={`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`} alt="" loading="lazy" decoding="async" />
+          <img src={`https://i.ytimg.com/vi/${id}/sddefault.jpg`} alt="" loading="lazy" decoding="async" />
           <span className="case__film-play" aria-hidden="true">
             <svg viewBox="0 0 24 24">
               <path d="M8 5.5v13l11-6.5z" />
@@ -94,7 +94,7 @@ function CaseStudy({ project }) {
                 <img src={m.image} alt={m.imageAlt ?? ''} loading="lazy" decoding="async" />
                 <div>
                   <p className="case__mission-tag">Mission 0{i + 1}</p>
-                  <h5>{m.name}</h5>
+                  <h4>{m.name}</h4>
                   <p>{m.text}</p>
                 </div>
               </Reveal>
